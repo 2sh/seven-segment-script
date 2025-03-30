@@ -1,0 +1,19 @@
+body
+{
+  background-color: #000000;
+  color: #ffffff;
+}
+
+@font-face
+{
+  font-family: 'DSEG7Classic-Bold';
+  src:  url('../fonts/DSEG7Classic-Bold.woff2') format('woff2'),
+        url('../fonts/DSEG7Classic-Bold.woff') format('woff');
+}
+
+.sevensegment-text
+{
+	font-family: 'DSEG7Classic-Bold', Fallback, sans-serif;
+	color: #00ff3f;
+	white-space: nowrap;
+}
