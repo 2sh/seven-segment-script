@@ -1,5 +1,5 @@
 {
-  "name": "seven-segment-driver",
+  "name": "seven-segment-script",
   "version": "0.0.1",
   "description": "A library to display text on 7 segment displays",
   "main": "main.ts",
