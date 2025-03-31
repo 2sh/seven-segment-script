@@ -4,13 +4,13 @@ import { ref, watch } from 'vue'
 import SevenSegmentScript from '../../src/main'
 
 export interface Props {
-  sss?: ReturnType<typeof SevenSegmentScript>,
+  sss?: SevenSegmentScript,
   individual?: boolean
   text: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  sss: () => SevenSegmentScript(),
+  sss: () => new SevenSegmentScript(),
 })
 
 const inParts = ref<string[]>([])
