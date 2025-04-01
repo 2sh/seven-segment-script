@@ -45,7 +45,7 @@ familiar with these languages, as it can be difficult to
 determine if words with their diacritics and special letter variations are
 both legible and visually appealing when displayed on seven-segment displays.
 
-Many diacritics map to the same seven-segment character, so adjustments
+Many diacritics map to the same seven-segment characters, so adjustments
 may be necessary for each language to better differentiate them.
 
 ### Development
