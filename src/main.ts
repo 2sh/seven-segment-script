@@ -300,7 +300,7 @@ export default class SevenSegmentScript
   /**
    * Convert text to a byte string to be displayed using a font.
    * @param text - The text to convert.
-   *   If a string, it will be converted with the the toBytes method
+   *   If a string, it will be converted with the toBytes method
    *   first. If an array, it is just remapped as a byte string,
    *   allowing for text to be output as a byte array first and then
    *   also converted to a string to perhaps display the text both
