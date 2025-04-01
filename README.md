@@ -16,6 +16,8 @@ particularly diacritics.
 For example, for the German ('de') locale, the characters Ä, Ö and Ü
 are mapped to AE, OE and UE, but by default to A, O and U.
 
+[Development page with all the characters](https://2sh.github.io/seven-segment-script/)
+
 ## Stylistic Choice
 - Characters are allowed to look the same as the numerals.
 - **Lowercase letters** are designed to have more
