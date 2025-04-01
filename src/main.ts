@@ -1,4 +1,10 @@
-import type { Char, FunctionOptions, InstanceOptions, PinMap, VariationMap } from "./types"
+import type {
+  Char,
+  FunctionOptions,
+  InstanceOptions,
+  PinMap,
+  VariationMap
+} from "./types"
 
 function escapeRegExp(string: string)
 {
@@ -99,15 +105,13 @@ export default class SevenSegmentScript
 {
   private instanceOptions: Required<InstanceOptions>
   private charMap: CharMap
+
   constructor(options?: InstanceOptions)
   {
     this.instanceOptions =
     {
-      // default reversed for DSEG 7-segment font
-      pinMap: [7,6,5,4,3,2,1,0],
-      // used by the DSEG 7-segment font (at least v0.5beta1:
-      // https://github.com/keshikan/DSEG/releases/tag/v0.50beta1)
-      startCharCode: 0x2800,
+      pinMap: [0,1,2,3,4,5,6,7],
+      startCharCode: 0,
       characters: libChars,
       unknownCharacterMap: 0b00000001,
       locales: [],
@@ -117,7 +121,7 @@ export default class SevenSegmentScript
       numberGroupSeparator: ",",
       ...options,
     }
-  
+
     this.charMap = Object.fromEntries(
       this.instanceOptions.characters.map(char => [char.chr, <InternalChar> {
         chr: char.chr,
@@ -125,7 +129,19 @@ export default class SevenSegmentScript
         var: char.var
       }]))
   }
-  
+
+  public static dseg(options?: InstanceOptions)
+  {
+    return new this({
+      // default reversed for DSEG 7-segment font
+      pinMap: [7,6,5,4,3,2,1,0],
+      // used by the DSEG 7-segment font (at least v0.5beta1:
+      // https://github.com/keshikan/DSEG/releases/tag/v0.50beta1)
+      startCharCode: 0x2800,
+      ...options
+    })
+  }
+
   public toBytes(text: string, options?: FunctionOptions)
   {
     const opts: Required<InstanceOptions> =
