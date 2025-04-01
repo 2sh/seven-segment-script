@@ -41,9 +41,10 @@ Areas for improvement:
   - **Any other writing systems**
 
 This project requires contributors who are native speakers or highly
-familiar with these languages, as it can be difficult to
-determine if words with their diacritics and special letter variations are
-both legible and visually appealing when displayed on seven-segment displays.
+familiar with these languages. Without being able to recognise the
+words even normally it can be difficult to determine if words with
+their diacritics and special letter variations are both legible and
+visually appealing when displayed on seven-segment displays.
 
 Many diacritics map to the same seven-segment characters, so adjustments
 may be necessary for each language to better differentiate them.
