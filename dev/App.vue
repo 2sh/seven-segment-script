@@ -8,7 +8,7 @@ import { computed, ref } from "vue"
 const chars: Char[] = libChars
   .toSorted((c1, c2) => c1.chr.charCodeAt(0)-c2.chr.charCodeAt(0))
 
-const gridSsd = SevenSegmentScript.dseg({
+const gridSsd = SevenSegmentScript.forDsegFont({
   variationKeys: ["*"]
 })
 
@@ -317,8 +317,8 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
   return languageSections.map(section =>
   {
     const ssd = section.code
-      ? SevenSegmentScript.dseg({locales: [section.code]})
-      : SevenSegmentScript.dseg()
+      ? SevenSegmentScript.forDsegFont({locales: [section.code]})
+      : SevenSegmentScript.forDsegFont()
 
     let examples = section.examples
     if (examples)

@@ -130,7 +130,7 @@ export default class SevenSegmentScript
       }]))
   }
 
-  public static dseg(options?: InstanceOptions)
+  public static forDsegFont(options?: InstanceOptions)
   {
     return new this({
       // default reversed for DSEG 7-segment font
