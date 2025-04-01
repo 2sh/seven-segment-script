@@ -46,7 +46,7 @@ determine if words with their diacritics and special letter variations are
 both legible and visually appealing when displayed on seven-segment displays.
 
 Many diacritics map to the same seven-segment character, so adjustments
-are necessary to better differentiate them for each language.
+may be necessary for each language to better differentiate them.
 
 ### Development
 
