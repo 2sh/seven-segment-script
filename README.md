@@ -20,19 +20,21 @@ are mapped to AE, OE and UE, but by default to A, O and U.
 
 ## Stylistic Choice
 - Characters are allowed to look the same as the numerals.
-- **Lowercase letters** are designed to have more
-  weight in the lower 4 segments of the seven-segment display,
+- **Lowercase letters** are generally designed to have more weight in
+  the lower 4 segments and to never have the upper 4 segments all lit
+  at once,
   ensuring a distinct visual difference from uppercase letters.
   This may require the "invention" of some new characters, which may take
   some time to become familiar with and read fluently at first.
-- **Uppercase and lowercase letters** are distinct from one another.
+- **Uppercase and lowercase letters** should ideally all be distinct
+  from one another.
 - Aside from its numerical usage, the **decimal point (DP)**
   is used to mark unknown characters or variations of diacritics or letters.
   However, it should be used as a last resort as some displays might not
   include it.
 
 ## Help required
-Areas for improvement:
+Potential areas for improvement:
   - **Languages using the Latin alphabet with diacritics**
   - **Greek**
   - **Languages using Cyrillic**
@@ -41,15 +43,15 @@ Areas for improvement:
   - **Any other writing systems**
 
 This project requires contributors who are native speakers or highly
-familiar with these languages as it's important to have a strong sense
-of how words in these languages are meant to look. This helps
-determine whether they remain visually recognizable and
+familiar with the languages being worked on as it's important to have a strong sense of how words in these languages are meant to look.
+This helps determine whether they remain visually recognizable and
 aesthetically pleasing on a seven-segment display.
 
 Many diacritics map to the same seven-segment characters, so adjustments
 may be necessary for each language to better differentiate them.
 
-Don't hesitate to suggest major changes, as this project is still very much a work in progress...
+Don't hesitate to suggest major changes, as this project is still very
+much a work in progress...
 
 ### Development
 
