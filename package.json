@@ -1,10 +1,14 @@
 {
   "name": "seven-segment-script",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A library to display text on 7 segment displays",
   "main": "main.ts",
   "author": "2sh",
-  "license": "UNLICENSED",
+  "license": "MPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/2sh/seven-segment-script.git"
+  },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",

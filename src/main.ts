@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2025 2sh <contact@2sh.me>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+/**
+ * A library to display text on 7 segment displays.
+ *
+ * @packageDocumentation
+ */
+
 import type {
   Char,
   FunctionOptions,
@@ -6,10 +20,13 @@ import type {
   VariationMap
 } from "./types"
 
-function escapeRegExp(string: string)
-{
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+type InternalChar = {
+  chr: string
+  byte?: number
+  var?: VariationMap
 }
+
+type InternalCharMap = { [key: string]: InternalChar }
 
 /*
 
@@ -54,17 +71,22 @@ export const libLocaleVarMap: { [loc: string]: string[] } = {}
 export const decimalPointByte = 0b00000001
 export const decimalPointModChar = "\x1F"
 
-export function bits2byte(bits: string)
+function escapeRegExp(string: string)
+{
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function bits2byte(bits: string)
 {
   return parseInt(bits, 2)
 }
 
-export function byte2bits(byte: number)
+function byte2bits(byte: number)
 {
   return byte.toString(2).padStart(8, "0")
 }
 
-export function mapPins(byte: number | string, pinMap: PinMap)
+function mapPins(byte: number | string, pinMap: PinMap)
 {
 	const byteString = typeof byte == "string" ? byte : byte2bits(byte)
 	return bits2byte(pinMap.map(i => byteString[i]).join(""))
@@ -93,22 +115,28 @@ function getNormalizedChr(str: string)
   return str.normalize("NFD")[0]
 }
 
-type InternalChar = {
-  chr: string
-  byte?: number
-  var?: VariationMap
-}
-
-type CharMap = { [key: string]: InternalChar }
-
+/**
+ * The class from which to create a `SevenSegmentScript` instance for
+ * converting text to display on 7 segment displays.
+ */
 export default class SevenSegmentScript
 {
-  private instanceOptions: Required<InstanceOptions>
-  private charMap: CharMap
+  /**
+   * The properties of the class, set by the options of the constructor.
+   */
+  private properties: Required<InstanceOptions>
+  /**
+   * The processed character mapping.
+   */
+  private charMap: InternalCharMap
 
+  /**
+   * The constructor of the `SevenSegmentScript` class.
+   * @param options - Optional parameters.
+   */
   constructor(options?: InstanceOptions)
   {
-    this.instanceOptions =
+    this.properties =
     {
       pinMap: [0,1,2,3,4,5,6,7],
       startCharCode: 0,
@@ -123,30 +151,42 @@ export default class SevenSegmentScript
     }
 
     this.charMap = Object.fromEntries(
-      this.instanceOptions.characters.map(char => [char.chr, <InternalChar> {
+      this.properties.characters.map(char => [char.chr, <InternalChar> {
         chr: char.chr,
         byte: char.map ? bits2byte(char.map) : undefined,
         var: char.var
       }]))
   }
 
+  /**
+   * Factory method for displaying text using the DSEG 7-segment font
+   * (at least v0.5beta1:
+   * https://github.com/keshikan/DSEG/releases/tag/v0.50beta1)
+   * @param options - Optional parameters.
+   * @returns An instance of the
+   *   {@link SevenSegmentScript | `SevenSegmentScript`} class.
+   */
   public static forDsegFont(options?: InstanceOptions)
   {
     return new this({
-      // default reversed for DSEG 7-segment font
       pinMap: [7,6,5,4,3,2,1,0],
-      // used by the DSEG 7-segment font (at least v0.5beta1:
-      // https://github.com/keshikan/DSEG/releases/tag/v0.50beta1)
       startCharCode: 0x2800,
       ...options
     })
   }
 
+  /**
+   * Convert text to a byte array to be fed to an electronics component
+   * such as a shift register.
+   * @param text - The text to convert.
+   * @param options - Instance properties to adjust.
+   * @returns a byte array
+   */
   public toBytes(text: string, options?: FunctionOptions)
   {
     const opts: Required<InstanceOptions> =
     {
-      ...this.instanceOptions,
+      ...this.properties,
       ...options
     }
 
@@ -257,13 +297,24 @@ export default class SevenSegmentScript
     return new Uint8Array(bytes)
   }
 
+  /**
+   * Convert text to a byte string to be displayed using a font.
+   * @param text - The text to convert.
+   *   If a string, it will be converted with the the toBytes method
+   *   first. If an array, it is just remapped as a byte string,
+   *   allowing for text to be output as a byte array first and then
+   *   also converted to a string to perhaps display the text both
+   *   electronically and with a font at the same time.
+   * @param options - Instance properties to adjust.
+   * @returns a string
+   */
   public toByteString(
     text: string | number[] | Uint8Array,
     options?: FunctionOptions)
   {
     const opts: Required<InstanceOptions> =
     {
-      ...this.instanceOptions,
+      ...this.properties,
       ...options
     }
 
