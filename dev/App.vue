@@ -304,12 +304,12 @@ const languageSections: LanguageSection[] = [
 ]
 
 const caseMode = ref('normal')
+const enableRemovingDiacritics = ref(false)
 
 const casing: {[key: string]: (v: string) => string} = {
   'normal': (v) => v,
   'upper': (v) => v.toLocaleUpperCase(),
-  'lower': (v) => v.toLocaleLowerCase(),
-  'nd': (v) => v.normalize("NFD").replace(/\p{Diacritic}/gu, ""),
+  'lower': (v) => v.toLocaleLowerCase()
 }
 
 const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
@@ -330,7 +330,13 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
       }
       else
       {
-        examples = examples.map(e => casing[caseMode.value](e))
+        examples = examples.map(example =>
+        {
+          example = casing[caseMode.value](example)
+          if (enableRemovingDiacritics.value)
+            example = example.normalize("NFD").replace(/\p{Diacritic}/gu, "")
+          return example
+        })
       }
     }
 
@@ -347,12 +353,21 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
 <template>
   <div id="main">
     <div>
-      <label>Casing examples: <select v-model="caseMode">
-        <option value="normal">Normal</option>
-        <option value="upper">All uppercase</option>
-        <option value="lower">All lowercase</option>
-        <option value="nd">No diacritics</option>
-      </select></label>
+      <div class="options">
+        <div class="options-header">
+        Filters for the examples:
+        </div>
+        <div>
+          <label>Casing: <select v-model="caseMode">
+            <option value="normal">Normal</option>
+            <option value="upper">All uppercase</option>
+            <option value="lower">All lowercase</option>
+          </select></label>
+        </div>
+        <div>
+          <label>Remove diacritics: <input type="checkbox" v-model="enableRemovingDiacritics"></label>
+        </div>
+      </div>
       <div v-for="([ssd, section]) in sections">
         <h2>{{ section.name }}</h2>
         <div>
@@ -375,6 +390,18 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
 </template>
 
 <style scoped>
+.options
+{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.options-header
+{
+  font-weight: bold;
+}
+
 #character-map
 {
   display: flex;
