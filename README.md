@@ -23,7 +23,7 @@ are mapped to AE, OE and UE, but by default to A, O and U.
 - **Lowercase letters** are designed to have more
   weight in the lower 4 segments of the seven-segment display,
   ensuring a distinct visual difference from uppercase letters.
-  This requires the "invention" of some new characters, which may take
+  This may require the "invention" of some new characters, which may take
   some time to become familiar with and read fluently at first.
 - **Uppercase and lowercase letters** are distinct from one another.
 - Aside from its numerical usage, the **decimal point (DP)**
