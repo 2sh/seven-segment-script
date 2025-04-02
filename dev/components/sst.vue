@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import SevenSegmentScript from '../../src/main'
 
 export interface Props {
   sss?: SevenSegmentScript,
-  individual?: boolean
-  text: string
+  individual?: boolean,
+  text: string,
+  color?: string,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   sss: () => new SevenSegmentScript(),
+  color: "#00ff3f"
 })
 
 const inParts = ref<string[]>([])
@@ -24,6 +26,14 @@ watch(props, () =>
   outParts.value = inParts.value.map(part => props.sss.toByteString(part))
 }, { immediate: true })
 
+const lineStyle = computed(() =>
+{
+  return {
+    color: props.color,
+    textShadow: `0 0 3px ${props.color}`
+  }
+})
+
 </script>
 
 <template>
@@ -33,7 +43,7 @@ watch(props, () =>
       <tr class="sevensegment-line sevensegment-text">
         <td v-for="part in outParts">
           <div class="off-line">{{ "8".repeat(part.length) }}</div>
-          <div>{{ part }}</div>
+          <div class="on-line" :style="lineStyle">{{ part }}</div>
         </td>
       </tr>
       <tr class="plain-line">
@@ -59,6 +69,7 @@ td
 
 .sevensegment-line td
 {
+
   font-size: 20px;
   position: relative;
 }

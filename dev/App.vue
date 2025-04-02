@@ -305,6 +305,7 @@ const languageSections: LanguageSection[] = [
 
 const caseMode = ref('normal')
 const enableRemovingDiacritics = ref(false)
+const color = ref('#00ff3f')
 
 const casing: {[key: string]: (v: string) => string} = {
   'normal': (v) => v,
@@ -354,8 +355,18 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
   <div id="main">
     <div>
       <div class="options">
+        <div>
+          <label>Colour: <select v-model="color">
+            <option value="#ff3333">Red</option>
+            <option value="#00ff3f" selected>Green</option>
+            <option value="#FFA500">Orange</option>
+            <option value="#7DF9FF">Blue</option>
+          </select></label>
+        </div>
+      </div>
+      <div class="options">
         <div class="options-header">
-        Filters for the examples:
+        Options for the examples:
         </div>
         <div>
           <label>Casing: <select v-model="caseMode">
@@ -372,10 +383,10 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
         <h2>{{ section.name }}</h2>
         <div>
           <div class="subsection">
-            <sst v-for="line in section.chars" :sss="ssd" :text="line" individual></sst>
+            <sst v-for="line in section.chars" :color="color" :sss="ssd" :text="line" individual></sst>
           </div>
           <div class="subsection">
-            <sst v-for="line in section.examples" :sss="ssd" :text="line"></sst>
+            <sst v-for="line in section.examples" :color="color" :sss="ssd" :text="line"></sst>
           </div>
         </div>
       </div>
