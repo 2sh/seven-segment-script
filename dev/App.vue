@@ -36,8 +36,8 @@ const languageSections: LanguageSection[] = [
   {
     name: "General",
     chars: [
-      "ABCDEFGHIJKLMNOPQRSTUVXYZ",
-      "abcdefghijklmnopqrstuvxyz",
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      "abcdefghijklmnopqrstuvwxyz",
       "0123456789↊↋",
       "!\"#$%&'()*+,-./ :;<=>?@ [\\]^_` {|}~",
       "þðʒȝŋñĳ āēèíìıōúūùû",
