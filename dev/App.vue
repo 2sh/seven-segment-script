@@ -351,6 +351,13 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
   })
 })
 
+function onColorPreset(e: Event)
+{
+  const target = e.target as HTMLSelectElement
+  color.value = target.value
+  target.value = ''
+}
+
 </script>
 
 <template>
@@ -358,11 +365,15 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
     <div>
       <div class="options">
         <div>
-          <label>Colour: <select v-model="color">
+          <label>Colour:
+            <input style='width: 60px; font-family:monospace' v-model="color" value="#00ff3f"/>
+            <select v-on:change="onColorPreset">
+            <option disabled selected value="">Preset</option>
+            <option value="#00ff3f">Green</option>
             <option value="#ff3333">Red</option>
-            <option value="#00ff3f" selected>Green</option>
             <option value="#FFA500">Orange</option>
-            <option value="#7DF9FF">Blue</option>
+            <option value="#0c5afc">Blue</option>
+            <option value="#ffff00">Yellow</option>
           </select></label>
         </div>
       </div>
