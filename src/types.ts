@@ -8,7 +8,7 @@ export type VariationMap = {[key: string]: Variation}
 
 export type Char = {
   chr: string
-  map?: string
+  pin?: string
   var?: VariationMap
 }
 

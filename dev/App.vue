@@ -392,7 +392,7 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
       </div>
     </div>
     <div id="character-map">
-      <div class="character" v-bind:class="{'is-mapped': typeof char.map !== 'undefined'}" v-for="char in chars">
+      <div class="character" v-bind:class="{'has-pinmap': typeof char.pin !== 'undefined'}" v-for="char in chars">
         <div class="title">{{ char.chr }}</div>
         <div class="ssbox sevensegment-text"><div>{{ gridSsd.toByteString(char.chr) }}</div></div>
       </div>
@@ -438,7 +438,7 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
   height: 22px;
 }
 
-.character:not(.is-mapped) .title
+.character:not(.has-pinmap) .title
 {
   background-color: #ffdbb3;
 }

@@ -153,7 +153,7 @@ export default class SevenSegmentScript
     this.charMap = Object.fromEntries(
       this.properties.characters.map(char => [char.chr, <InternalChar> {
         chr: char.chr,
-        byte: char.map ? bits2byte(char.map) : undefined,
+        byte: char.pin ? bits2byte(char.pin) : undefined,
         var: char.var
       }]))
   }
