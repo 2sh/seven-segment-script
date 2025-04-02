@@ -29,7 +29,6 @@ export default <Char[]> [
     { chr: "ƅ", var: { _: "b\x1F" } },
 
   { chr: "C", pin: "10011100" }, { chr: "c", pin: "00011010" },
-    { chr: "ç", pin: "10010110" },
     { chr: "Ɔ", pin: "11110000" },
     { chr: "Ƈ", var: { _: "C\x1F" } },
       { chr: "ƈ", var: { _: "c\x1F" } },
