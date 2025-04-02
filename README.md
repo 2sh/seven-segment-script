@@ -45,7 +45,7 @@ Potential areas for improvement:
 This project needs contributors who are native speakers or highly
 familiar with the languages being worked on as it's important to have a strong sense of how words in these languages are meant to look.
 This helps determine whether they remain visually recognizable and
-aesthetically pleasing on a seven-segment display.
+aesthetically pleasing on seven-segment displays.
 
 Many diacritics map to the same seven-segment characters, so adjustments
 may be necessary for each language to better differentiate them.
