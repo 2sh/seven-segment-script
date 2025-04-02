@@ -144,7 +144,7 @@ export default <Char[]> [
     { chr: "Ö", var: { de:["OE", "Oe"] } },
       { chr: "ö", var: { _: "ō" } },
     { chr: "ò", var: { _: "ō" } },
-    { chr: "ó", var: { _: "ō", it: "ō\x1F" } }, // low occurrence in italian
+    { chr: "ó", var: { _: "ō", it: "ō\x1F" } }, // low occurrence in Italian
     { chr: "ô", var: { _: "ō", pt: "ō\x1F" } },
     { chr: "õ", var: { _: "ō" } },
     { chr: "ø", var: { _: "ō" } },
