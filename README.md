@@ -30,7 +30,7 @@ are mapped to AE, OE and UE, but by default to A, O and U.
   from one another.
 - Aside from its numerical usage, the **decimal point (DP)**
   is used to mark unknown characters or variations of diacritics or letters.
-  However, it should be used as a last resort as some displays might not
+  However, it should be used sparingly as some displays might not
   include it.
 
 ## Help required
@@ -42,15 +42,15 @@ Potential areas for improvement:
   - **Korean**
   - **Any other writing systems**
 
-This project requires contributors who are native speakers or highly
+This project needs contributors who are native speakers or highly
 familiar with the languages being worked on as it's important to have a strong sense of how words in these languages are meant to look.
 This helps determine whether they remain visually recognizable and
-aesthetically pleasing on a seven-segment display.
+aesthetically pleasing on seven-segment displays.
 
 Many diacritics map to the same seven-segment characters, so adjustments
 may be necessary for each language to better differentiate them.
 
-Don't hesitate to suggest major changes, as this project is still very
+Don't hesitate to [suggest](https://github.com/2sh/seven-segment-script/discussions) major changes, as this project is still very
 much a work in progress...
 
 ### Development
