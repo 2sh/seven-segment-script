@@ -50,7 +50,7 @@ aesthetically pleasing on a seven-segment display.
 Many diacritics map to the same seven-segment characters, so adjustments
 may be necessary for each language to better differentiate them.
 
-Don't hesitate to suggest major changes, as this project is still very
+Don't hesitate to [suggest](https://github.com/2sh/seven-segment-script/discussions) major changes, as this project is still very
 much a work in progress...
 
 ### Development
