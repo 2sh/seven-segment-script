@@ -8,7 +8,7 @@ import { computed, ref } from "vue"
 const chars: Char[] = libChars
   .toSorted((c1, c2) => c1.chr.charCodeAt(0)-c2.chr.charCodeAt(0))
 
-const gridSsd = SevenSegmentScript.forDsegFont({
+const generalSss = SevenSegmentScript.forDsegFont({
   variationKeys: ["*"]
 })
 
@@ -306,6 +306,8 @@ const languageSections: LanguageSection[] = [
 const caseMode = ref('normal')
 const enableRemovingDiacritics = ref(false)
 const color = ref('#00ff3f')
+const customText = ref('Custom text input')
+const customTextLines = computed(() => customText.value.split(/\r\n|\n|\r/))
 
 const casing: {[key: string]: (v: string) => string} = {
   'normal': (v) => v,
@@ -379,6 +381,14 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
           <label>Remove diacritics: <input type="checkbox" v-model="enableRemovingDiacritics"></label>
         </div>
       </div>
+      <div id="custom-text-section">
+        <div>
+          <textarea v-model="customText"></textarea>
+        </div>
+        <div id="custom-text-output">
+          <sst v-for="line in customTextLines" :color="color" :sss="generalSss" :text="line"></sst>
+        </div>
+      </div>
       <div v-for="([ssd, section]) in sections">
         <h2>{{ section.name }}</h2>
         <div>
@@ -394,7 +404,7 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
     <div id="character-map">
       <div class="character" v-bind:class="{'has-pinmap': typeof char.pin !== 'undefined'}" v-for="char in chars">
         <div class="title">{{ char.chr }}</div>
-        <div class="ssbox sevensegment-text"><div>{{ gridSsd.toByteString(char.chr) }}</div></div>
+        <div class="ssbox sevensegment-text"><div>{{ generalSss.toByteString(char.chr) }}</div></div>
       </div>
     </div>
   </div>
@@ -411,6 +421,24 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
 .options-header
 {
   font-weight: bold;
+}
+
+#custom-text-section
+{
+  margin: 10px;
+}
+
+#custom-text-section textarea
+{
+  width: 600px;
+  height: 100px;
+  background-color: black;
+  color: white;
+}
+
+#custom-text-output
+{
+  margin-top: 10px;
 }
 
 #character-map
