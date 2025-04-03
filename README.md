@@ -28,7 +28,7 @@ const displayScriptForGerman = new SevenSegmentScript({
 })
 
 const fontScriptMultiLang = SevenSegmentScript.forDsegFont({
-  locale: ['fr', 'it', 'de'] // Ü would map to UE even in french text
+  locale: ['fr', 'it', 'de'] // Ü would map to UE even in French text
 })
 
 const stringOutput = fontScript.toByteString(
