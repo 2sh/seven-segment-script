@@ -73,7 +73,8 @@ may be necessary for each language to better differentiate them.
 Don't hesitate to [suggest](https://github.com/2sh/seven-segment-script/discussions) major changes, as this project is still very
 much a work in progress...
 
-### Development
+## Development
+### Dev Web View
 
 To view all the characters in use on a web page, run:
 ```sh
@@ -82,7 +83,7 @@ yarn dev
 
 ### Build
 
-To build the project, run:
+To build the library, run:
 ```sh
 yarn build
 ```
