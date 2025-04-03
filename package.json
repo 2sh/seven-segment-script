@@ -3,11 +3,18 @@
   "version": "0.2.0",
   "description": "A library to display text on 7 segment displays",
   "main": "lib/index.js",
-  "author": "2sh",
+  "author": "2sh <git@2sh.me> (https://2sh.me)",
   "license": "MPL-2.0",
+  "keywords": [
+    "seven-segement display",
+    "minimalism"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/2sh/seven-segment-script.git"
+  },
+  "bugs": {
+    "url": "https://github.com/2sh/seven-segment-script/issues"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
