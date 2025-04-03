@@ -4,6 +4,7 @@
   "description": "A library to display text on 7 segment displays",
   "main": "lib/index.js",
   "author": "2sh <git@2sh.me> (https://2sh.me)",
+  "contributors": [],
   "license": "MPL-2.0",
   "keywords": [
     "seven-segement display",
