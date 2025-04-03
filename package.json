@@ -1,6 +1,6 @@
 {
   "name": "seven-segment-script",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A library to display text on 7 segment displays",
   "main": "lib/index.js",
   "author": "2sh",
