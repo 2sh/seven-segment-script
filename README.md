@@ -53,6 +53,9 @@ const byteArrayOutput = displayScript.toBytes(
   "Text to be fed to seven segment displays")
 ```
 
+The font to use is [DSEG font v0.50beta1](https://github.com/keshikan/DSEG/releases/tag/v0.50beta1). The current NPM stable release does not include the
+correct structure for displaying the characters programmatically.
+
 ## Help required
 Potential areas for improvement:
   - **Languages using the Latin alphabet with diacritics**
