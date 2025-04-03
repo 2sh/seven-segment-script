@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SevenSegmentScript, { libChars } from "../src/main"
+import SevenSegmentScript, { libChars } from "../src/"
 import type { Char } from "../src/types"
 import sst from './components/sst.vue'
 
@@ -310,12 +310,6 @@ const color = ref('#00ff3f')
 const customText = ref('Custom text input')
 const customTextLines = computed(() => customText.value.split(/\r\n|\n|\r/))
 
-const casing: {[key: string]: (v: string) => string} = {
-  'normal': (v) => v,
-  'upper': (v) => v.toLocaleUpperCase(),
-  'lower': (v) => v.toLocaleLowerCase()
-}
-
 const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
 {
   return languageSections.map(section =>
@@ -329,14 +323,16 @@ const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
     {
       if (section.code == "ko")
       {
-        console.log(examples.map(e => e.normalize("NFKD").split('')))
         examples = examples.map(e => e.normalize("NFKD").split('').join(''))
       }
       else
       {
         examples = examples.map(example =>
         {
-          example = casing[caseMode.value](example)
+          if (caseMode.value == "upper")
+            example = example.toLocaleUpperCase()
+          else if (caseMode.value == "lower")
+            example = example.toLocaleLowerCase()
           if (enableRemovingDiacritics.value)
             example = example.normalize("NFD").replace(/\p{Diacritic}/gu, "")
           return example

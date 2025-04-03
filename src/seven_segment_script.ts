@@ -98,7 +98,7 @@ function getVariation(varMap: VariationMap, varKeys: string[])
   }
   if (varKeys.includes("*"))
   {
-    return Object.entries(varMap)[0][1]
+    return (Object.entries(varMap)[0]||[])[1]
   }
   return varMap["_"] || null
 }

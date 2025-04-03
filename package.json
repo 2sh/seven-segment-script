@@ -2,7 +2,7 @@
   "name": "seven-segment-script",
   "version": "0.1.0",
   "description": "A library to display text on 7 segment displays",
-  "main": "main.ts",
+  "main": "lib/index.js",
   "author": "2sh",
   "license": "MPL-2.0",
   "repository": {

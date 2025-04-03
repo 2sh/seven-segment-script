@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 
-import SevenSegmentScript from '../../src/main'
+import SevenSegmentScript from '../../src/'
 
 export interface Props {
   sss?: SevenSegmentScript,
