@@ -212,41 +212,35 @@ export default class SevenSegmentScript
 
     const splitText = text.split('')
 
-    // Replace chrs in text with variations
-    const processedText = splitText.map((chr, index) =>
+    const resolveChr = (chr: string, index: number): string | string[] =>
     {
       if (chr == decimalPointModChar) return chr
       let char = this.charMap[chr]
       if (!char)
       {
-        // remove diacritics if possible and
-        // check if normalised char is in map
-        chr = getNormalizedChr(chr) + decimalPointModChar
-        char = this.charMap[chr]
+        // remove diacritics if possible and add DP
+        return getNormalizedChr(chr) + decimalPointModChar
       }
-      if (char && char.var)
+
+      if (char.var)
       {
-        const variation = getVariation(char.var, variationKeys)
+        let variation = getVariation(char.var, variationKeys)
         if (variation)
         {
-          if (typeof variation == 'string')
-          {
-            chr = variation
-          }
-          else
+          if (typeof variation !== 'string')
           {
             const varIndex = (index+1 < splitText.length &&
               isLowerCase(splitText[index+1]!)) ? 1 : 0
-            chr = variation[varIndex]
+            variation = variation[varIndex]
           }
-        }
-        else if(!char.byte)
-        {
-          chr = getNormalizedChr(chr) + decimalPointModChar
+          return variation.split('').map(resolveChr).flat()
         }
       }
       return chr
-    })
+    }
+
+    // Replace chrs in text with variations
+    const processedText = splitText.map(resolveChr).flat()
 
     // convert text to 7s bytes
     const bytes: number[] = []
