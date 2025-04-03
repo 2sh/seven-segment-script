@@ -221,7 +221,6 @@ export default class SevenSegmentScript
         // remove diacritics if possible and add DP
         return getNormalizedChr(chr) + decimalPointModChar
       }
-
       if (char.var)
       {
         let variation = getVariation(char.var, variationKeys)
