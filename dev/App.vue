@@ -280,7 +280,6 @@ const languageSections: LanguageSection[] = [
     examples: [
       "イロハニオエド　チリヌルヲ　ワガヨダレゾ　ツネナラン　ウイノオクヤマ　キョウコエテ　アサキユメミジ　エイモセズ",
     ]
-    // https://wentwayup.tamaliver.jp/e67936.html
   },
   {
     name: "Korean",

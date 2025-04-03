@@ -1,6 +1,9 @@
 import type { Char } from "../types"
 
-// https://wentwayup.tamaliver.jp/e67936.html
+/**
+ * Katakana mapping by いかづちSqueak
+ *   (https://wentwayup.tamaliver.jp/e67936.html)
+ */
 export default <Char[]> [
   { chr: "ア", pin: "11001000" }, { chr: "あ", var: { _: "ア" } },
   { chr: "イ", pin: "01001010" }, { chr: "い", var: { _: "イ" } },
