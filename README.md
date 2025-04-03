@@ -33,7 +33,7 @@ are mapped to AE, OE and UE, but by default to A, O and U.
   However, it should be used sparingly as some displays might not
   include it.
 
-### Usage
+## Usage
 
 ```js
 const displayScript = new SevenSegmentScript()
