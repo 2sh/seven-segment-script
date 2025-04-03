@@ -213,17 +213,15 @@ export default class SevenSegmentScript
     const splitText = text.split('')
 
     // Replace chrs in text with variations
-    for (let c=0; c<splitText.length; c++)
+    const processedText = splitText.map((chr, index) =>
     {
-      let chr = splitText[c]
-      // skip mod char
-      if (chr == decimalPointModChar) continue
+      if (chr == decimalPointModChar) return chr
       let char = this.charMap[chr]
       if (!char)
       {
         // remove diacritics if possible and
         // check if normalised char is in map
-        chr = splitText[c] = getNormalizedChr(chr) + decimalPointModChar
+        chr = getNormalizedChr(chr) + decimalPointModChar
         char = this.charMap[chr]
       }
       if (char && char.var)
@@ -233,25 +231,26 @@ export default class SevenSegmentScript
         {
           if (typeof variation == 'string')
           {
-            splitText[c] = variation
+            chr = variation
           }
           else
           {
-            const index =
-              (c+1 < splitText.length && isLowerCase(splitText[c+1])) ? 1 : 0
-            splitText[c] = variation[index]
+            const varIndex = (index+1 < splitText.length &&
+              isLowerCase(splitText[index+1]!)) ? 1 : 0
+            chr = variation[varIndex]
           }
         }
         else if(!char.byte)
         {
-          splitText[c] = getNormalizedChr(chr) + decimalPointModChar
+          chr = getNormalizedChr(chr) + decimalPointModChar
         }
       }
-    }
+      return chr
+    })
 
     // convert text to 7s bytes
     const bytes: number[] = []
-    splitText.join("").split('').forEach(chr =>
+    processedText.join("").split('').forEach(chr =>
     {
       // add dec point to previous char if there is one,
       // otherwise append it
@@ -259,10 +258,11 @@ export default class SevenSegmentScript
       {
         if (bytes.length)
         {
-          const lastByte = bytes[bytes.length-1]
+          const lastIndex = bytes.length-1
+          const lastByte = bytes[lastIndex]!
           // check if dec point is already set
           if (!(lastByte & decimalPointByte))
-            bytes[bytes.length-1] += decimalPointByte
+            bytes[lastIndex]! += decimalPointByte
         }
         else
         {
@@ -288,7 +288,7 @@ export default class SevenSegmentScript
     {
       for (let i=0; i<bytes.length; i++)
       {
-        bytes[i] = mapPins(bytes[i], opts.pinMap)
+        bytes[i] = mapPins(bytes[i]!, opts.pinMap)
       }
     }
 
@@ -323,7 +323,7 @@ export default class SevenSegmentScript
     const chars: string[] = []
     for (let i=0; i<bytes.length; i++)
     {
-      chars.push(String.fromCharCode(opts.startCharCode + bytes[i]))
+      chars.push(String.fromCharCode(opts.startCharCode + bytes[i]!))
     }
     return chars.join("")
   }
