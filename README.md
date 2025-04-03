@@ -21,7 +21,9 @@ are mapped to AE, OE and UE, but by default to A, O and U.
 ## Usage
 
 ```js
-const displayScript = new SevenSegmentScript()
+const displayScript = new SevenSegmentScript({
+  pinMap: [0,6,2,4,3,5,1,7] // if some other pin mapping is more convenient
+})
 const fontScript = SevenSegmentScript.forDsegFont()
 const displayScriptForGerman = new SevenSegmentScript({
   locale: ['de']
@@ -36,14 +38,6 @@ const stringOutput = fontScript.toByteString(
 
 const byteArrayOutput = displayScript.toBytes(
   "Text to be fed to seven segment displays")
-
-// Though the byte array output can be fed into the toByteString method,
-// allowing for both an output to seven segment displays electronically
-// and on the screen with a font
-const byteArrayOutput2 = fontScript.toByteString(
-  "Text to be rendered with both")
-const stringOutput2 = fontScript.toByteString(byteArrayOutput2)
-
 ```
 
 The font to use is [DSEG font v0.50beta1](https://github.com/keshikan/DSEG/releases/tag/v0.50beta1). The current NPM stable release does not include the
