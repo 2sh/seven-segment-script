@@ -8,7 +8,8 @@ import { computed, ref } from "vue"
 const chars: Char[] = libChars
   .toSorted((c1, c2) => c1.chr.charCodeAt(0)-c2.chr.charCodeAt(0))
 
-const generalSss = SevenSegmentScript.forDsegFont({
+const generalSss = SevenSegmentScript.forDsegFont()
+const gridSss = SevenSegmentScript.forDsegFont({
   variationKeys: ["*"]
 })
 
@@ -415,7 +416,7 @@ function onColorPreset(e: Event)
     <div id="character-map">
       <div class="character" v-bind:class="{'has-pinmap': typeof char.pin !== 'undefined'}" v-for="char in chars">
         <div class="title">{{ char.chr }}</div>
-        <div class="ssbox sevensegment-text"><div>{{ generalSss.toByteString(char.chr) }}</div></div>
+        <div class="ssbox sevensegment-text"><div>{{ gridSss.toByteString(char.chr) }}</div></div>
       </div>
     </div>
   </div>
