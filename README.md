@@ -18,21 +18,6 @@ are mapped to AE, OE and UE, but by default to A, O and U.
 
 [Development page with all the characters](https://2sh.github.io/seven-segment-script/)
 
-## Stylistic Choice
-- Characters are allowed to look the same as the numerals.
-- **Lowercase letters** are generally designed to have more weight in
-  the lower 4 segments and to never have the upper 4 segments all lit
-  at once,
-  ensuring a distinct visual difference from uppercase letters.
-  This may require the "invention" of some new characters, which may take
-  some time to become familiar with and read fluently at first.
-- **Uppercase and lowercase letters** should ideally all be distinct
-  from one another.
-- Aside from its numerical usage, the **decimal point (DP)**
-  is used to mark unknown characters or variations of diacritics or letters.
-  However, it should be used sparingly as some displays might not
-  include it.
-
 ## Usage
 
 ```js
@@ -55,6 +40,21 @@ const byteArrayOutput = displayScript.toBytes(
 
 The font to use is [DSEG font v0.50beta1](https://github.com/keshikan/DSEG/releases/tag/v0.50beta1). The current NPM stable release does not include the
 correct structure for displaying the characters programmatically.
+
+## Stylistic Choice
+- Characters are allowed to look the same as the numerals.
+- **Lowercase letters** are generally designed to have more weight in
+  the lower 4 segments and to never have the upper 4 segments all lit
+  at once,
+  ensuring a distinct visual difference from uppercase letters.
+  This may require the "invention" of some new characters, which may take
+  some time to become familiar with and read fluently at first.
+- **Uppercase and lowercase letters** should ideally all be distinct
+  from one another.
+- Aside from its numerical usage, the **decimal point (DP)**
+  is used to mark unknown characters or variations of diacritics or letters.
+  However, it should be used sparingly as some displays might not
+  include it.
 
 ## Help required
 Potential areas for improvement:
