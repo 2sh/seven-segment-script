@@ -33,6 +33,26 @@ are mapped to AE, OE and UE, but by default to A, O and U.
   However, it should be used sparingly as some displays might not
   include it.
 
+### Usage
+
+```js
+const displayScript = new SevenSegmentScript()
+const fontScript = SevenSegmentScript.forDsegFont()
+const displayScriptForGerman = new SevenSegmentScript({
+  locale: ['de']
+})
+
+const fontScriptMultiLang = SevenSegmentScript.forDsegFont({
+  locale: ['fr', 'it', 'de'] // Ü would map to UE even in french text
+})
+
+const stringOutput = fontScript.toByteString(
+  "Text to be rendered with the DSEG font")
+
+const byteArrayOutput = displayScript.toBytes(
+  "Text to be fed to seven segment displays")
+```
+
 ## Help required
 Potential areas for improvement:
   - **Languages using the Latin alphabet with diacritics**
