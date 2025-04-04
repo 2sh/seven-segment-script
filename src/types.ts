@@ -13,13 +13,11 @@ export type Char = {
   var?: VariationMap
 }
 
-export type PinMap = [number, number, number, number, number, number, number, number]
+export type Pins =
+  [number, number, number, number, number, number, number, number]
 
 export interface FunctionOptions
 {
-  pinMap?: PinMap | null,
-  startCharCode?: number,
-  unknownCharacterMap?: number,
   locales?: string[],
   variationKeys?: string[],
   improveNumbers?: boolean,
@@ -31,3 +29,14 @@ export interface InstanceOptions extends FunctionOptions
 {
   characters?: Char[],
 }
+
+export interface LineGeneralOptions {
+  pinMap?: Pins | null
+}
+
+export interface LineStringSpecificOptions {
+  startCharCode?: number
+}
+
+export interface LineStringOptions extends
+  LineStringSpecificOptions, LineGeneralOptions {}

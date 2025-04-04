@@ -14,17 +14,14 @@ import type {
   Char,
   FunctionOptions,
   InstanceOptions,
-  PinMap,
+  LineGeneralOptions,
+  Pins,
+  LineStringOptions,
+  LineStringSpecificOptions,
   VariationMap
 } from "./types"
 
-type InternalChar = {
-  chr: string
-  byte?: number
-  var?: VariationMap
-}
-
-type InternalCharMap = { [key: string]: InternalChar }
+type CharMap = { [key: string]: Char }
 
 /*
 
@@ -66,7 +63,7 @@ export const libChars: Char[] =
 
 export const libLocaleVarMap: { [loc: string]: string[] } = {}
 
-export const decimalPointByte = 0b00000001
+export const decimalPoint = "00000001"
 export const decimalPointModChar = "\x1F"
 
 function escapeRegExp(string: string)
@@ -82,12 +79,6 @@ function bits2byte(bits: string)
 function byte2bits(byte: number)
 {
   return byte.toString(2).padStart(8, "0")
-}
-
-function mapPins(byte: number | string, pinMap: PinMap)
-{
-	const byteString = typeof byte == "string" ? byte : byte2bits(byte)
-	return bits2byte(pinMap.map(i => byteString[i]).join(""))
 }
 
 function getVariation(varMap: VariationMap, varKeys: string[])
@@ -113,6 +104,100 @@ function getNormalizedChr(str: string)
   return str.normalize("NFD")[0]
 }
 
+function andPinMap(a: string, b: string)
+{
+  return a.split('').map((ac, i) =>
+    ac == '1' || b[i] == '1' ? '1' : '0').join('')
+}
+
+/**
+ * An object containing the converted string with methods for outputting
+ * into various convenient formats.
+ */
+export class SevenSegmentLine
+{
+  private pinsLine: string[]
+  private properties: Required<LineGeneralOptions>
+  constructor(pinsLine: string[])
+  {
+    this.pinsLine = pinsLine
+    this.properties = {
+      pinMap: null
+    }
+  }
+
+  /**
+   * Outputs the line as an array of strings representing the 8 segments
+   * as '1' or '0'.
+   * @param options - Optional parameters.
+   * @returns An array of strings
+   */
+  public toPinsArray(options?: LineGeneralOptions)
+  {
+    const opts: Required<LineGeneralOptions> = {
+      ...this.properties,
+      ...options,
+    }
+    return this.pinsLine.map((pins) =>
+    {
+      return opts.pinMap
+        ? opts.pinMap.map(i => pins[i]).join("")
+        : pins
+    })
+  }
+
+  /**
+   * Outputs the line as an array of bytes, a compact format for
+   * data tranfer.
+   * @param options - Optional parameters.
+   * @returns An array of bytes
+   */
+  public toBytes(options?: LineGeneralOptions)
+  {
+    const opts: Required<LineGeneralOptions> = {
+      ...this.properties,
+      ...options,
+    }
+    return this.toPinsArray(options).map(bits2byte)
+  }
+
+  /**
+   * Output the line as a string of bytes.
+   * @param options - Optional parameters.
+   * @returns A string of bytes
+   */
+  public toString(options?: LineStringOptions)
+  {
+    const opts: Required<LineStringSpecificOptions> = {
+      startCharCode: 0,
+      ...options,
+    }
+    const bytes = this.toBytes(options)
+    const chars: string[] = []
+    for (let i=0; i<bytes.length; i++)
+    {
+      chars.push(String.fromCharCode(opts.startCharCode + bytes[i]!))
+    }
+    return chars.join("")
+  }
+
+  /**
+   * Output the line as a string for displaying using the DSEG 7-segment
+   * font (at least v0.5beta1:
+   * https://github.com/keshikan/DSEG/releases/tag/v0.50beta1)
+   * @param options - Optional parameters.
+   * @returns A string of bytes
+   */
+  public toDsegString(options?: LineStringOptions)
+  {
+    return this.toString({
+      pinMap: [7,6,5,4,3,2,1,0],
+      startCharCode: 0x2800,
+      ...options,
+    })
+  }
+}
+
 /**
  * The class from which to create a `SevenSegmentScript` instance for
  * converting text to display on 7 segment displays.
@@ -126,7 +211,7 @@ export default class SevenSegmentScript
   /**
    * The processed character mapping.
    */
-  private charMap: InternalCharMap
+  private charMap: CharMap
 
   /**
    * The constructor of the `SevenSegmentScript` class.
@@ -136,10 +221,7 @@ export default class SevenSegmentScript
   {
     this.properties =
     {
-      pinMap: [0,1,2,3,4,5,6,7],
-      startCharCode: 0,
       characters: libChars,
-      unknownCharacterMap: 0b00000001,
       locales: [],
       variationKeys: [],
       improveNumbers: true,
@@ -149,38 +231,17 @@ export default class SevenSegmentScript
     }
 
     this.charMap = Object.fromEntries(
-      this.properties.characters.map(char => [char.chr, <InternalChar> {
-        chr: char.chr,
-        byte: char.pin ? bits2byte(char.pin) : undefined,
-        var: char.var
-      }]))
+      this.properties.characters.map(char => [char.chr, char]))
   }
 
   /**
-   * Factory method for displaying text using the DSEG 7-segment font
-   * (at least v0.5beta1:
-   * https://github.com/keshikan/DSEG/releases/tag/v0.50beta1)
-   * @param options - Optional parameters.
-   * @returns An instance of the
-   *   {@link SevenSegmentScript | `SevenSegmentScript`} class.
-   */
-  public static forDsegFont(options?: InstanceOptions)
-  {
-    return new this({
-      pinMap: [7,6,5,4,3,2,1,0],
-      startCharCode: 0x2800,
-      ...options
-    })
-  }
-
-  /**
-   * Convert text to a byte array to be fed to an electronics component
-   * such as a shift register.
+   * Convert a string to a line object.
    * @param text - The text to convert.
    * @param options - Instance properties to adjust.
-   * @returns a byte array
+   * @returns An instance of the
+   *   {@link SevenSegmentLine | `SevenSegmentLine`} class.
    */
-  public toBytes(text: string, options?: FunctionOptions)
+  public convert(text: string, options?: FunctionOptions)
   {
     const opts: Required<InstanceOptions> =
     {
@@ -242,82 +303,37 @@ export default class SevenSegmentScript
     const processedText = splitText.map(resolveChr).flat()
 
     // convert text to 7s bytes
-    const bytes: number[] = []
+    const pinsLine: string[] = []
     processedText.join("").split('').forEach(chr =>
     {
       // add dec point to previous char if there is one,
       // otherwise append it
       if (chr == decimalPointModChar)
       {
-        if (bytes.length)
+        if (pinsLine.length)
         {
-          const lastIndex = bytes.length-1
-          const lastByte = bytes[lastIndex]!
-          // check if dec point is already set
-          if (!(lastByte & decimalPointByte))
-            bytes[lastIndex]! += decimalPointByte
+          const lastIndex = pinsLine.length-1
+          pinsLine[lastIndex]! =
+            andPinMap(pinsLine[lastIndex]!, decimalPoint)
         }
         else
         {
-          bytes.push(decimalPointByte)
+          pinsLine.push(decimalPoint)
         }
         return
       }
 
-      // append unknown char if not mapped
+      // append DP if not mapped
       const char = this.charMap[chr]
-      if (!char || typeof char.byte !== "number")
+      if (!char || typeof char.pin !== "string")
       {
-        bytes.push(opts.unknownCharacterMap)
+        pinsLine.push(decimalPoint)
         return
       }
 
-      const byte = char.byte
-      bytes.push(byte)
+      pinsLine.push(char.pin)
     })
 
-    // map pins
-    if (opts.pinMap)
-    {
-      for (let i=0; i<bytes.length; i++)
-      {
-        bytes[i] = mapPins(bytes[i]!, opts.pinMap)
-      }
-    }
-
-    return new Uint8Array(bytes)
-  }
-
-  /**
-   * Convert text to a byte string to be displayed using a font.
-   * @param text - The text to convert.
-   *   If a string, it will be converted with the toBytes method
-   *   first. If an array, it is just remapped as a byte string,
-   *   allowing for text to be output as a byte array first and then
-   *   also converted to a string to perhaps display the text both
-   *   electronically and with a font at the same time.
-   * @param options - Instance properties to adjust.
-   * @returns a string
-   */
-  public toByteString(
-    text: string | number[] | Uint8Array,
-    options?: FunctionOptions)
-  {
-    const opts: Required<InstanceOptions> =
-    {
-      ...this.properties,
-      ...options
-    }
-
-    const bytes = typeof text === 'string'
-      ? this.toBytes(text, opts)
-      : text
-
-    const chars: string[] = []
-    for (let i=0; i<bytes.length; i++)
-    {
-      chars.push(String.fromCharCode(opts.startCharCode + bytes[i]!))
-    }
-    return chars.join("")
+    return new SevenSegmentLine(pinsLine)
   }
 }

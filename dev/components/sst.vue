@@ -23,7 +23,8 @@ watch(props, () =>
   inParts.value = props.individual
     ? props.text.split('')
     : props.text.split(/(?<=\s+)/)
-  outParts.value = inParts.value.map(part => props.sss.toByteString(part))
+  outParts.value = inParts.value.map(part =>
+    props.sss.convert(part).toDsegString())
 }, { immediate: true })
 
 const lineStyle = computed(() =>
@@ -33,7 +34,6 @@ const lineStyle = computed(() =>
     textShadow: `0 0 3px ${props.color}`
   }
 })
-
 </script>
 
 <template>

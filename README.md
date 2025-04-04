@@ -21,23 +21,31 @@ are mapped to AE, OE and UE, but by default to A, O and U.
 ## Usage
 
 ```js
-const displayScript = new SevenSegmentScript({
-  pinMap: [0,6,2,4,3,5,1,7] // if some other pin mapping is more convenient
+const scriptGeneral = new SevenSegmentScript()
+const scriptGerman = new SevenSegmentScript({
+  locales: ['de']
 })
-const fontScript = SevenSegmentScript.forDsegFont()
-const displayScriptForGerman = new SevenSegmentScript({
-  locale: ['de']
-})
-
-const fontScriptMultiLang = SevenSegmentScript.forDsegFont({
-  locale: ['fr', 'it', 'de'] // Ü would map to UE even in French text
+const scriptMultiLang = new SevenSegmentScript({
+  // Ü would map to UE even in French text
+  locales: ['fr', 'it', 'de']
 })
 
-const stringOutput = fontScript.toByteString(
-  "Text to be rendered with the DSEG font")
+const text = "Text to be displayed"
 
-const byteArrayOutput = displayScript.toBytes(
-  "Text to be fed to seven segment displays")
+const displayLine = scriptGeneral.convert(text)
+
+// String to be rendered with the DSEG font
+const stringOutput = displayLine.toDsegString()
+
+// Formats useful for feeding to seven segment displays
+const byteArray = displayLine.toBytes()
+const pinsLine = displayLine.toPinsLine({
+  // if some other pin mapping is more convenient
+  pinMap: [0,6,2,4,3,5,1,7]
+})
+
+// One liner
+scriptMultiLang.convert(text).toDsegString()
 ```
 
 The font to use is [DSEG font v0.50beta1](https://github.com/keshikan/DSEG/releases/tag/v0.50beta1). The current NPM stable release does not include the
