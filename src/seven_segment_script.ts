@@ -104,7 +104,7 @@ function getNormalizedChr(str: string)
   return str.normalize("NFD")[0]
 }
 
-function andPinMap(a: string, b: string)
+function orPinMap(a: string, b: string)
 {
   return a.split('').map((ac, i) =>
     ac == '1' || b[i] == '1' ? '1' : '0').join('')
@@ -314,7 +314,7 @@ export default class SevenSegmentScript
         {
           const lastIndex = pinsLine.length-1
           pinsLine[lastIndex]! =
-            andPinMap(pinsLine[lastIndex]!, decimalPoint)
+            orPinMap(pinsLine[lastIndex]!, decimalPoint)
         }
         else
         {
