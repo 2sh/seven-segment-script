@@ -354,6 +354,11 @@ function onColorPreset(e: Event)
   target.value = ''
 }
 
+const test = new SevenSegmentScript()
+const text = test.convert("TESTING THIS LONGER STRING WITHOUT NEW\u00ADLINES BUT WITH MANY WORDS TEST TEST\nTEST TEST TEST TEST")
+const lines = text.toLines()
+console.log(lines)
+
 </script>
 
 <template>
@@ -387,6 +392,9 @@ function onColorPreset(e: Event)
         <div>
           <label>Remove diacritics: <input type="checkbox" v-model="enableRemovingDiacritics"></label>
         </div>
+      </div>
+      <div>
+        <div class='sevensegment-text' style="margin: 10px;" v-for="line in lines">{{ line.toDsegString() }}</div>
       </div>
       <div id="custom-text-section">
         <div>
