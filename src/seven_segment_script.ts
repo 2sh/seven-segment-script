@@ -64,8 +64,34 @@ export const libLocaleVarMap: { [loc: string]: string[] } = {}
 
 export const decimalPoint = "00000001"
 export const decimalPointModChar = "\x1F"
+export const zeroWidthSpace = "\u200B"
+export const nonBreakingSpace = "\u00A0"
 export const softHyphenChar = "\u00AD"
 export const newlineChar = "\n"
+
+type LineElementSpecialType =
+  | "zero-width"
+  | "non-breaking-space"
+  | "soft-hyphen"
+  | "newline"
+
+interface LineElementSpecial {
+  type: LineElementSpecialType
+}
+
+type LineElement = LineElementSpecial | LineElementChar
+
+interface LineElementChar {
+  type: "char",
+  pin: string,
+}
+
+export const specialChars: {[chr: string]: LineElementSpecialType} = {
+  "\u200B": "zero-width",
+  "\u00A0": "non-breaking-space",
+  "\u00AD": "soft-hyphen",
+  "\n": "newline",
+}
 
 function escapeRegExp(string: string)
 {
@@ -117,11 +143,11 @@ function orPinMap(a: string, b: string)
  */
 export class SevenSegmentLine
 {
-  private pinsLine: (string | number)[]
+  private elements: LineElement[]
   private properties: Required<LineGeneralOptions>
-  constructor(pinsLine: (string | number)[])
+  constructor(elements: LineElement[])
   {
-    this.pinsLine = pinsLine
+    this.elements = elements
     this.properties = {
       pinMap: null
     }
@@ -130,39 +156,50 @@ export class SevenSegmentLine
   public toLines()
   {
     const pad = 20
-    const lines: string[][] = []
-    let line: string[] = []
-    let part: string[] = []
-    let isSoftHyphen = false
+    const lines: LineElementChar[][] = []
+    let line: LineElementChar[] = []
+    let part: LineElementChar[] = []
+    let isSoftHyphened = false
+    let isSoftBreak = false
 
     function pushLine()
     {
       const remaining = pad - line.length
       for (let i=0; i<remaining; i++)
       {
-        line.push('00000000')
+        line.push({type: 'char', pin: '00000000'})
       }
       lines.push(line)
     }
 
-    this.pinsLine.forEach(pins =>
+    this.elements.forEach(el =>
     {
       let isNewline = false
-      if (pins === 1 && (line.length + 1 + part.length + 1) > pad)
+      if (el.type == 'soft-hyphen'
+        && (line.length + 1 + part.length + 1) > pad)
       {
         isNewline = true
       }
-      else if (pins === '00000000' || pins === 1 || pins === 0)
+      else if ((el.type == 'char' && el.pin == '00000000')
+        || el.type == 'zero-width'
+        || el.type == 'soft-hyphen'
+        || el.type == 'newline')
       {
-        const inter = (isSoftHyphen || line.length == 0) ? [] : ['00000000']
+        const inter: LineElementChar[] = (isSoftHyphened
+          || isSoftBreak
+          || line.length == 0) ? [] : [{type: 'char', pin: '00000000'}]
         line = line.concat(inter, part)
         part = []
-        isNewline = pins === 0
-        isSoftHyphen = pins === 1
+        isNewline = el.type == 'newline'
+        isSoftHyphened = el.type == 'soft-hyphen'
+        isSoftBreak = el.type == 'zero-width'
       }
-      else if (typeof pins === 'string')
+      else if (el.type == 'non-breaking-space' || el.type === 'char')
       {
-        part.push(pins)
+        if (el.type == 'char')
+          part.push(el)
+        else
+          part.push({type: 'char', pin: '00000000'})
         if (line.length + 1 + part.length > pad)
         {
           isNewline = true
@@ -171,10 +208,10 @@ export class SevenSegmentLine
 
       if (isNewline)
       {
-        if (isSoftHyphen)
+        if (isSoftHyphened)
         {
-          line.push("00000010")
-          isSoftHyphen = false
+          line.push({type: 'char', pin: '00000010'})
+          isSoftHyphened = false
         }
         pushLine()
         line = []
@@ -196,13 +233,14 @@ export class SevenSegmentLine
       ...this.properties,
       ...options,
     }
-    return this.pinsLine
-      .filter(pins => typeof pins === 'string')
-      .map(pins =>
+    return this.elements
+      .filter(el => el.type == "char")
+      .map(element =>
     {
+      const el = element as LineElementChar
       return opts.pinMap
-        ? opts.pinMap.map(i => pins[i]).join("")
-        : pins
+        ? opts.pinMap.map(i => el.pin[i]).join("")
+        : el.pin
     })
   }
 
@@ -335,9 +373,7 @@ export default class SevenSegmentScript
 
     const resolveChr = (chr: string, index: number): string | string[] =>
     {
-      if (chr == decimalPointModChar
-        || chr == softHyphenChar
-        || chr == newlineChar) return chr
+      if (chr == decimalPointModChar || specialChars[chr]) return chr
       let char = this.charMap[chr]
       if (!char)
       {
@@ -365,33 +401,28 @@ export default class SevenSegmentScript
     const processedText = splitText.map(resolveChr).flat()
 
     // convert text to 7s bytes
-    const pinsLine: (string | number)[] = []
+    const elements: LineElement[] = []
     processedText.join("").split('').forEach(chr =>
     {
       // add dec point to previous char if there is one,
       // otherwise append it
       if (chr == decimalPointModChar)
       {
-        const lastIndex = pinsLine.findIndex(pins => typeof pins === 'string')
+        const lastIndex = elements.findIndex(el => el.type == "char")
         if (lastIndex >= 0)
         {
-          const lastPins = pinsLine[lastIndex] as string
-          pinsLine[lastIndex]! = orPinMap(lastPins, decimalPoint)
+          const lastPins = elements[lastIndex] as LineElementChar;
+          (elements[lastIndex] as LineElementChar).pin = orPinMap(lastPins.pin, decimalPoint)
         }
         else
         {
-          pinsLine.push(decimalPoint)
+          elements.push({type: "char", pin: decimalPoint})
         }
         return
       }
-      else if (chr == softHyphenChar)
+      else if (specialChars[chr])
       {
-        pinsLine.push(1)
-        return
-      }
-      else if (chr == newlineChar)
-      {
-        pinsLine.push(0)
+        elements.push({type: specialChars[chr]})
         return
       }
 
@@ -399,13 +430,13 @@ export default class SevenSegmentScript
       const char = this.charMap[chr]
       if (!char || typeof char.pin !== "string")
       {
-        pinsLine.push(decimalPoint)
+        elements.push({type: "char", pin: decimalPoint})
         return
       }
 
-      pinsLine.push(char.pin)
+      elements.push({type: "char", pin: char.pin})
     })
 
-    return new SevenSegmentLine(pinsLine)
+    return new SevenSegmentLine(elements)
   }
 }

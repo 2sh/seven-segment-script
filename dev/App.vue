@@ -355,7 +355,7 @@ function onColorPreset(e: Event)
 }
 
 const test = new SevenSegmentScript()
-const text = test.convert("TESTING THIS LONGER STRING WITHOUT NEW\u00ADLINES BUT WITH MANY WORDS TEST TEST\nTEST TEST TEST TEST")
+const text = test.convert("TESTING THIS LONGER STRING WITHOUT NEW\u00ADLINES BUT WITH MANY\u00A0WORDS TEST TEST\nTEST TEST TEST TEST")
 const lines = text.toLines()
 console.log(lines)
 
