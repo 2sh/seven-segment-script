@@ -14,9 +14,9 @@ import type {
   Char,
   FunctionOptions,
   InstanceOptions,
-  LineGeneralOptions,
-  LineStringOptions,
-  LineStringSpecificOptions,
+  TextGeneralOptions,
+  TextStringOptions,
+  TextStringSpecificOptions,
   VariationMap
 } from "./types"
 
@@ -65,24 +65,24 @@ export const libLocaleVarMap: { [loc: string]: string[] } = {}
 export const decimalPoint = "00000001"
 export const decimalPointModChar = "\x1F"
 
-type LineElementSpecialType =
+type TextElementSpecialType =
   | "zero-width"
   | "non-breaking-space"
   | "soft-hyphen"
   | "newline"
 
-interface LineElementSpecial {
-  type: LineElementSpecialType
+interface TextElementSpecial {
+  type: TextElementSpecialType
 }
 
-type LineElement = LineElementSpecial | LineElementChar
+type TextElement = TextElementSpecial | TextElementChar
 
-interface LineElementChar {
+interface TextElementChar {
   type: "char",
   pin: string,
 }
 
-export const specialChars: {[chr: string]: LineElementSpecialType} = {
+export const specialChars: {[chr: string]: TextElementSpecialType} = {
   "\u200B": "zero-width",
   "\u00A0": "non-breaking-space",
   "\u00AD": "soft-hyphen",
@@ -137,11 +137,11 @@ function orPinMap(a: string, b: string)
  * An object containing the converted string with methods for outputting
  * into various convenient formats.
  */
-export class SevenSegmentLine
+export class SevenSegmentText
 {
-  private elements: LineElement[]
-  private properties: Required<LineGeneralOptions>
-  constructor(elements: LineElement[])
+  private elements: TextElement[]
+  private properties: Required<TextGeneralOptions>
+  constructor(elements: TextElement[])
   {
     this.elements = elements
     this.properties = {
@@ -152,9 +152,9 @@ export class SevenSegmentLine
   public toLines()
   {
     const pad = 20
-    const lines: LineElementChar[][] = []
-    let line: LineElementChar[] = []
-    let part: LineElementChar[] = []
+    const lines: TextElementChar[][] = []
+    let line: TextElementChar[] = []
+    let part: TextElementChar[] = []
     let isSoftHyphened = false
     let isSoftBreak = false
 
@@ -181,7 +181,7 @@ export class SevenSegmentLine
         || el.type == 'soft-hyphen'
         || el.type == 'newline')
       {
-        const inter: LineElementChar[] = (isSoftHyphened
+        const inter: TextElementChar[] = (isSoftHyphened
           || isSoftBreak
           || line.length == 0) ? [] : [{type: 'char', pin: '00000000'}]
         line = line.concat(inter, part)
@@ -214,18 +214,18 @@ export class SevenSegmentLine
       }
     })
     if (line.length) pushLine()
-    return lines.map(line => new SevenSegmentLine(line))
+    return lines.map(line => new SevenSegmentText(line))
   }
 
   /**
-   * Outputs the line as an array of strings representing the 8 segments
+   * Output an array of strings representing the 8 segments
    * as '1' or '0'.
    * @param options - Optional parameters.
    * @returns An array of strings
    */
-  public toPinsArray(options?: LineGeneralOptions)
+  public toPinsArray(options?: TextGeneralOptions)
   {
-    const opts: Required<LineGeneralOptions> = {
+    const opts: Required<TextGeneralOptions> = {
       ...this.properties,
       ...options,
     }
@@ -233,7 +233,7 @@ export class SevenSegmentLine
       .filter(el => el.type == "char")
       .map(element =>
     {
-      const el = element as LineElementChar
+      const el = element as TextElementChar
       return opts.pinMap
         ? opts.pinMap.map(i => el.pin[i]).join("")
         : el.pin
@@ -241,14 +241,14 @@ export class SevenSegmentLine
   }
 
   /**
-   * Outputs the line as an array of bytes, a compact format for
+   * Output an array of bytes, a compact format for
    * data tranfer.
    * @param options - Optional parameters.
    * @returns An array of bytes
    */
-  public toBytes(options?: LineGeneralOptions)
+  public toBytes(options?: TextGeneralOptions)
   {
-    const opts: Required<LineGeneralOptions> = {
+    const opts: Required<TextGeneralOptions> = {
       ...this.properties,
       ...options,
     }
@@ -256,13 +256,13 @@ export class SevenSegmentLine
   }
 
   /**
-   * Output the line as a string of bytes.
+   * Output a string of bytes.
    * @param options - Optional parameters.
    * @returns A string of bytes
    */
-  public toString(options?: LineStringOptions)
+  public toString(options?: TextStringOptions)
   {
-    const opts: Required<LineStringSpecificOptions> = {
+    const opts: Required<TextStringSpecificOptions> = {
       startCharCode: 0,
       ...options,
     }
@@ -276,13 +276,13 @@ export class SevenSegmentLine
   }
 
   /**
-   * Output the line as a string for displaying using the DSEG 7-segment
+   * Output a string for displaying using the DSEG 7-segment
    * font (at least v0.5beta1:
    * https://github.com/keshikan/DSEG/releases/tag/v0.50beta1)
    * @param options - Optional parameters.
    * @returns A string of bytes
    */
-  public toDsegString(options?: LineStringOptions)
+  public toDsegString(options?: TextStringOptions)
   {
     return this.toString({
       pinMap: [7,6,5,4,3,2,1,0],
@@ -329,11 +329,11 @@ export default class SevenSegmentScript
   }
 
   /**
-   * Convert a string to a line object.
+   * Convert a string to a seven segment text object.
    * @param text - The text to convert.
    * @param options - Instance properties to adjust.
    * @returns An instance of the
-   *   {@link SevenSegmentLine | `SevenSegmentLine`} class.
+   *   {@link SevenSegmentText | `SevenSegmentText`} class.
    */
   public convert(text: string, options?: FunctionOptions)
   {
@@ -397,7 +397,7 @@ export default class SevenSegmentScript
     const processedText = splitText.map(resolveChr).flat()
 
     // convert text to 7s bytes
-    const elements: LineElement[] = []
+    const elements: TextElement[] = []
     processedText.join("").split('').forEach(chr =>
     {
       // add dec point to previous char if there is one,
@@ -407,8 +407,8 @@ export default class SevenSegmentScript
         const lastIndex = elements.findIndex(el => el.type == "char")
         if (lastIndex >= 0)
         {
-          const lastPins = elements[lastIndex] as LineElementChar;
-          (elements[lastIndex] as LineElementChar).pin = orPinMap(lastPins.pin, decimalPoint)
+          const lastPins = elements[lastIndex] as TextElementChar;
+          (elements[lastIndex] as TextElementChar).pin = orPinMap(lastPins.pin, decimalPoint)
         }
         else
         {
@@ -433,6 +433,6 @@ export default class SevenSegmentScript
       elements.push({type: "char", pin: char.pin})
     })
 
-    return new SevenSegmentLine(elements)
+    return new SevenSegmentText(elements)
   }
 }

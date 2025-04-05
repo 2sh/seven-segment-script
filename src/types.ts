@@ -30,13 +30,13 @@ export interface InstanceOptions extends FunctionOptions
   characters?: Char[],
 }
 
-export interface LineGeneralOptions {
+export interface TextGeneralOptions {
   pinMap?: Pins | null
 }
 
-export interface LineStringSpecificOptions {
+export interface TextStringSpecificOptions {
   startCharCode?: number
 }
 
-export interface LineStringOptions extends
-  LineStringSpecificOptions, LineGeneralOptions {}
+export interface TextStringOptions extends
+  TextStringSpecificOptions, TextGeneralOptions {}
