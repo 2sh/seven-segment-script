@@ -64,10 +64,6 @@ export const libLocaleVarMap: { [loc: string]: string[] } = {}
 
 export const decimalPoint = "00000001"
 export const decimalPointModChar = "\x1F"
-export const zeroWidthSpace = "\u200B"
-export const nonBreakingSpace = "\u00A0"
-export const softHyphenChar = "\u00AD"
-export const newlineChar = "\n"
 
 type LineElementSpecialType =
   | "zero-width"
