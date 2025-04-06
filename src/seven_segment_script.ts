@@ -169,6 +169,16 @@ export class SevenSegmentText
         line.push({type: 'char', pin: '00000000'})
       }
       lines.push(line)
+      line = []
+    }
+
+    function pushPart()
+    {
+      const inter: TextElementChar[] = (isSoftHyphened
+        || isSoftBreak
+        || line.length == 0) ? [] : [{type: 'char', pin: '00000000'}]
+      line = line.concat(inter, part)
+      part = []
     }
 
     this.elements.forEach(el =>
@@ -184,11 +194,7 @@ export class SevenSegmentText
         || el.type == 'soft-hyphen'
         || el.type == 'newline')
       {
-        const inter: TextElementChar[] = (isSoftHyphened
-          || isSoftBreak
-          || line.length == 0) ? [] : [{type: 'char', pin: '00000000'}]
-        line = line.concat(inter, part)
-        part = []
+        pushPart()
         isNewline = el.type == 'newline'
         isSoftHyphened = el.type == 'soft-hyphen'
         isSoftBreak = el.type == 'zero-width'
@@ -218,10 +224,9 @@ export class SevenSegmentText
           isSoftHyphened = false
         }
         pushLine()
-        line = []
       }
     })
-    if (part.length) line = line.concat(part)
+    if (part.length) pushPart()
     if (line.length) pushLine()
     return lines.map(line => new SevenSegmentText(line))
   }
