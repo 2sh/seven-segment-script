@@ -427,7 +427,7 @@ export default class SevenSegmentScript
       // otherwise append it
       if (chr == decimalPointModChar)
       {
-        const lastIndex = elements.findIndex(el => el.type == "char")
+        const lastIndex = elements.findLastIndex(el => el.type == "char")
         if (lastIndex >= 0)
         {
           const lastPins = elements[lastIndex] as TextElementChar;
