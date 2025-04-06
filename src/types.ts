@@ -31,7 +31,7 @@ export interface InstanceOptions extends FunctionOptions
 }
 
 export interface TextGeneralOptions {
-  pinMap?: Pins | null
+  pinMap?: Pins | null,
 }
 
 export interface TextStringSpecificOptions {

@@ -133,6 +133,10 @@ function orPinMap(a: string, b: string)
     ac == '1' || b[i] == '1' ? '1' : '0').join('')
 }
 
+interface TextToLinesOptions {
+  width: number
+}
+
 /**
  * An object containing the converted string with methods for outputting
  * into various convenient formats.
@@ -149,9 +153,8 @@ export class SevenSegmentText
     }
   }
 
-  public toLines()
+  public split(length: number)
   {
-    const pad = 20
     const lines: TextElementChar[][] = []
     let line: TextElementChar[] = []
     let part: TextElementChar[] = []
@@ -160,7 +163,7 @@ export class SevenSegmentText
 
     function pushLine()
     {
-      const remaining = pad - line.length
+      const remaining = length - line.length
       for (let i=0; i<remaining; i++)
       {
         line.push({type: 'char', pin: '00000000'})
@@ -172,7 +175,7 @@ export class SevenSegmentText
     {
       let isNewline = false
       if (el.type == 'soft-hyphen'
-        && (line.length + 1 + part.length + 1) > pad)
+        && (line.length + 1 + part.length + 1) > length)
       {
         isNewline = true
       }
@@ -196,8 +199,13 @@ export class SevenSegmentText
           part.push(el)
         else
           part.push({type: 'char', pin: '00000000'})
-        if (line.length + 1 + part.length > pad)
+        if (line.length + 1 + part.length > length)
         {
+          if (line.length == 0)
+          {
+            line = line.concat(part)
+            part = []
+          }
           isNewline = true
         }
       }
@@ -213,6 +221,7 @@ export class SevenSegmentText
         line = []
       }
     })
+    if (part.length) line = line.concat(part)
     if (line.length) pushLine()
     return lines.map(line => new SevenSegmentText(line))
   }
@@ -230,13 +239,16 @@ export class SevenSegmentText
       ...options,
     }
     return this.elements
-      .filter(el => el.type == "char")
-      .map(element =>
+      .filter(el => el.type == "char"
+        || el.type == "newline"
+        || el.type == "non-breaking-space")
+      .map(el =>
     {
-      const el = element as TextElementChar
+      const pin = el.type == 'char'
+        ? el.pin : '00000000'
       return opts.pinMap
-        ? opts.pinMap.map(i => el.pin[i]).join("")
-        : el.pin
+        ? opts.pinMap.map(i => pin[i]).join("")
+        : pin
     })
   }
 

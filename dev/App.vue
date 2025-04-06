@@ -356,8 +356,8 @@ function onColorPreset(e: Event)
 }
 
 const test = new SevenSegmentScript()
-const text = test.convert("TESTING THIS LONGER STRING WITHOUT NEW\u00ADLINES BUT WITH MANY\u00A0WORDS TEST TEST\nTEST TEST TEST TEST")
-const lines = text.toLines()
+const text = test.convert("Testing hyphenating sen\u00ADtence and some no\u00A0break\u00A0spaces with many many words to test the wrapping of the the text and\nthere's a newline character.")
+const lines = text.split(4*6)
 console.log(lines)
 
 </script>
@@ -394,9 +394,6 @@ console.log(lines)
           <label>Remove diacritics: <input type="checkbox" v-model="enableRemovingDiacritics"></label>
         </div>
       </div>
-      <div>
-        <div class='sevensegment-text' style="margin: 10px;" v-for="line in lines">{{ line.toDsegString() }}</div>
-      </div>
       <div id="custom-text-section">
         <div>
           <textarea v-model="customText"></textarea>
@@ -415,6 +412,9 @@ console.log(lines)
             <sst v-for="line in section.examples" :color="color" :sss="ssd" :text="line"></sst>
           </div>
         </div>
+      </div>
+      <div>
+        <div class='sevensegment-text' style="margin: 10px;" v-for="line in lines">{{ line.toDsegString() }}</div>
       </div>
     </div>
     <div id="character-map">
