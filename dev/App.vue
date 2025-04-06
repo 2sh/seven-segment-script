@@ -2,6 +2,7 @@
 import SevenSegmentScript, { libChars } from "../src/"
 import type { Char } from "../src/types"
 import sst from './components/sst.vue'
+import SevenSegmentText from './components/SevenSegmentText.vue'
 
 import { computed, ref } from "vue"
 
@@ -355,10 +356,7 @@ function onColorPreset(e: Event)
   target.value = ''
 }
 
-const test = new SevenSegmentScript()
-const text = test.convert("Testing hyphenating sen\u00ADtence and some no\u00A0break\u00A0spaces with many many words to test the wrapping of the the text and\nthere's a newline character.")
-const lines = text.split(4*6)
-console.log(lines)
+const wrappingTextExample = "Testing hyphenating sen\u00ADtence and some no\u00A0break\u00A0spaces. With many many words to test the wrapping of the text and also\na newline character."
 
 </script>
 
@@ -414,13 +412,19 @@ console.log(lines)
         </div>
       </div>
       <div>
-        <div class='sevensegment-text' style="margin: 10px;" v-for="line in lines">{{ line.toDsegString() }}</div>
+        <h2>Text Wrapping Test</h2>
+        <div style="margin: 10px;">
+          <SevenSegmentText :text="wrappingTextExample"></SevenSegmentText>
+        </div>
       </div>
-    </div>
-    <div id="character-map">
-      <div class="character" v-bind:class="{'has-pinmap': typeof char.pin !== 'undefined'}" v-for="char in chars">
-        <div class="title">{{ char.chr }}</div>
-        <div class="ssbox sevensegment-text"><div>{{ gridSss.convert(char.chr).toDsegString() }}</div></div>
+      <div>
+        <h2>Character Map</h2>
+        <div id="character-map">
+          <div class="character" v-bind:class="{'has-pinmap': typeof char.pin !== 'undefined'}" v-for="char in chars">
+            <div class="title">{{ char.chr }}</div>
+            <div class="ssbox sevensegment-text"><div>{{ gridSss.convert(char.chr).toDsegString() }}</div></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
