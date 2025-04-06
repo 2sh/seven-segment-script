@@ -39,7 +39,7 @@ const stringOutput = displayLine.toDsegString()
 
 // Formats useful for feeding to seven segment displays
 const byteArray = displayLine.toBytes()
-const pinsLine = displayLine.toPinsLine({
+const pinsLine = displayLine.toPinsArray({
   // if some other pin mapping is more convenient
   pinMap: [0,6,2,4,3,5,1,7]
 })
