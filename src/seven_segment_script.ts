@@ -184,10 +184,21 @@ export class SevenSegmentText
     this.elements.forEach(el =>
     {
       let isNewline = false
+
+      function setNewline()
+      {
+        if (line.length == 0)
+        {
+          line = line.concat(part)
+          part = []
+        }
+        isNewline = true
+      }
+
       if (el.type == 'soft-hyphen'
         && (line.length + 1 + part.length + 1) > length)
       {
-        isNewline = true
+        setNewline()
       }
       else if ((el.type == 'char' && el.pin == '00000000')
         || el.type == 'zero-width'
@@ -207,12 +218,7 @@ export class SevenSegmentText
           part.push({type: 'char', pin: '00000000'})
         if (line.length + 1 + part.length > length)
         {
-          if (line.length == 0)
-          {
-            line = line.concat(part)
-            part = []
-          }
-          isNewline = true
+          setNewline()
         }
       }
 
