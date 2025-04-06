@@ -278,8 +278,9 @@ const languageSections: LanguageSection[] = [
       "　　ョ　ォ　ヲロヨモホノトソコオ",
     ],
     examples: [
-      "イロハニオエド　チリヌルヲ　ワガヨダレゾ　ツネナラン　ウイノオクヤマ　キョウコエテ　アサキユメミジ　エイモセズ",
-    ]
+      "いろはにほへと　ちりぬるを　わかよたれそ　つねならむ　うゐのおくやま　けふこえて　あさきゆめみし　ゑひもせす",
+      "やまざとにかぜわたる　こもれびゆらしいろを　ほんのりそめてふくあ　すはようみちなきおね　へつえむけぬ",
+    ] // https://web.archive.org/web/20090330125307/http://admac.jp/pangram/sakuhin.html
   },
   {
     name: "Korean",
