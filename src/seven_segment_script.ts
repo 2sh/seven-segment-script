@@ -67,15 +67,6 @@ export const libLocaleVarMap: { [loc: string]: string[] } = {}
 export const decimalPoint = "00000001"
 export const decimalPointModChar = "\x1F"
 
-/*
-export const specialChars: {[chr: string]: TextElementSpecialType} = {
-  "\u200B": "zero-width",
-  "\u00A0": "non-breaking-space",
-  "\u00AD": "soft-hyphen",
-  "\n": "newline",
-}
-*/
-
 function escapeRegExp(string: string)
 {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
