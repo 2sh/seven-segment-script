@@ -392,16 +392,12 @@ export default class SevenSegmentScript
 
     const resolveChr = (chr: string, index: number): string | string[] =>
     {
-      if (chr == decimalPointModChar || specialChars[chr]) return chr
+      if (chr == decimalPointModChar) return chr
       let char = this.charMap[chr]
-      if (!char)
+      let variation = null
+      if (char && char.var)
       {
-        // remove diacritics if possible and add DP
-        return getNormalizedChr(chr) + decimalPointModChar
-      }
-      if (char.var)
-      {
-        let variation = getVariation(char.var, variationKeys)
+        variation = getVariation(char.var, variationKeys)
         if (variation)
         {
           if (typeof variation !== 'string')
@@ -412,6 +408,11 @@ export default class SevenSegmentScript
           }
           return variation.split('').map(resolveChr).flat()
         }
+      }
+      if (!char || !variation)
+      {
+        // remove diacritics if possible and add DP
+        return getNormalizedChr(chr) + decimalPointModChar
       }
       return chr
     }
