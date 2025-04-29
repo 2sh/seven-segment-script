@@ -7,10 +7,36 @@
 export type Variation = string | [string, string]
 export type VariationMap = {[key: string]: Variation}
 
+export type CharBreak =
+    'hard'
+  | 'soft'
+  //| 'never'
+export type CharVisible =
+    // default
+    // use: hard-hyphen with soft break
+  //  'always'
+    // use: Zero-width space with soft break
+  'never'
+    // hidden if unbroken
+    // use: soft-hyphen with soft break
+  | 'show-on-break'
+    // visible if unbroken
+    // use: newline with hard break
+  | 'hide-on-break'
+
 export type Char = {
   chr: string
   pin?: string
   var?: VariationMap
+  break?: CharBreak
+  visible?: CharVisible
+  // charAfterBreak?: boolean
+}
+
+export interface TextElement {
+  pin: string,
+  break?: CharBreak
+  visible?: CharVisible
 }
 
 export type Pins =

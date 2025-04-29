@@ -12,8 +12,10 @@
 
 import type {
   Char,
+  CharVisible,
   FunctionOptions,
   InstanceOptions,
+  TextElement,
   TextGeneralOptions,
   TextStringOptions,
   TextStringSpecificOptions,
@@ -65,29 +67,14 @@ export const libLocaleVarMap: { [loc: string]: string[] } = {}
 export const decimalPoint = "00000001"
 export const decimalPointModChar = "\x1F"
 
-type TextElementSpecialType =
-  | "zero-width"
-  | "non-breaking-space"
-  | "soft-hyphen"
-  | "newline"
-
-interface TextElementSpecial {
-  type: TextElementSpecialType
-}
-
-type TextElement = TextElementSpecial | TextElementChar
-
-interface TextElementChar {
-  type: "char",
-  pin: string,
-}
-
+/*
 export const specialChars: {[chr: string]: TextElementSpecialType} = {
   "\u200B": "zero-width",
   "\u00A0": "non-breaking-space",
   "\u00AD": "soft-hyphen",
   "\n": "newline",
 }
+*/
 
 function escapeRegExp(string: string)
 {
@@ -133,8 +120,14 @@ function orPinMap(a: string, b: string)
     ac == '1' || b[i] == '1' ? '1' : '0').join('')
 }
 
-interface TextToLinesOptions {
-  width: number
+function isVisibleWithinLine(visible: CharVisible | undefined)
+{
+  return visible == 'hide-on-break' || typeof visible == 'undefined'
+}
+
+function isVisibleOnBreak(visible: CharVisible | undefined)
+{
+  return visible == 'show-on-break' || typeof visible == 'undefined'
 }
 
 /**
@@ -155,9 +148,11 @@ export class SevenSegmentText
 
   public split(length: number)
   {
-    const lines: TextElementChar[][] = []
-    let line: TextElementChar[] = []
-    let part: TextElementChar[] = []
+    const lines: TextElement[][] = []
+    let line: TextElement[] = []
+    let part: TextElement[] = []
+
+    /*
     let isSoftHyphened = false
     let isSoftBreak = false
 
@@ -166,7 +161,7 @@ export class SevenSegmentText
       const remaining = length - line.length
       for (let i=0; i<remaining; i++)
       {
-        line.push({type: 'char', pin: '00000000'})
+        line.push({pin: '00000000'})
       }
       lines.push(line)
       line = []
@@ -174,15 +169,59 @@ export class SevenSegmentText
 
     function pushPart()
     {
-      const inter: TextElementChar[] = (isSoftHyphened
+      const inter: TextElement[] = (isSoftHyphened
         || isSoftBreak
-        || line.length == 0) ? [] : [{type: 'char', pin: '00000000'}]
+        || line.length == 0) ? [] : [{pin: '00000000'}]
+      line = line.concat(inter, part)
+      part = []
+    }
+    */
+
+    let linkElement: TextElement | null = null
+
+    function toSimpleChar(element: TextElement)
+    {
+      return { pin: element.pin }
+    }
+
+    function pushPart()
+    {
+      const inter: TextElement[] =
+        (line.length && linkElement && isVisibleWithinLine(linkElement.visible))
+        ? [toSimpleChar(linkElement)] : []
       line = line.concat(inter, part)
       part = []
     }
 
+    function pushLine()
+    {
+      if (linkElement && isVisibleOnBreak(linkElement.visible))
+      {
+        line.push(toSimpleChar(linkElement))
+        linkElement = null
+      }
+
+      const remaining = length - line.length
+      for (let i=0; i<remaining; i++)
+      {
+        line.push({pin: '00000000'})
+      }
+      lines.push(line)
+      line = []
+    }
+
     this.elements.forEach(el =>
     {
+
+
+      // soft break:
+        // hard-hyphen =      "always" (undefined)
+        // soft-hyphen =      show-on-break
+        // Zero-width space = never
+        // space =            hide-on-break
+
+      // newline =          hard break + hide-on-break
+
       let isNewline = false
 
       function setNewline()
@@ -195,28 +234,41 @@ export class SevenSegmentText
         isNewline = true
       }
 
-      if (el.type == 'soft-hyphen'
-        && (line.length + 1 + part.length + 1) > length)
-      {
-        setNewline()
-      }
-      else if ((el.type == 'char' && el.pin == '00000000')
-        || el.type == 'zero-width'
-        || el.type == 'soft-hyphen'
-        || el.type == 'newline')
+      // el
+      //   el.visible 'never' | 'show-on-break' | 'hide-on-break'
+      //   el.break    'hard' | 'soft'
+
+      // line
+      // part
+
+      // linkElement
+      // linkVisible
+
+      const lineLength = line.length
+        + (linkElement && isVisibleWithinLine(linkElement.visible) ? 1 : 0)
+        + part.length
+
+      if (el.break == "hard")
       {
         pushPart()
-        isNewline = el.type == 'newline'
-        isSoftHyphened = el.type == 'soft-hyphen'
-        isSoftBreak = el.type == 'zero-width'
+        setNewline()
       }
-      else if (el.type == 'non-breaking-space' || el.type === 'char')
+      else if(el.break == "soft")
       {
-        if (el.type == 'char')
-          part.push(el)
+        if ((lineLength + (isVisibleOnBreak(el.visible) ? 1 : 0)) > length)
+        {
+          setNewline()
+        }
         else
-          part.push({type: 'char', pin: '00000000'})
-        if (line.length + 1 + part.length > length)
+        {
+          pushPart()
+          linkElement = el
+        }
+      }
+      else
+      {
+        part.push(el)
+        if ((lineLength + 1) > length)
         {
           setNewline()
         }
@@ -224,11 +276,6 @@ export class SevenSegmentText
 
       if (isNewline)
       {
-        if (isSoftHyphened)
-        {
-          line.push({type: 'char', pin: '00000010'})
-          isSoftHyphened = false
-        }
         pushLine()
       }
     })
@@ -250,16 +297,13 @@ export class SevenSegmentText
       ...options,
     }
     return this.elements
-      .filter(el => el.type == "char"
-        || el.type == "newline"
-        || el.type == "non-breaking-space")
+      .filter(el => el.visible != 'never'
+        && el.visible != 'show-on-break')
       .map(el =>
     {
-      const pin = el.type == 'char'
-        ? el.pin : '00000000'
       return opts.pinMap
-        ? opts.pinMap.map(i => pin[i]).join("")
-        : pin
+        ? opts.pinMap.map(i => el.pin[i]).join("")
+        : el.pin
     })
   }
 
@@ -428,21 +472,16 @@ export default class SevenSegmentScript
       // otherwise append it
       if (chr == decimalPointModChar)
       {
-        const lastIndex = elements.findLastIndex(el => el.type == "char")
-        if (lastIndex >= 0)
+        if (elements.length > 0)
         {
-          const lastPins = elements[lastIndex] as TextElementChar;
-          (elements[lastIndex] as TextElementChar).pin = orPinMap(lastPins.pin, decimalPoint)
+          const lastIndex = elements.length-1
+          const element = (elements[lastIndex] as TextElement);
+          (elements[lastIndex] as TextElement).pin = orPinMap(element.pin, decimalPoint)
         }
         else
         {
-          elements.push({type: "char", pin: decimalPoint})
+          elements.push({pin: decimalPoint})
         }
-        return
-      }
-      else if (specialChars[chr])
-      {
-        elements.push({type: specialChars[chr]})
         return
       }
 
@@ -450,11 +489,15 @@ export default class SevenSegmentScript
       const char = this.charMap[chr]
       if (!char || typeof char.pin !== "string")
       {
-        elements.push({type: "char", pin: decimalPoint})
+        elements.push({pin: decimalPoint})
         return
       }
 
-      elements.push({type: "char", pin: char.pin})
+      elements.push({
+        pin: char.pin,
+        break: char.break,
+        visible: char.visible
+      })
     })
 
     return new SevenSegmentText(elements)
