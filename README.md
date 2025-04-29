@@ -32,20 +32,27 @@ const scriptMultiLang = new SevenSegmentScript({
 
 const text = "Text to be displayed"
 
-const displayLine = scriptGeneral.convert(text)
+const displayText = scriptGeneral.convert(text)
 
 // String to be rendered with the DSEG font
-const stringOutput = displayLine.toDsegString()
+const stringOutput = displayText.toDsegString()
 
 // Formats useful for feeding to seven segment displays
-const byteArray = displayLine.toBytes()
-const pinsLine = displayLine.toPinsArray({
+const byteArray = displayText.toBytes()
+const pinsLine = displayText.toPinsArray({
   // if some other pin mapping is more convenient
   pinMap: [0,6,2,4,3,5,1,7]
 })
 
+// Splitting the text for a panel with a width of 24 seven segment displays
+scriptGeneral.convert(multiLineText).split(24).forEach(line =>
+{
+  line.toBytes()
+})
+// Splitting takes into account spaces, newline and soft/hard hyphenation characters
+
 // One liner
-scriptMultiLang.convert(text).toDsegString()
+scriptGeneral.convert(text).toDsegString()
 ```
 
 The font to use is [DSEG font v0.50beta1](https://github.com/keshikan/DSEG/releases/tag/v0.50beta1). The current NPM stable release does not include the

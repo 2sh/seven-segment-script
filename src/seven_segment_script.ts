@@ -146,36 +146,30 @@ export class SevenSegmentText
     }
   }
 
+  /**
+   * Split the seven segment text into fixed width lines for outputting
+   * to panels.
+   *
+   * Takes into account soft and hard break characters and whether they
+   * are still visible on break or hidden on break.
+   *
+   * Examples of soft and hard breaks and their visibility:
+   * soft break:
+   *   space: hide on break
+   *   soft-hyphen: show on break
+   *   hard-hyphen: always shown
+   *   zero-width space: never shown
+   * hard break:
+   *   newline: hide on break
+   *
+   * @param options - Optional parameters.
+   * @returns An array of strings
+   */
   public split(length: number)
   {
     const lines: TextElement[][] = []
     let line: TextElement[] = []
     let part: TextElement[] = []
-
-    /*
-    let isSoftHyphened = false
-    let isSoftBreak = false
-
-    function pushLine()
-    {
-      const remaining = length - line.length
-      for (let i=0; i<remaining; i++)
-      {
-        line.push({pin: '00000000'})
-      }
-      lines.push(line)
-      line = []
-    }
-
-    function pushPart()
-    {
-      const inter: TextElement[] = (isSoftHyphened
-        || isSoftBreak
-        || line.length == 0) ? [] : [{pin: '00000000'}]
-      line = line.concat(inter, part)
-      part = []
-    }
-    */
 
     let linkElement: TextElement | null = null
 
@@ -212,16 +206,6 @@ export class SevenSegmentText
 
     this.elements.forEach(el =>
     {
-
-
-      // soft break:
-        // hard-hyphen =      "always" (undefined)
-        // soft-hyphen =      show-on-break
-        // Zero-width space = never
-        // space =            hide-on-break
-
-      // newline =          hard break + hide-on-break
-
       let isNewline = false
 
       function setNewline()
@@ -233,16 +217,6 @@ export class SevenSegmentText
         }
         isNewline = true
       }
-
-      // el
-      //   el.visible 'never' | 'show-on-break' | 'hide-on-break'
-      //   el.break    'hard' | 'soft'
-
-      // line
-      // part
-
-      // linkElement
-      // linkVisible
 
       const lineLength = line.length
         + (linkElement && isVisibleWithinLine(linkElement.visible) ? 1 : 0)
