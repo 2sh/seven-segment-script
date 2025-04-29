@@ -120,8 +120,14 @@ function orPinMap(a: string, b: string)
     ac == '1' || b[i] == '1' ? '1' : '0').join('')
 }
 
-interface TextToLinesOptions {
-  width: number
+function isVisibleWithinLine(visible: CharVisible | undefined)
+{
+  return visible == 'hide-on-break' || typeof visible == 'undefined'
+}
+
+function isVisibleOnBreak(visible: CharVisible | undefined)
+{
+  return visible == 'show-on-break' || typeof visible == 'undefined'
 }
 
 /**
@@ -145,6 +151,8 @@ export class SevenSegmentText
     const lines: TextElement[][] = []
     let line: TextElement[] = []
     let part: TextElement[] = []
+
+    /*
     let isSoftHyphened = false
     let isSoftBreak = false
 
@@ -167,12 +175,51 @@ export class SevenSegmentText
       line = line.concat(inter, part)
       part = []
     }
+    */
 
     let linkElement: TextElement | null = null
+    let linkVisible: CharVisible | undefined
+
+    function pushPart()
+    {
+      const inter: TextElement[] =
+        (line.length && linkElement && isVisibleWithinLine(linkVisible))
+        ? [linkElement] : []
+      line = line.concat(inter, part)
+      part = []
+    }
+
+    function pushLine()
+    {
+      if (linkElement && isVisibleOnBreak(linkVisible))
+      {
+        line.push(linkElement)
+        linkElement = null
+        linkVisible = undefined
+      }
+
+      const remaining = length - line.length
+      for (let i=0; i<remaining; i++)
+      {
+        line.push({pin: '00000000'})
+      }
+      lines.push(line)
+      line = []
+    }
 
     this.elements.forEach(el =>
     {
-      //let isNewline = false
+
+
+      // soft break:
+        // hard-hyphen =      "always" (undefined)
+        // soft-hyphen =      show-on-break
+        // Zero-width space = never
+        // space =            hide-on-break
+
+      // newline =          hard break + hide-on-break
+
+      let isNewline = false
 
       function setNewline()
       {
@@ -184,53 +231,42 @@ export class SevenSegmentText
         isNewline = true
       }
 
-      el.visible 'never' | 'show-on-break' | 'hide-on-break'
-      el.break    'hard' | 'soft'
+      // el
+      //   el.visible 'never' | 'show-on-break' | 'hide-on-break'
+      //   el.break    'hard' | 'soft'
 
-      // soft break:
-        // hard-hyphen =      "always" (undefined)
-        // soft-hyphen =      show-on-break
-        // Zero-width space = never
-        // space =            hide-on-break
+      // line
+      // part
 
-      // newline =          hard break + hide-on-break
+      // linkElement
+      // linkVisible
 
-      if (el.break == "soft")
+      const lineLength = line.length
+        + (isVisibleWithinLine(linkVisible) ? 1 : 0)
+        + part.length
+
+      if (el.break == "hard")
       {
-        if (el.visible == 'never')
+        pushPart()
+        setNewline()
+      }
+      else if(el.break == "soft")
+      {
+        if ((lineLength + (isVisibleOnBreak(el.visible) ? 1 : 0)) > length)
         {
-          linkElement = null
+          setNewline()
         }
         else
         {
+          pushPart()
           linkElement = el
+          linkVisible = el.visible
         }
-      }
-
-
-      const currentLength = line.length + part.length
-      const potentialLength = currentLength + (el.visible != 'never' ? 1 : 0)
-      const unbrokenlength = currentLength + (typeof el.visible == 'undefined'
-        || el.visible == 'hide-on-break' ? 1 : 0)
-      const brokenLengh = currentLength + (typeof el.visible == 'undefined'
-        || el.visible == 'show-on-break' ? 1 : 0)
-
-      let isNewline = el.break == 'hard'
-        || (el.break == 'soft' && potentialLength > length)
-
-      if (el.break == 'soft'
-        && (line.length + 1 + part.length + 1) > length)
-      {
-        setNewline()
-      }
-      else if (el.break)
-      {
-        pushPart()
       }
       else
       {
         part.push(el)
-        if (line.length + 1 + part.length > length)
+        if ((lineLength + 1) > length)
         {
           setNewline()
         }
@@ -238,43 +274,6 @@ export class SevenSegmentText
 
       if (isNewline)
       {
-
-      }
-
-      if (el.type == 'soft-hyphen'
-        && (line.length + 1 + part.length + 1) > length)
-      {
-        setNewline()
-      }
-      else if ((el.type == 'char' && el.pin == '00000000')
-        || el.type == 'zero-width'
-        || el.type == 'soft-hyphen'
-        || el.type == 'newline')
-      {
-        pushPart()
-        isNewline = el.type == 'newline'
-        isSoftHyphened = el.type == 'soft-hyphen'
-        isSoftBreak = el.type == 'zero-width'
-      }
-      else if (el.type == 'non-breaking-space' || el.type === 'char')
-      {
-        if (el.type == 'char')
-          part.push(el)
-        else
-          part.push({pin: '00000000'})
-        if (line.length + 1 + part.length > length)
-        {
-          setNewline()
-        }
-      }
-
-      if (isNewline)
-      {
-        if (isSoftHyphened)
-        {
-          line.push({pin: '00000010'})
-          isSoftHyphened = false
-        }
         pushLine()
       }
     })

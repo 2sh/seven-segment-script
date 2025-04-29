@@ -4,7 +4,8 @@ export default <Char[]> [
   { chr: "\x1E", pin: "00000001" },
 
   // Basic Latin
-  { chr: " ", pin: "00000000" },
+  { chr: "\n", pin: "00000000", break: 'hard', visible: 'hide-on-break'},
+  { chr: " ", pin: "00000000", break: 'soft', visible: 'hide-on-break' },
   { chr: "!", pin: "01010000" },
   { chr: '"', pin: "01000100" },
   { chr: "#", pin: "10010010" },
@@ -42,6 +43,8 @@ export default <Char[]> [
   { chr: "~", pin: "01000010" },
 
   // 0x00A1 - 0x00BF (Latin-1 Supplement)
+  { chr: "\u00A0", pin: "00000000" }, // non-breaking-space
+  { chr: "\u00AD", pin: "00000000", break: 'soft', visible: 'show-on-break'}, // soft-hyphen
   { chr: "¡", pin: "00010100" },
   { chr: "¢", pin: "10010110" },
   { chr: "£", pin: "00011110" },
@@ -70,7 +73,14 @@ export default <Char[]> [
   { chr: "×", pin: "00101000" },
   { chr: "÷", pin: "00100010" },
 
+  { chr: "¼", var: { _: "1/4" } },
+  { chr: "½", var: { _: "1/2" } },
+  { chr: "¾", var: { _: "3/4" } },
+  { chr: "«", var: { _: "<<" } },
+  { chr: "»", var: { _: ">>" } },
+
   // 0x2010 - 0x203E (General Punctuation)
+  { chr: "\u200B", pin: "00000000", break: 'soft', visible: 'never'}, // zero-width
   { chr: "‐", pin: "00000010" },
   { chr: "‑", pin: "00000010" },
   { chr: "‒", pin: "00000010" },
@@ -99,17 +109,6 @@ export default <Char[]> [
   { chr: "※", pin: "10010010" },
   { chr: "‾", pin: "10000000" },
 
-
-  // 0x00A1 - 0x00BF (Latin-1 Supplement)
-  { chr: " ", var: { _: " " } },
-  { chr: "­", var: { _: "" } },
-  { chr: "¼", var: { _: "1/4" } },
-  { chr: "½", var: { _: "1/2" } },
-  { chr: "¾", var: { _: "3/4" } },
-  { chr: "«", var: { _: "<<" } },
-  { chr: "»", var: { _: ">>" } },
-
-  // 0x2010 - 0x203E (General Punctuation)
   { chr: "—", var: { _: "--" } },
   { chr: "―", var: { _: "--" } },
   { chr: "‥", var: { _: "․․" } },
