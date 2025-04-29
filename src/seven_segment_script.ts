@@ -451,7 +451,7 @@ export default class SevenSegmentScript
           return variation.split('').map(resolveChr).flat()
         }
       }
-      if (!char || !variation)
+      if (!char || (!char.pin && !variation))
       {
         // remove diacritics if possible and add DP
         return getNormalizedChr(chr) + decimalPointModChar
