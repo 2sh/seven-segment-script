@@ -178,24 +178,27 @@ export class SevenSegmentText
     */
 
     let linkElement: TextElement | null = null
-    let linkVisible: CharVisible | undefined
+
+    function toSimpleChar(element: TextElement)
+    {
+      return { pin: element.pin }
+    }
 
     function pushPart()
     {
       const inter: TextElement[] =
-        (line.length && linkElement && isVisibleWithinLine(linkVisible))
-        ? [linkElement] : []
+        (line.length && linkElement && isVisibleWithinLine(linkElement.visible))
+        ? [toSimpleChar(linkElement)] : []
       line = line.concat(inter, part)
       part = []
     }
 
     function pushLine()
     {
-      if (linkElement && isVisibleOnBreak(linkVisible))
+      if (linkElement && isVisibleOnBreak(linkElement.visible))
       {
-        line.push(linkElement)
+        line.push(toSimpleChar(linkElement))
         linkElement = null
-        linkVisible = undefined
       }
 
       const remaining = length - line.length
@@ -242,7 +245,7 @@ export class SevenSegmentText
       // linkVisible
 
       const lineLength = line.length
-        + (isVisibleWithinLine(linkVisible) ? 1 : 0)
+        + (linkElement && isVisibleWithinLine(linkElement.visible) ? 1 : 0)
         + part.length
 
       if (el.break == "hard")
@@ -260,7 +263,6 @@ export class SevenSegmentText
         {
           pushPart()
           linkElement = el
-          linkVisible = el.visible
         }
       }
       else

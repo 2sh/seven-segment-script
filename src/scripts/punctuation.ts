@@ -18,7 +18,7 @@ export default <Char[]> [
   { chr: "*", pin: "01000000" },
   { chr: "+", pin: "01100010" },
   { chr: ",", pin: "00001000" },
-  { chr: "-", pin: "00000010" },
+  { chr: "-", pin: "00000010", break: 'soft' },
   { chr: ".", pin: "00010000" },
   { chr: "/", pin: "01001000" },
 
@@ -44,7 +44,7 @@ export default <Char[]> [
 
   // 0x00A1 - 0x00BF (Latin-1 Supplement)
   { chr: "\u00A0", pin: "00000000" }, // non-breaking-space
-  { chr: "\u00AD", pin: "00000000", break: 'soft', visible: 'show-on-break'}, // soft-hyphen
+  { chr: "\u00AD", pin: "00000010", break: 'soft', visible: 'show-on-break'}, // soft-hyphen
   { chr: "¡", pin: "00010100" },
   { chr: "¢", pin: "10010110" },
   { chr: "£", pin: "00011110" },
