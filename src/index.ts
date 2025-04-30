@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-export * from './seven_segment_script'
+export * from './main'
 export * from './types'
-import SevenSegmentScript from './seven_segment_script'
-export default SevenSegmentScript
+import SevenSegmentType from './main'
+export default SevenSegmentType

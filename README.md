@@ -1,4 +1,4 @@
-# Seven-Segment Script
+# Seven-Segment Type
 
 This library provides functionality for displaying text on seven-segment display panels.
 It makes use of a standardized typeface that currently covers the following characters:
@@ -15,43 +15,43 @@ Locales can be specified to improve the mapping of characters, particularly diac
 For example, for the German ('de') locale, the characters Ä, Ö and Ü
 are mapped to AE, OE and UE, but by default to A, O and U.
 
-[Development page with all the characters](https://2sh.github.io/seven-segment-script/)
+[Development page with all the characters](https://2sh.github.io/seven-segment-type/)
 
 ## Usage
 
 ```js
-const scriptGeneral = new SevenSegmentScript()
-const scriptGerman = new SevenSegmentScript({
+const sstGeneral = new SevenSegmentType()
+const sstGerman = new SevenSegmentType({
   locales: ['de']
 })
-const scriptMultiLang = new SevenSegmentScript({
+const sstMultiLang = new SevenSegmentType({
   // Ü would map to UE even in French text
   locales: ['fr', 'it', 'de']
 })
 
 const text = "Text to be displayed"
 
-const displayText = scriptGeneral.convert(text)
+const displayLine = sstGeneral.convert(text)
 
 // String to be rendered with the DSEG font
-const stringOutput = displayText.toDsegString()
+const stringOutput = displayLine.toDsegString()
 
 // Formats useful for feeding to seven segment displays
-const byteArray = displayText.toBytes()
-const pinsLine = displayText.toPinsArray({
+const byteArray = displayLine.toBytes()
+const pinsLine = displayLine.toPinsArray({
   // if some other pin mapping is more convenient
   pinMap: [0,6,2,4,3,5,1,7]
 })
 
 // Splitting the text for a panel with a width of 24 seven segment displays
-scriptGeneral.convert(multiLineText).split(24).forEach(line =>
+sstGeneral.convert(multiLineText).split(24).forEach(line =>
 {
   line.toBytes()
 })
 // Splitting takes into account spaces, newline and soft/hard hyphenation characters
 
 // One liner
-scriptGeneral.convert(text).toDsegString()
+sstGeneral.convert(text).toDsegString()
 ```
 
 The font to use is [DSEG font v0.50beta1](https://github.com/keshikan/DSEG/releases/tag/v0.50beta1). The current NPM stable release does not include the
@@ -89,7 +89,7 @@ aesthetically pleasing on seven-segment displays.
 Many diacritics map to the same seven-segment characters, so adjustments
 may be necessary for each language to better differentiate them.
 
-Don't hesitate to [suggest](https://github.com/2sh/seven-segment-script/discussions) major changes, as this project is still very
+Don't hesitate to [suggest](https://github.com/2sh/seven-segment-type/discussions) major changes, as this project is still very
 much a work in progress.
 
 ## Development

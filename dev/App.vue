@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import SevenSegmentScript, { libChars } from "../src/"
+import SevenSegmentType, { libChars } from "../src/"
 import type { Char } from "../src/types"
-import sst from './components/sst.vue'
+import SevenSegmentLine from './components/SevenSegmentLine.vue'
 import SevenSegmentText from './components/SevenSegmentText.vue'
 
 import { computed, ref } from "vue"
@@ -9,8 +9,8 @@ import { computed, ref } from "vue"
 const chars: Char[] = libChars
   .toSorted((c1, c2) => c1.chr.charCodeAt(0)-c2.chr.charCodeAt(0))
 
-const generalSss = new SevenSegmentScript()
-const gridSss = new SevenSegmentScript({
+const generalSss = new SevenSegmentType()
+const gridSss = new SevenSegmentType({
   variationKeys: ["*"]
 })
 
@@ -311,13 +311,13 @@ const color = ref('#00ff3f')
 const customText = ref('Custom text input')
 const customTextLines = computed(() => customText.value.split(/\r\n|\n|\r/))
 
-const sections = computed<[SevenSegmentScript, LanguageSection][]>(() =>
+const sections = computed<[SevenSegmentType, LanguageSection][]>(() =>
 {
   return languageSections.map(section =>
   {
     const ssd = section.code
-      ? new SevenSegmentScript({locales: [section.code]})
-      : new SevenSegmentScript()
+      ? new SevenSegmentType({locales: [section.code]})
+      : new SevenSegmentType()
 
     let examples = section.examples
     if (examples)
@@ -397,17 +397,17 @@ const wrappingTextExample = "Testing hyphenating sen\u00ADtence and some no\u00A
           <textarea v-model="customText"></textarea>
         </div>
         <div id="custom-text-output">
-          <sst v-for="line in customTextLines" :color="color" :sss="generalSss" :text="line"></sst>
+          <SevenSegmentLine v-for="line in customTextLines" :color="color" :sst="generalSss" :text="line"></SevenSegmentLine>
         </div>
       </div>
       <div v-for="([ssd, section]) in sections">
         <h2>{{ section.name }}</h2>
         <div>
           <div class="subsection">
-            <sst v-for="line in section.chars" :color="color" :sss="ssd" :text="line" individual></sst>
+            <SevenSegmentLine v-for="line in section.chars" :color="color" :sst="ssd" :text="line" individual></SevenSegmentLine>
           </div>
           <div class="subsection">
-            <sst v-for="line in section.examples" :color="color" :sss="ssd" :text="line"></sst>
+            <SevenSegmentLine v-for="line in section.examples" :color="color" :sst="ssd" :text="line"></SevenSegmentLine>
           </div>
         </div>
       </div>

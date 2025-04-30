@@ -37,16 +37,16 @@ type CharMap = { [key: string]: Char }
 
 */
 
-import punctuation from './scripts/punctuation'
-import diacritics from './scripts/diacritics'
-import numbers from './scripts/numbers'
-import latin from './scripts/latin'
-import cyrillic from './scripts/cyrillic'
-import greek from './scripts/greek'
-import cjkNumbers from './scripts/cjk_numbers'
-import cjkPunctuation from './scripts/cjk_punctuation'
-import japanese from './scripts/japanese'
-import korean from './scripts/korean'
+import punctuation from './chars/punctuation'
+import diacritics from './chars/diacritics'
+import numbers from './chars/numbers'
+import latin from './chars/latin'
+import cyrillic from './chars/cyrillic'
+import greek from './chars/greek'
+import cjkNumbers from './chars/cjk_numbers'
+import cjkPunctuation from './chars/cjk_punctuation'
+import japanese from './chars/japanese'
+import korean from './chars/korean'
 
 export const libChars: Char[] =
 [
@@ -125,7 +125,7 @@ function isVisibleOnBreak(visible: CharVisible | undefined)
  * An object containing the converted string with methods for outputting
  * into various convenient formats.
  */
-export class SevenSegmentText
+export class SevenSegmentLine
 {
   private elements: TextElement[]
   private properties: Required<TextGeneralOptions>
@@ -138,7 +138,7 @@ export class SevenSegmentText
   }
 
   /**
-   * Split the seven segment text into fixed width lines for outputting
+   * Split the seven segment line into fixed width lines for outputting
    * to panels.
    *
    * Takes into account soft and hard break characters and whether they
@@ -246,7 +246,7 @@ export class SevenSegmentText
     })
     if (part.length) pushPart()
     if (line.length) pushLine()
-    return lines.map(line => new SevenSegmentText(line))
+    return lines.map(line => new SevenSegmentLine(line))
   }
 
   /**
@@ -325,10 +325,10 @@ export class SevenSegmentText
 }
 
 /**
- * The class from which to create a `SevenSegmentScript` instance for
+ * The class from which to create a `SevenSegmentType` instance for
  * converting text to display on 7 segment displays.
  */
-export default class SevenSegmentScript
+export default class SevenSegmentType
 {
   /**
    * The properties of the class, set by the options of the constructor.
@@ -340,7 +340,7 @@ export default class SevenSegmentScript
   private charMap: CharMap
 
   /**
-   * The constructor of the `SevenSegmentScript` class.
+   * The constructor of the `SevenSegmentType` class.
    * @param options - Optional parameters.
    */
   constructor(options?: InstanceOptions)
@@ -361,11 +361,11 @@ export default class SevenSegmentScript
   }
 
   /**
-   * Convert a string to a seven segment text object.
+   * Convert a string to a seven segment line object.
    * @param text - The text to convert.
    * @param options - Instance properties to adjust.
    * @returns An instance of the
-   *   {@link SevenSegmentText | `SevenSegmentText`} class.
+   *   {@link SevenSegmentLine | `SevenSegmentLine`} class.
    */
   public convert(text: string, options?: FunctionOptions)
   {
@@ -465,6 +465,6 @@ export default class SevenSegmentScript
       })
     })
 
-    return new SevenSegmentText(elements)
+    return new SevenSegmentLine(elements)
   }
 }

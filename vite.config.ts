@@ -4,7 +4,7 @@ import vue from '@vitejs/plugin-vue'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  base: '/seven-segment-script/',
+  base: '/seven-segment-type/',
   build: {
     outDir: 'dev-dist'
   }

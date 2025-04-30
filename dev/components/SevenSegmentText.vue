@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 
-import SevenSegmentScript from '../../src/'
+import SevenSegmentType from '../../src/'
 
 export interface Props {
-  sss?: SevenSegmentScript,
+  sst?: SevenSegmentType,
   text: string,
   color?: string,
   split?: number,
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  sss: () => new SevenSegmentScript(),
+  sst: () => new SevenSegmentType(),
   color: "#00ff3f",
   split: 4*6,
 })
@@ -20,7 +20,7 @@ const lines = ref<string[]>([])
 
 watch(props, () =>
 {
-  lines.value = props.sss.convert(props.text)
+  lines.value = props.sst.convert(props.text)
     .split(props.split)
     .map(line => line.toDsegString())
 }, { immediate: true })
