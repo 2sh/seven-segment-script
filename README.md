@@ -1,7 +1,7 @@
 # Seven-Segment Script
 
-This library allows you to display text on seven-segment display panels.
-It currently supports converting the following:
+This library provides functionality for displaying text on seven-segment display panels.
+It makes use of a standardized typeface that currently covers the following characters:
 - **Numerals**
 - **Punctuation**
 - **Alphabets** (both uppercase and lowercase):
@@ -11,8 +11,7 @@ It currently supports converting the following:
 - **Japanese Katakana**, with mappings from Hiragana
 - **Korean Hangul Jamo**
 
-You can also specify locales to improve the mapping of characters,
-particularly diacritics.
+Locales can be specified to improve the mapping of characters, particularly diacritics.
 For example, for the German ('de') locale, the characters Ä, Ö and Ü
 are mapped to AE, OE and UE, but by default to A, O and U.
 
@@ -91,7 +90,7 @@ Many diacritics map to the same seven-segment characters, so adjustments
 may be necessary for each language to better differentiate them.
 
 Don't hesitate to [suggest](https://github.com/2sh/seven-segment-script/discussions) major changes, as this project is still very
-much a work in progress...
+much a work in progress.
 
 ## Development
 ### Dev Web View
