@@ -172,7 +172,7 @@ export class SevenSegmentLine
     function pushPart()
     {
       const inter: TextElement[] =
-        (line.length && linkElement && isVisibleWithinLine(linkElement.visible))
+        (linkElement && isVisibleWithinLine(linkElement.visible))
         ? [toSimpleChar(linkElement)] : []
       line = line.concat(inter, part)
       part = []
@@ -183,7 +183,6 @@ export class SevenSegmentLine
       if (linkElement && isVisibleOnBreak(linkElement.visible))
       {
         line.push(toSimpleChar(linkElement))
-        linkElement = null
       }
 
       const remaining = length - line.length
@@ -193,6 +192,7 @@ export class SevenSegmentLine
       }
       lines.push(line)
       line = []
+      linkElement = null
     }
 
     this.elements.forEach(el =>
