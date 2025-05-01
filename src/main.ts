@@ -212,7 +212,7 @@ export class SevenSegmentLine
         if (el.break == "line")
           pushLine()
       }
-      else (el.visible != 'never')
+      else if (el.visible != 'never')
       {
         if (lineLength + 1 > length)
         {
