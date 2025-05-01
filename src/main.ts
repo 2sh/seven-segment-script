@@ -64,8 +64,8 @@ export const libChars: Char[] =
 
 export const libLocaleVarMap: { [loc: string]: string[] } = {}
 
-export const decimalPoint = "00000001"
-export const decimalPointModChar = "\0" // null
+const decimalPoint = "00000001"
+const decimalPointModChar = "\0" // null
 
 function escapeRegExp(string: string)
 {
