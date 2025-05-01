@@ -121,6 +121,11 @@ function isVisibleOnBreak(visible: CharVisible | undefined)
   return visible == 'show-on-break' || typeof visible == 'undefined'
 }
 
+function toSimpleChar(element: TextElement)
+{
+  return { pin: element.pin }
+}
+
 /**
  * An object containing the converted string with methods for outputting
  * into various convenient formats.
@@ -162,29 +167,20 @@ export class SevenSegmentLine
     let line: TextElement[] = []
     let part: TextElement[] = []
 
-    let linkElement: TextElement | null = null
-
-    function toSimpleChar(element: TextElement)
-    {
-      return { pin: element.pin }
-    }
+    let breakElement: TextElement | null = null
 
     function pushPart()
     {
-      const inter: TextElement[] =
-        (linkElement && isVisibleWithinLine(linkElement.visible))
-        ? [toSimpleChar(linkElement)] : []
-      line = line.concat(inter, part)
+      if (breakElement && isVisibleWithinLine(breakElement.visible))
+        line.push(toSimpleChar(breakElement))
+      line = line.concat(part)
       part = []
     }
 
     function pushLine()
     {
-      if (linkElement && isVisibleOnBreak(linkElement.visible))
-      {
-        line.push(toSimpleChar(linkElement))
-      }
-
+      if (breakElement && isVisibleOnBreak(breakElement.visible))
+        line.push(toSimpleChar(breakElement))
       const remaining = length - line.length
       for (let i=0; i<remaining; i++)
       {
@@ -192,56 +188,33 @@ export class SevenSegmentLine
       }
       lines.push(line)
       line = []
-      linkElement = null
+      breakElement = null
     }
 
     this.elements.forEach(el =>
     {
-      let isNewline = false
-
-      function setNewline()
-      {
-        if (line.length == 0)
-        {
-          line = line.concat(part)
-          part = []
-        }
-        isNewline = true
-      }
-
       const lineLength = line.length
-        + (linkElement && isVisibleWithinLine(linkElement.visible) ? 1 : 0)
+        + (breakElement && isVisibleWithinLine(breakElement.visible) ? 1 : 0)
         + part.length
 
-      if (el.break == "hard")
+      if (el.break)
       {
+        if (isVisibleOnBreak(el.visible) && (lineLength + 1 > length))
+          pushLine() // line with break char would exceed max length
         pushPart()
-        setNewline()
-      }
-      else if(el.break == "soft")
-      {
-        if ((lineLength + (isVisibleOnBreak(el.visible) ? 1 : 0)) > length)
-        {
-          setNewline()
-        }
-        else
-        {
-          pushPart()
-          linkElement = el
-        }
+        breakElement = el
+        if (el.break == "hard")
+          pushLine()
       }
       else
       {
-        part.push(el)
-        if ((lineLength + 1) > length)
+        if (lineLength + 1 > length)
         {
-          setNewline()
+          if (line.length == 0)
+            pushPart() // part exceeds max length
+          pushLine()
         }
-      }
-
-      if (isNewline)
-      {
-        pushLine()
+        part.push(el)
       }
     })
     if (part.length) pushPart()

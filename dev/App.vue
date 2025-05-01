@@ -356,7 +356,7 @@ function onColorPreset(e: Event)
   target.value = ''
 }
 
-const wrappingTextExample = "Testing hyphenating sen\u00ADtence and some no\u00A0break\u00A0spaces. With many many words to test the wrapping of the text and also\na newline character."
+const wrappingTextExample = "123456789012345678901234 Testing hyphenating sen\u00ADtence and some no\u00A0break\u00A0spaces. With many many words to test the wrapping of seven\u2010segment text and also\na newline character."
 
 </script>
 
@@ -414,7 +414,7 @@ const wrappingTextExample = "Testing hyphenating sen\u00ADtence and some no\u00A
       <div>
         <h2>Text Wrapping Test</h2>
         <div style="margin: 10px;">
-          <SevenSegmentText :text="wrappingTextExample"></SevenSegmentText>
+          <SevenSegmentText :text="wrappingTextExample" :split="24"></SevenSegmentText>
         </div>
       </div>
       <div>
