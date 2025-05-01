@@ -148,17 +148,17 @@ export class SevenSegmentLine
    * Split the seven segment line into fixed width lines for outputting
    * to panels.
    *
-   * Takes into account soft and hard break characters and whether they
+   * Takes into account soft and line break characters and whether they
    * are still visible on break or hidden on break.
    *
-   * Examples of soft and hard breaks and their visibility:
+   * Examples of soft and line breaks and their visibility:
    * soft break:
    *   space: hide on break
    *   soft-hyphen: show on break
    *   hard-hyphen: always shown
    *   zero-width space: never shown
-   * hard break:
-   *   newline: hide on break
+   * line break:
+   *   new line: hide on break
    *
    * @param options - Optional parameters.
    * @returns An array of strings
