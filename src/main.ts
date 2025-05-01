@@ -62,8 +62,6 @@ export const libChars: Char[] =
 	...korean,
 ]
 
-export const libLocaleVarMap: { [loc: string]: string[] } = {}
-
 const decimalPoint = "00000001"
 const decimalPointModChar = "\0" // null
 
@@ -357,7 +355,6 @@ export default class SevenSegmentType
     const variationKeys = [
       ...opts.variationKeys,
       ...opts.locales,
-      ...opts.locales.map(key => libLocaleVarMap[key] || []).flat()
     ]
 
     if (opts.improveNumbers)
