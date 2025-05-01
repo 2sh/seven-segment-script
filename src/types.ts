@@ -8,7 +8,7 @@ export type Variation = string | [string, string]
 export type VariationMap = {[key: string]: Variation}
 
 export type CharBreak =
-    'hard'
+    'line'
   | 'soft'
   //| 'never'
 export type CharVisible =

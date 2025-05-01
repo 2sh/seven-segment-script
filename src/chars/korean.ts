@@ -3,7 +3,7 @@ import type { Char } from "../types"
 /**
  * Mapping found on: https://ko.wikipedia.org/wiki/7%EC%84%B8%EA%B7%B8%EB%A8%BC%ED%8A%B8_%ED%91%9C%EC%8B%9C_%EC%9E%A5%EC%B9%98
  */
-export default <Char[]> [
+const chars: Char[] = [
   { chr: "ㄱ", pin: "11100000" }, { chr: "ᄀ", var: { _: "ㄱ" } },
   { chr: "ㄴ", pin: "00011100" }, { chr: "ᆫ", var: { _: "ㄴ" } },
   { chr: "ㄷ", pin: "10011100" }, { chr: "ᄃ", var: { _: "ㄷ" } },
@@ -46,3 +46,4 @@ export default <Char[]> [
   { chr: "ㅞ", var: { _: "ㅜ\x1Fㅐ" } }, { chr: "ᅰ", var: { _: "ㅞ" } },
   { chr: "ㅟ", var: { _: "ㅜ\x1F|" } }, { chr: "ᅱ", var: { _: "ㅟ" } },
 ]
+export default chars

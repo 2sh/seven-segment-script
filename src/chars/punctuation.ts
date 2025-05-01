@@ -1,10 +1,12 @@
 import type { Char } from "../types"
 
-export default <Char[]> [
+const chars: Char[] = [
   { chr: "\x1E", pin: "00000001" },
 
   // Basic Latin
-  { chr: "\n", pin: "00000000", break: 'hard', visible: 'hide-on-break' }, // newline
+  { chr: "\n", pin: "00000000", break: 'line', visible: 'hide-on-break' }, // new line
+  { chr: "\r", pin: "00000000", visible: 'never' }, // carriage return
+  { chr: "\t", var: { _: "  " } }, // tab
   { chr: " ", pin: "00000000", break: 'soft', visible: 'hide-on-break' }, // space
   { chr: "!", pin: "01010000" },
   { chr: '"', pin: "01000100" },
@@ -142,3 +144,4 @@ export default <Char[]> [
   { chr: "ǂ", var: { _: "‡" } },
   { chr: "ǃ", var: { _: "!" } },
 ]
+export default chars

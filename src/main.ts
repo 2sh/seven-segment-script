@@ -209,7 +209,7 @@ export class SevenSegmentLine
           pushLine() // line with break char would exceed max length
         pushPart()
         breakElement = el
-        if (el.break == "hard")
+        if (el.break == "line")
           pushLine()
       }
       else (el.visible != 'never')

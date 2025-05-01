@@ -1,6 +1,6 @@
 import type { Char } from "../types"
 
-export default <Char[]> [
+const chars: Char[] = [
   { chr: "A", pin: "11101110" }, { chr: "a", pin: "00110010" },
     { chr: "ā", pin: "10110010" },
     { chr: "ą", pin: "11010010" },
@@ -203,3 +203,4 @@ export default <Char[]> [
   { chr: "Ɣ", pin: "00001010" },
   { chr: "Ɨ", pin: "01100010" },
 ]
+export default chars

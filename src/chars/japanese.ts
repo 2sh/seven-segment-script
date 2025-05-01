@@ -4,7 +4,7 @@ import type { Char } from "../types"
  * Katakana mapping by いかづちSqueak
  *   (https://wentwayup.tamaliver.jp/e67936.html)
  */
-export default <Char[]> [
+const chars: Char[] = [
   { chr: "ア", pin: "11001000" }, { chr: "あ", var: { _: "ア" } },
   { chr: "イ", pin: "01001010" }, { chr: "い", var: { _: "イ" } },
   { chr: "ウ", pin: "10101010" }, { chr: "う", var: { _: "ウ" } },
@@ -122,3 +122,4 @@ export default <Char[]> [
   { chr: "ヽ", pin: "11000000" },
   { chr: "ヿ", pin: "11100000" },
 ]
+export default chars
