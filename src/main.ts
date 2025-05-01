@@ -411,28 +411,27 @@ export default class SevenSegmentType
     {
       const char = this.charMap[chr]
 
-      // insert dec point into previous char if exists
       if ((chr == decimalPointModChar || (char && char.dp))
         && elements.length > 0)
       {
+        // insert dec point into previous char if exists
         const lastIndex = elements.length-1
-        const element = (elements[lastIndex] as TextElement);
-        (elements[lastIndex] as TextElement).pin = orPinMap(element.pin, decimalPoint)
-        return
+        elements[lastIndex]!.pin =
+          orPinMap(elements[lastIndex]!.pin, decimalPoint)
       }
-
-      // append dec point on its own if no char
-      if (!char || typeof char.pin !== "string")
+      else if (!char || typeof char.pin !== "string")
       {
+        // append dec point on its own if no char
         elements.push({pin: decimalPoint})
-        return
       }
-
-      elements.push({
-        pin: char.pin,
-        break: char.break,
-        visible: char.visible
-      })
+      else
+      {
+        elements.push({
+          pin: char.pin,
+          break: char.break,
+          visible: char.visible
+        })
+      }
     })
 
     return new SevenSegmentLine(elements)
