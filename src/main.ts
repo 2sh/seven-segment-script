@@ -111,12 +111,14 @@ function orPinMap(a: string, b: string)
     ac == '1' || b[i] == '1' ? '1' : '0').join('')
 }
 
-function isVisibleWithinLine(visible: CharVisible | undefined)
+type BreakCheck = (visible: CharVisible | undefined) => boolean
+
+const isVisibleWithinLine: BreakCheck = (visible) =>
 {
   return visible == 'hide-on-break' || typeof visible == 'undefined'
 }
 
-function isVisibleOnBreak(visible: CharVisible | undefined)
+const isVisibleOnBreak: BreakCheck = (visible) =>
 {
   return visible == 'show-on-break' || typeof visible == 'undefined'
 }
@@ -169,18 +171,23 @@ export class SevenSegmentLine
 
     let breakElement: TextElement | null = null
 
+    function pushBreakElement(check: BreakCheck)
+    {
+      if (breakElement && check(breakElement.visible))
+        line.push(toSimpleChar(breakElement))
+      breakElement = null
+    }
+
     function pushPart()
     {
-      if (breakElement && isVisibleWithinLine(breakElement.visible))
-        line.push(toSimpleChar(breakElement))
+      pushBreakElement(isVisibleWithinLine)
       line = line.concat(part)
       part = []
     }
 
     function pushLine()
     {
-      if (breakElement && isVisibleOnBreak(breakElement.visible))
-        line.push(toSimpleChar(breakElement))
+      pushBreakElement(isVisibleOnBreak)
       const remaining = length - line.length
       for (let i=0; i<remaining; i++)
       {
@@ -188,7 +195,6 @@ export class SevenSegmentLine
       }
       lines.push(line)
       line = []
-      breakElement = null
     }
 
     this.elements.forEach(el =>
@@ -217,7 +223,7 @@ export class SevenSegmentLine
         part.push(el)
       }
     })
-    if (part.length) pushPart()
+    pushPart()
     if (line.length) pushLine()
     return lines.map(line => new SevenSegmentLine(line))
   }
