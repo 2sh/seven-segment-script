@@ -28,6 +28,7 @@ export type Char = {
   chr: string
   pin?: string
   var?: VariationMap
+  dp?: boolean
   break?: CharBreak
   visible?: CharVisible
   // charAfterBreak?: boolean

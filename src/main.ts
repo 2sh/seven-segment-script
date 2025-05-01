@@ -65,7 +65,7 @@ export const libChars: Char[] =
 export const libLocaleVarMap: { [loc: string]: string[] } = {}
 
 export const decimalPoint = "00000001"
-export const decimalPointModChar = "\x1F"
+export const decimalPointModChar = "\0" // null
 
 function escapeRegExp(string: string)
 {
@@ -412,25 +412,19 @@ export default class SevenSegmentType
     const elements: TextElement[] = []
     processedText.join("").split('').forEach(chr =>
     {
-      // add dec point to previous char if there is one,
-      // otherwise append it
-      if (chr == decimalPointModChar)
+      const char = this.charMap[chr]
+
+      // insert dec point into previous char if exists
+      if ((chr == decimalPointModChar || (char && char.dp))
+        && elements.length > 0)
       {
-        if (elements.length > 0)
-        {
-          const lastIndex = elements.length-1
-          const element = (elements[lastIndex] as TextElement);
-          (elements[lastIndex] as TextElement).pin = orPinMap(element.pin, decimalPoint)
-        }
-        else
-        {
-          elements.push({pin: decimalPoint})
-        }
+        const lastIndex = elements.length-1
+        const element = (elements[lastIndex] as TextElement);
+        (elements[lastIndex] as TextElement).pin = orPinMap(element.pin, decimalPoint)
         return
       }
 
-      // append DP if not mapped
-      const char = this.charMap[chr]
+      // append dec point on its own if no char
       if (!char || typeof char.pin !== "string")
       {
         elements.push({pin: decimalPoint})

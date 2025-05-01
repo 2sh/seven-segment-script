@@ -1,12 +1,14 @@
 import type { Char } from "../types"
 
 const chars: Char[] = [
-  { chr: "\x1E", pin: "00000001" },
+  { chr: "\t", var: { _: "  " } }, // tab
+  { chr: "\n", pin: "00000000", break: 'line', visible: 'hide-on-break' }, // line feed / new line
+  { chr: "\r", pin: "00000000", visible: 'never' }, // carriage return
+
+  { chr: "\x1E", pin: "00000001" }, // record separator
+  { chr: "\x1F", pin: "00000001", dp: true }, // unit separator
 
   // Basic Latin
-  { chr: "\n", pin: "00000000", break: 'line', visible: 'hide-on-break' }, // new line
-  { chr: "\r", pin: "00000000", visible: 'never' }, // carriage return
-  { chr: "\t", var: { _: "  " } }, // tab
   { chr: " ", pin: "00000000", break: 'soft', visible: 'hide-on-break' }, // space
   { chr: "!", pin: "01010000" },
   { chr: '"', pin: "01000100" },
@@ -23,7 +25,7 @@ const chars: Char[] = [
   { chr: "-", pin: "00000010" }, // minus, not hard-hyphen. Use U+2010 for hard-hyphen
   { chr: ".", pin: "00010000" },
   { chr: "/", pin: "01001000" },
-
+  // 0-9
   { chr: ":", pin: "10010000" },
   { chr: ";", pin: "10001000" },
   { chr: "<", pin: "10000110" },
@@ -31,14 +33,14 @@ const chars: Char[] = [
   { chr: ">", pin: "11000010" },
   { chr: "?", pin: "11010000" },
   { chr: "@", pin: "11011110" },
-
+  // A-Z
   { chr: "[", pin: "10011100" },
   { chr: "\\", pin: "00100100" },
   { chr: "]", pin: "11110000" },
   { chr: "^", pin: "11000100" },
   { chr: "_", pin: "00010000" },
   { chr: "`", pin: "01000000" },
-
+  // a-z
   { chr: "{", pin: "01100010" },
   { chr: "|", pin: "00001100" },
   { chr: "}", pin: "00001110" },
@@ -46,7 +48,6 @@ const chars: Char[] = [
 
   // 0x00A1 - 0x00BF (Latin-1 Supplement)
   { chr: "\u00A0", pin: "00000000" }, // non-breaking space
-  { chr: "\u00AD", pin: "00000010", break: 'soft', visible: 'show-on-break' }, // soft-hyphen
   { chr: "¡", pin: "00010100" },
   { chr: "¢", pin: "10010110" },
   { chr: "£", pin: "00011110" },
@@ -58,6 +59,7 @@ const chars: Char[] = [
   { chr: "©", pin: "10010110" },
   { chr: "ª", pin: "11000010" },
   { chr: "¬", pin: "00100010" },
+  { chr: "\u00AD", pin: "00000010", break: 'soft', visible: 'show-on-break' }, // soft-hyphen
   { chr: "®", pin: "10001010" },
   { chr: "¯", pin: "10000000" },
   { chr: "°", pin: "11000110" },
