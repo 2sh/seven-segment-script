@@ -24,6 +24,11 @@ export type CharVisible =
     // use: newline with hard break
   | 'hide-on-break'
 
+export type Justify =
+  'center'
+  | 'left'
+  | 'right'
+
 export type Char = {
   chr: string
   pin?: string
@@ -31,6 +36,7 @@ export type Char = {
   dp?: boolean
   break?: CharBreak
   visible?: CharVisible
+  justify?: Justify
   // charAfterBreak?: boolean
 }
 
@@ -38,6 +44,7 @@ export interface TextElement {
   pin: string,
   break?: CharBreak
   visible?: CharVisible
+  justify?: Justify
 }
 
 export type Pins =

@@ -15,6 +15,7 @@ import type {
   CharVisible,
   FunctionOptions,
   InstanceOptions,
+  Justify,
   TextElement,
   TextGeneralOptions,
   TextStringOptions,
@@ -126,6 +127,11 @@ function toSimpleChar(element: TextElement)
   return { pin: element.pin }
 }
 
+function blankFill(length: number): TextElement[]
+{
+  return Array(length).fill({pin: '00000000'})
+}
+
 /**
  * An object containing the converted string with methods for outputting
  * into various convenient formats.
@@ -161,11 +167,12 @@ export class SevenSegmentLine
    * @param options - Optional parameters.
    * @returns An array of strings
    */
-  public split(length: number)
+  public split(length: number, justify: Justify = 'left')
   {
     const lines: TextElement[][] = []
     let line: TextElement[] = []
     let part: TextElement[] = []
+    let lineJustify: Justify = justify
 
     let breakElement: TextElement | null = null
 
@@ -187,12 +194,22 @@ export class SevenSegmentLine
     {
       pushBreakElement(isVisibleOnBreak)
       const remaining = length - line.length
-      for (let i=0; i<remaining; i++)
+
+      let left = 0
+      let right = 0
+      if (lineJustify == "left")
+        right = remaining
+      else if (lineJustify == "right")
+        left = remaining
+      else if (lineJustify == "center")
       {
-        line.push({pin: '00000000'})
+        left = Math.floor(remaining/2)
+        right = remaining - left
       }
+      line = blankFill(left).concat(line, blankFill(right))
       lines.push(line)
       line = []
+      lineJustify = justify
     }
 
     this.elements.forEach(el =>
@@ -209,6 +226,10 @@ export class SevenSegmentLine
         breakElement = el
         if (el.break == "line")
           pushLine()
+      }
+      else if (el.justify)
+      {
+        lineJustify = el.justify
       }
       else if (el.visible != 'never')
       {
@@ -429,7 +450,8 @@ export default class SevenSegmentType
         elements.push({
           pin: char.pin,
           break: char.break,
-          visible: char.visible
+          visible: char.visible,
+          justify: char.justify,
         })
       }
     })
