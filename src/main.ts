@@ -218,6 +218,11 @@ export class SevenSegmentLine
         + (breakElement && isVisibleWithinLine(breakElement.visible) ? 1 : 0)
         + part.length
 
+      if (el.justify)
+      {
+        lineJustify = el.justify
+      }
+
       if (el.break)
       {
         if (isVisibleOnBreak(el.visible) && (lineLength + 1 > length))
@@ -226,10 +231,6 @@ export class SevenSegmentLine
         breakElement = el
         if (el.break == "line")
           pushLine()
-      }
-      else if (el.justify)
-      {
-        lineJustify = el.justify
       }
       else if (el.visible != 'never')
       {
