@@ -102,7 +102,7 @@ const chars: Char[] = [
       { chr: "į", var: { _: "í" } },
 
   { chr: "J", pin: "01111000" }, { chr: "j", pin: "01110000" },
-    { chr: "Ĳ", pin: "01110100" }, /* "When a Dutch word starting with IJ is capitalised, the entire digraph is capitalised" */
+    { chr: "Ĳ", pin: "01110100" }, // "When a Dutch word starting with IJ is capitalised, the entire digraph is capitalised"
       { chr: "ĳ", var: { _: "Ĳ" } },
 
   { chr: "K", pin: "10101110" }, { chr: "k", pin: "00010110" },
@@ -120,7 +120,7 @@ const chars: Char[] = [
       { chr: "ǈ", var: { _: "Lj" } },
       { chr: "ǉ", var: { _: "lj" } },
 
-  { chr: "M", pin: "11010100" }, { chr: "m", pin: "10101000" }, // { chr: "m", pin: "10101010" },
+  { chr: "M", pin: "11010100" }, { chr: "m", pin: "10101000" }, // m not 10101010 to allow ñ to use it
 
   { chr: "N", pin: "11101100" }, { chr: "n", pin: "00101010" },
     { chr: "ñ", pin: "10101010" },
@@ -162,7 +162,7 @@ const chars: Char[] = [
     { chr: "ß", var: { _: "ſs" } },
       { chr: "ẞ", var: { _: "SS" } },
 
-  { chr: "T", pin: "11100000" }, { chr: "t", pin: "00011110" },
+  { chr: "T", pin: "11100000" }, { chr: "t", pin: "00011110" }, // T not 10001100 to allow Greek Γ and Cyrillic Г to use it, and for all Ts to look the same
     { chr: "Ŧ", pin: "11100010" },
       { chr: "ŧ", var: { _: "t\x1F" } },
 
@@ -185,8 +185,8 @@ const chars: Char[] = [
     { chr: "ų", var: { _: "ú" } },
 
   { chr: "V", pin: "01001110" }, { chr: "v", pin: "00110000" },
-  { chr: "W", pin: "01111110" }, { chr: "w", pin: "01010100" }, // { chr: "w", pin: "10111000" },
-  { chr: "X", pin: "01101100" }, { chr: "x", pin: "00101000" },
+  { chr: "W", pin: "01111110" }, { chr: "w", pin: "01010100" }, // w not 10111000 to allow ū to use it
+  { chr: "X", pin: "01101100" }, { chr: "x", pin: "00101000" }, // X not 10010010 to allow Ш, Ξ to use it, and for all Xs to look the same. 00010010 is used by Cyrillic к and Greek κ
   { chr: "Y", pin: "01110110" }, { chr: "y", pin: "01100110" },
 
   { chr: "Z", pin: "11011010" }, { chr: "z", pin: "01011010" },
