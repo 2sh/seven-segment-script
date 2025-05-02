@@ -416,7 +416,7 @@ export default class SevenSegmentType
           return variation.split('').map(resolveChr).flat()
         }
       }
-      if (!char || (!char.pin && !variation))
+      if (!char || (char.var && !variation))
       {
         // remove diacritics if possible and add DP
         return getNormalizedChr(chr) + decimalPointModChar
@@ -441,7 +441,7 @@ export default class SevenSegmentType
         elements[lastIndex]!.pin =
           orPinMap(elements[lastIndex]!.pin, decimalPoint)
       }
-      else if (!char || typeof char.pin !== "string")
+      else if (!char)
       {
         // append dec point on its own if no char
         elements.push({pin: decimalPoint})
@@ -449,7 +449,7 @@ export default class SevenSegmentType
       else
       {
         elements.push({
-          pin: char.pin,
+          pin: typeof char.pin !== "string" ? decimalPoint : char.pin,
           break: char.break,
           visible: char.visible,
           justify: char.justify,
