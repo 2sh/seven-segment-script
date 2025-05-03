@@ -1,28 +1,70 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 
-import SevenSegmentType from '../../src/'
+import SevenSegmentType, { SevenSegmentLine } from '../../src'
+
+type Mode =
+  | 'line'
+  | 'individual'
+  | 'word'
+  | 'split'
 
 export interface Props {
   sst?: SevenSegmentType,
-  text: string,
+  mode?: Mode,
+  pin?: string | string[],
+  text?: string,
   color?: string,
   split?: number,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   sst: () => new SevenSegmentType(),
+  mode: "line",
+  text: "",
+  pin: () => [],
   color: "#00ff3f",
   split: 4*6,
 })
 
-const lines = ref<string[]>([])
+const lines = ref<string[][]>([])
+
+const textParts = ref<string[]>([])
+//const outParts = ref<string[]>([])
 
 watch(props, () =>
 {
-  lines.value = props.sst.convert(props.text)
-    .split(props.split)
-    .map(line => line.toDsegString())
+  if (props.mode == 'individual' || props.mode == 'word')
+  {
+    textParts.value = props.mode == 'individual'
+      ? props.text.split('')
+      : props.text.split(/(?<=\s+)/)
+    lines.value = [textParts.value.map(text =>
+      props.sst.convert(text).toDsegString())]
+  }
+  else
+  {
+    textParts.value = []
+    let line: SevenSegmentLine
+    if (props.pin.length)
+    {
+      const pins = typeof props.pin == "string" ? [props.pin] : props.pin
+      line = new SevenSegmentLine(pins.map(pin => { return {pin} } ))
+    }
+    else
+    {
+      line = props.sst.convert(props.text)
+    }
+
+    if (props.mode == 'split')
+    {
+      lines.value = line.split(props.split).map(l => [l.toDsegString()])
+    }
+    else
+    {
+      lines.value = [[line.toDsegString()]]
+    }
+  }
 }, { immediate: true })
 
 const lineStyle = computed(() =>
@@ -35,45 +77,57 @@ const lineStyle = computed(() =>
 </script>
 
 <template>
-<div>
-  <table>
-    <tbody>
-      <tr class="sevensegment-line sevensegment-text" v-for="line in lines">
-        <td>
-          <div class="off-line">{{ "8".repeat(line.length) }}</div>
-          <div class="on-line" :style="lineStyle">{{ line }}</div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="seven-segment-panel">
+  <div class="line" v-for="line in lines">
+    <div class="part" v-for="(part, i) in line">
+      <div class="displays sevensegment-text">
+        <div class="off">{{ "8".repeat(part.length) }}</div>
+        <div class="on" :style="lineStyle">{{ part }}</div>
+      </div>
+      <div v-if="textParts.length" class="plain"><div>{{ textParts[i] }}</div></div>
+    </div>
+  </div>
 </div>
 </template>
 
 <style scoped>
-table
+.seven-segment-panel
 {
-  border-collapse: collapse;
-  border: none;
+  display: inline-block;
 }
 
-td
+.part
 {
-  padding: 0;
-  margin: 0;
+  display: inline-block;
 }
 
-.sevensegment-line td
+.displays
 {
-
   font-size: 20px;
-  position: relative;
-  padding-bottom: 5px;
 }
 
-.off-line
+.off
 {
   position: absolute;
   color: rgb(43, 43, 43);
   z-index: -1;
+}
+
+.plain
+{
+  width: 0;
+  position: relative;
+  height: 30px;
+  font-size: 16px;
+  font-family: monospace;
+}
+
+.plain div
+{
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: 30px;
+  white-space: nowrap;
 }
 </style>
