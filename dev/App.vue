@@ -421,7 +421,7 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
         </div>
       </div>
       <div>
-        <h2>Decisions</h2>
+        <h2>Notes</h2>
         <div>
           a <ssd pin="00110010"/> : Considered was <ssd pin="00100010"/> as it would mirror 'e' <ssd pin="00011000"/>, and <ssd pin="00110010"/> could then be used for `s` perhaps, but using it also for Greek and Cyrillic `a` would conflict with their `t` <ssd pin="00100010"/>. it also makes words a bit less recognisable.
         </div>
