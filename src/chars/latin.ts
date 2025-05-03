@@ -3,7 +3,6 @@ import type { Char } from "../types"
 const chars: Char[] = [
   { chr: "A", pin: "11101110" }, { chr: "a", pin: "00110010" },
     { chr: "ā", pin: "10110010" },
-    { chr: "ą", pin: "11010010" },
     { chr: "Æ", var: { _: ["A\x1FE", "A\x1Fe"] } },
       { chr: "æ", var: { _: "a\x1Fe" } },
     { chr: "Ǣ", var: { _: ["A\x1FE\x1F", "A\x1Fē"] } },
@@ -29,9 +28,14 @@ const chars: Char[] = [
     { chr: "ƅ", var: { _: "b\x1F" } },
 
   { chr: "C", pin: "10011100" }, { chr: "c", pin: "00011010" },
+    { chr: "č", pin: "10011010" },
+      { chr: "ç", var: { _: "č" } },
+      { chr: "ć", var: { _: "č" } },
+      { chr: "ĉ", var: { _: "č" } },
+      { chr: "ċ", var: { _: "č" } },
     { chr: "Ɔ", pin: "11110000" },
     { chr: "Ƈ", var: { _: "C\x1F" } },
-      { chr: "ƈ", var: { _: "c\x1F" } },
+      { chr: "ƈ", var: { _: "č" } },
 
   { chr: "D", pin: "11110100" }, { chr: "d", pin: "01111010" },
     { chr: "Ð", pin: "11110110" },
@@ -66,7 +70,7 @@ const chars: Char[] = [
     { chr: "Ƒ", var: { _: "F\x1F" } },
       { chr: "ƒ", var: { _: "f\x1F" } },
 
-  { chr: "G", pin: "10111100" }, { chr: "g", pin: "10011010" },
+  { chr: "G", pin: "10111100" }, { chr: "g", pin: "10010110" },
     { chr: "Ɠ", var: { _: "G\x1F" } },
     { chr: "Ǥ", var: { _: "G\x1F" } },
       { chr: "ǥ", var: { _: "g\x1F" } },
@@ -77,8 +81,7 @@ const chars: Char[] = [
     { chr: "Ƕ", var: { _: ["HV", "Hv"] } },
       { chr: "ƕ", var: { _: "hv" } },
 
-  { chr: "I", pin: "01100000" },
-    { chr: "i", pin: "10100000" },
+  { chr: "I", pin: "01100000" }, { chr: "i", pin: "10100000" },
     { chr: "ı", pin: "00100000" },
     { chr: "Í", pin: "01100100" },
       { chr: "í", pin: "00100100" },
@@ -102,7 +105,7 @@ const chars: Char[] = [
       { chr: "į", var: { _: "í" } },
 
   { chr: "J", pin: "01111000" }, { chr: "j", pin: "01110000" },
-    { chr: "Ĳ", pin: "01110100" }, // "When a Dutch word starting with IJ is capitalised, the entire digraph is capitalised"
+    { chr: "Ĳ", pin: "01110100" },
       { chr: "ĳ", var: { _: "Ĳ" } },
 
   { chr: "K", pin: "10101110" }, { chr: "k", pin: "00010110" },
@@ -120,7 +123,7 @@ const chars: Char[] = [
       { chr: "ǈ", var: { _: "Lj" } },
       { chr: "ǉ", var: { _: "lj" } },
 
-  { chr: "M", pin: "11010100" }, { chr: "m", pin: "10101000" }, // m not 10101010 to allow ñ to use it
+  { chr: "M", pin: "11010100" }, { chr: "m", pin: "10101000" },
 
   { chr: "N", pin: "11101100" }, { chr: "n", pin: "00101010" },
     { chr: "ñ", pin: "10101010" },
@@ -144,7 +147,7 @@ const chars: Char[] = [
     { chr: "Ö", var: { de:["OE", "Oe"] } },
       { chr: "ö", var: { _: "ō" } },
     { chr: "ò", var: { _: "ō" } },
-    { chr: "ó", var: { _: "ō", it: "ō\x1F" } }, // low occurrence in Italian
+    { chr: "ó", var: { _: "ō", it: "ō\x1F" } },
     { chr: "ô", var: { _: "ō", pt: "ō\x1F" } },
     { chr: "õ", var: { _: "ō" } },
     { chr: "ø", var: { _: "ō" } },
@@ -162,7 +165,7 @@ const chars: Char[] = [
     { chr: "ß", var: { _: "ſs" } },
       { chr: "ẞ", var: { _: "SS" } },
 
-  { chr: "T", pin: "11100000" }, { chr: "t", pin: "00011110" }, // T not 10001100 to allow Greek Γ and Cyrillic Г to use it, and for all Ts to look the same
+  { chr: "T", pin: "11100000" }, { chr: "t", pin: "00011110" },
     { chr: "Ŧ", pin: "11100010" },
       { chr: "ŧ", var: { _: "t\x1F" } },
 
@@ -185,8 +188,8 @@ const chars: Char[] = [
     { chr: "ų", var: { _: "ú" } },
 
   { chr: "V", pin: "01001110" }, { chr: "v", pin: "00110000" },
-  { chr: "W", pin: "01111110" }, { chr: "w", pin: "01010100" }, // w not 10111000 to allow ū to use it
-  { chr: "X", pin: "01101100" }, { chr: "x", pin: "00101000" }, // X not 10010010 to allow Ш, Ξ to use it, and for all Xs to look the same. 00010010 is used by Cyrillic к and Greek κ
+  { chr: "W", pin: "01111110" }, { chr: "w", pin: "01010100" },
+  { chr: "X", pin: "01101100" }, { chr: "x", pin: "00101000" },
   { chr: "Y", pin: "01110110" }, { chr: "y", pin: "01100110" },
 
   { chr: "Z", pin: "11011010" }, { chr: "z", pin: "01011010" },

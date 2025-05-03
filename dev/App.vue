@@ -3,6 +3,7 @@ import SevenSegmentType, { libChars } from "../src/"
 import type { Char } from "../src/types"
 import SevenSegmentLine from './components/SevenSegmentLine.vue'
 import SevenSegmentText from './components/SevenSegmentText.vue'
+import ssd from './components/SevenSegmentDisplay.vue'
 
 import { computed, ref } from "vue"
 
@@ -62,6 +63,8 @@ const languageSections: LanguageSection[] = [
       "The five boxing wizards jump quickly.",
       "aquittal aquifer aquattic aqua",
       "How quickly daft jumping zebras vex!",
+      "Sixty zippers were quickly picked from the woven jute bag.",
+      "Farmer Jack realized that big yellow quilts were expensive.",
     ]
   },
   {
@@ -415,6 +418,45 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
         <h2>Text Wrapping Test</h2>
         <div style="margin: 10px;">
           <SevenSegmentText :text="wrappingTextExample" :split="24"></SevenSegmentText>
+        </div>
+      </div>
+      <div>
+        <h2>Decisions</h2>
+        <div>
+          a <ssd pin="00110010"/> : Considered was <ssd pin="00100010"/> as it would mirror 'e' <ssd pin="00011000"/>, and <ssd pin="00110010"/> could then be used for `s` perhaps, but using it also for Greek and Cyrillic `a` would conflict with their `t` <ssd pin="00100010"/>. it also makes words a bit less recognisable.
+        </div>
+        <div>
+          g <ssd pin="10010110"/> : <ssd pin="11110110"/> is too top heavy.
+        </div>
+        <div>
+          m <ssd pin="10101000"/> : Not <ssd pin="10101010"/> to allow ñ to use it. Same as w <ssd pin="01010100"/> upside down.
+        </div>
+        <div>
+          R <ssd pin="11101010"/> : Could perhaps also be <ssd pin="10001100"/> but then it wouldn't feel like a proper unique capital letter and also wouldn't mirror Cyrillic Я <ssd pin="10101110"/>.
+        </div>
+        <div>
+          T <ssd pin="11100000"/> : Not <ssd pin="10001100"/> to allow Greek Γ and Cyrillic Г to use it and for all 'T's to look the same.
+        </div>
+        <div>
+          w <ssd pin="01010100"/> : Not <ssd pin="10111000"/> to allow ū to use it. Same as m <ssd pin="10101000"/> upside down.
+        </div>
+        <div>
+          X <ssd pin="01101100"/> : Not <ssd pin="10010010"/> to allow Cyrillic Ш and Greek Ξ to use it and for all 'X's to look the same.
+        </div>
+        <div>
+          X <ssd pin="00101000"/> : <ssd pin="00010010"/> is already used by Cyrillic к and Greek κ.
+        </div>
+        <div>
+          Y <ssd pin="01110110"/> and y <ssd pin="01100110"/> : <ssd pin="01100110"/> y almost looks too top heavy but making it <ssd pin="01110110"/> means making Y <ssd pin="01010110"/>, but with priority to caps, caps are preferably without disconnected parts.
+        </div>
+        <div>
+          Ĳ <ssd pin="01110100"/> : Does not require upper and lowercase versions, because "When a Dutch word starting with IJ is capitalised, the entire digraph is capitalised" (e.g. Ĳmuiden becomes IJmuiden not Ijmuiden)
+        </div>
+        <div>
+          Italian locale ò <ssd pin="10111010"/> and ó <ssd pin="10111011"/> : ó gets the decimal point as it has a low occurrence in Italian.
+        </div>
+        <div>
+          y and g : Could possibly be <ssd pin="01100010"/> or <ssd pin="00100010"/> but those may be a bit too unrecognisable.
         </div>
       </div>
       <div>
