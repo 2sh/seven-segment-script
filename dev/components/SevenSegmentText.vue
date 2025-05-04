@@ -94,16 +94,12 @@ const lineStyle = computed(() =>
 .seven-segment-panel
 {
   display: inline-block;
+
 }
 
 .part
 {
   display: inline-block;
-}
-
-.displays
-{
-  font-size: 20px;
 }
 
 .off
@@ -118,8 +114,8 @@ const lineStyle = computed(() =>
   width: 0;
   position: relative;
   height: 30px;
-  font-size: 16px;
   font-family: monospace;
+  font-size: 0.8em;
 }
 
 .plain div

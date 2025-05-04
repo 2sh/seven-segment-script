@@ -402,7 +402,7 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
           <label>Remove diacritics: <input type="checkbox" v-model="enableRemovingDiacritics"></label>
         </div>
       </div>
-      <div id="custom-text-section">
+      <div id="custom-text-section" class="larger-displays">
         <div>
           <textarea v-model="customText"></textarea>
         </div>
@@ -410,7 +410,7 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
           <sst v-for="line in customTextLines" :color="color" :mode="hideTranscriptions ? 'line' : 'word'" :sst="generalSss" :text="line"></sst>
         </div>
       </div>
-      <div v-for="([ssd, section]) in sections">
+      <div v-for="([ssd, section]) in sections" class="larger-displays">
         <h2>{{ section.name }}</h2>
         <div>
           <div class="subsection">
@@ -425,7 +425,7 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
           </div>
         </div>
       </div>
-      <div>
+      <div class="larger-displays">
         <h2>Text Wrapping Test</h2>
         <div style="margin: 10px;">
           <sst :mode="'split'" :text="wrappingTextExample" :split="24"></sst>
@@ -440,7 +440,7 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
           f <sst pin="00001110"/> : A strong contender is <sst pin="10001010"/> but that one can be used for `r` with diacritics: ř. May still change though.
         </div>
         <div>
-          g <sst pin="00100010"/> : Maybe a stretch... but it's the hook of `G`, has the downward motion of `g`, and mirrors <sst pin="00001010"/> used for Cyrillic `г` and and Greek `γ`. <sst pin="10010110"/> and <sst pin="11110110"/> are too top heavy. A strong contender is <sst pin="10011010"/> but that one can be used for `c` with diacritics: č. May still change though.
+          g <sst pin="00100010"/> : Maybe a stretch... but it's the hook of `G`, has the downward motion of `g`, and mirrors <sst pin="00001010"/> used for Cyrillic `г` and and Greek `γ`. <sst pin="10010110"/> and <sst pin="11110110"/> are too top heavy. A strong contender is <sst pin="10011010"/> but that one can be used for `c` with diacritics: č. May still change though. Also a consideration is to use <sst pin="00100010"/> for `s`.
         </div>
         <div>
           m <sst pin="10101000"/> : Not <sst pin="10101010"/> to allow `ñ` to use it. Same as w <sst pin="01010100"/> upside down.
@@ -464,16 +464,16 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
           y <sst pin="01100010"/> : Like a `y` but rotated to make the right line vertical. <sst pin="01100110"/> looks too top heavy. Could also be <sst pin="01110010"/> but it feels a bit less recognisable.
         </div>
         <div>
-          Ĳ <sst pin="01110100"/> : Does not require upper and lowercase versions, because "When a Dutch word starting with `Ĳ` is capitalised, the entire digraph is capitalised" (e.g. Ĳmuiden becomes IJmuiden not Ijmuiden)
+          Ĳ <sst pin="01110100"/> : Does not require upper and lowercase versions, because "When a Dutch word starting with `Ĳ` is capitalised, the entire digraph is capitalised" (e.g. It's IJmuiden not Ijmuiden)
         </div>
         <div>
-          i <sst pin="10100000"/>, m <sst pin="10101000"/> & w <sst pin="01010100"/> : Don't want too many disconnected base characters.
+          M <sst pin="11010100"/>, Q <sst pin="11010110"/>, i <sst pin="10100000"/>, k <sst pin="00010110"/>, m <sst pin="10101000"/> & w <sst pin="01010100"/> : Shouldn't be too many disconnected base characters.
         </div>
         <div>
-          Italian locale ò <sst pin="10111010"/> and ó <sst pin="10111011"/> : ó gets the decimal point as it has a low occurrence in Italian.
+          Between `ò` <sst pin="10111010"/> and `ó` <sst pin="10111010"/> in the Italian locale, `ó` gets the decimal point <sst pin="10111011"/> as it has a low occurrence in Italian.
         </div>
       </div>
-      <div>
+      <div class="larger-displays">
         <h2>Character Map</h2>
         <div id="character-map">
           <div class="character" v-bind:class="{'has-pinmap': typeof char.pin !== 'undefined'}" v-for="char in chars">
@@ -487,6 +487,11 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
 </template>
 
 <style scoped>
+.larger-displays .seven-segment-panel
+{
+  font-size: 20px;
+}
+
 .options
 {
   display: flex;
