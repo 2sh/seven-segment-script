@@ -63,6 +63,7 @@ const languageSections: LanguageSection[] = [
       "How quickly daft jumping zebras vex!",
       "Sixty zippers were quickly picked from the woven jute bag.",
       "Farmer Jack realized that big yellow quilts were expensive.",
+      "Just keep examining every low bid quoted for zinc etchings.",
     ]
   },
   {
@@ -134,6 +135,10 @@ const languageSections: LanguageSection[] = [
     ],
     examples: [
       "Victor jagt zwölf Boxkämpfer quer über den großen Sylter Deich.",
+      "Falsches Üben von Xylophonmusik quält jeden größeren Zwerg.",
+      "Jörg bäckt quasi zwei Haxenfüße vom Wildpony.",
+      "Zwölf laxe Typen qualmen verdächtig süße Objekte.",
+      "Franz jagt im komplett verwahrlosten Taxi quer durch Bayern.",
       "Äußerst Öl Über",
     ]
   },
@@ -308,6 +313,7 @@ const languageSections: LanguageSection[] = [
 
 const caseMode = ref('normal')
 const enableRemovingDiacritics = ref(false)
+const hideTranscriptions = ref(false)
 const color = ref('#00ff3f')
 const customText = ref('Custom text input')
 const customTextLines = computed(() => customText.value.split(/\r\n|\n|\r/))
@@ -377,6 +383,9 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
             <option value="#ffff00">Yellow</option>
           </select></label>
         </div>
+        <div>
+          <label>Hide transcriptions: <input type="checkbox" v-model="hideTranscriptions"></label>
+        </div>
       </div>
       <div class="options">
         <div class="options-header">
@@ -398,7 +407,7 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
           <textarea v-model="customText"></textarea>
         </div>
         <div id="custom-text-output">
-          <sst v-for="line in customTextLines" :color="color" :mode="'word'" :sst="generalSss" :text="line"></sst>
+          <sst v-for="line in customTextLines" :color="color" :mode="hideTranscriptions ? 'line' : 'word'" :sst="generalSss" :text="line"></sst>
         </div>
       </div>
       <div v-for="([ssd, section]) in sections">
@@ -406,12 +415,12 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
         <div>
           <div class="subsection">
             <div v-for="line in section.chars">
-              <sst :color="color" :mode="'individual'" :sst="ssd" :text="line"></sst>
+              <sst :color="color" :mode="hideTranscriptions ? 'line' : 'individual'" :sst="ssd" :text="line"></sst>
             </div>
           </div>
           <div class="subsection">
             <div v-for="line in section.examples">
-              <sst :color="color" :mode="'word'" :sst="ssd" :text="line"></sst>
+              <sst :color="color" :mode="hideTranscriptions ? 'line' : 'word'" :sst="ssd" :text="line"></sst>
             </div>
           </div>
         </div>
@@ -428,7 +437,10 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
           a <sst pin="00110010"/> : Considered was <sst pin="00100010"/> as it would mirror 'e' <sst pin="00011000"/>, and <sst pin="00110010"/> could then be used for `s` perhaps, but using it also for Greek and Cyrillic `a` would conflict with their `t` <sst pin="00100010"/>. it also makes words a bit less recognisable.
         </div>
         <div>
-          g <sst pin="10010110"/> : <sst pin="11110110"/> is too top heavy.
+          f <sst pin="00001110"/> : A strong contender is <sst pin="10001010"/> but that one can be used for r with diacritics: ř. May still change though.
+        </div>
+        <div>
+          g <sst pin="00100010"/> : Maybe a stretch.. but the hook of G, the downward motion of g, and Mirrors <sst pin="00001010"/> used for Cyrillic г and and Greek γ. <sst pin="10010110"/> and <sst pin="11110110"/> are too top heavy. A strong contender is <sst pin="10011010"/> but that one can be used for c with diacritics: č. May still change though.
         </div>
         <div>
           m <sst pin="10101000"/> : Not <sst pin="10101010"/> to allow ñ to use it. Same as w <sst pin="01010100"/> upside down.
@@ -449,16 +461,16 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
           X <sst pin="00101000"/> : <sst pin="00010010"/> is already used by Cyrillic к and Greek κ.
         </div>
         <div>
-          Y <sst pin="01110110"/> and y <sst pin="01100110"/> : <sst pin="01100110"/> y almost looks too top heavy but making it <sst pin="01110110"/> means making Y <sst pin="01010110"/>, but with priority to caps, caps are preferably without disconnected parts.
+          y <sst pin="01100010"/> : Like a y but rotated to make the right line vertical. <sst pin="01100110"/> looks too top heavy. Could also be <sst pin="01110010"/> but it feels a bit less recognisable.
         </div>
         <div>
           Ĳ <sst pin="01110100"/> : Does not require upper and lowercase versions, because "When a Dutch word starting with IJ is capitalised, the entire digraph is capitalised" (e.g. Ĳmuiden becomes IJmuiden not Ijmuiden)
         </div>
         <div>
-          Italian locale ò <sst pin="10111010"/> and ó <sst pin="10111011"/> : ó gets the decimal point as it has a low occurrence in Italian.
+          i <sst pin="10100000"/>, m <sst pin="10101000"/> & w <sst pin="01010100"/> : Don't want too many disconnected base characters.
         </div>
         <div>
-          y and g : Could possibly be <sst pin="01100010"/> or <sst pin="00100010"/> but those may be a bit too unrecognisable.
+          Italian locale ò <sst pin="10111010"/> and ó <sst pin="10111011"/> : ó gets the decimal point as it has a low occurrence in Italian.
         </div>
       </div>
       <div>
