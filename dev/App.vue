@@ -434,37 +434,37 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
       <div>
         <h2>Notes</h2>
         <div>
-          a <sst pin="00110010"/> : Considered was <sst pin="00100010"/> as it would mirror 'e' <sst pin="00011000"/>, and <sst pin="00110010"/> could then be used for `s` perhaps, but using it also for Greek and Cyrillic `a` would conflict with their `t` <sst pin="00100010"/>. it also makes words a bit less recognisable.
+          a <sst pin="00110010"/> : Considered was <sst pin="00100010"/> as it would mirror `e` <sst pin="00011000"/>, and <sst pin="00110010"/> could then be used for `s` perhaps, but using it also for Greek and Cyrillic `a` would conflict with their `t` <sst pin="00100010"/>. it also makes words a bit less recognisable.
         </div>
         <div>
-          f <sst pin="00001110"/> : A strong contender is <sst pin="10001010"/> but that one can be used for r with diacritics: ř. May still change though.
+          f <sst pin="00001110"/> : A strong contender is <sst pin="10001010"/> but that one can be used for `r` with diacritics: ř. May still change though.
         </div>
         <div>
-          g <sst pin="00100010"/> : Maybe a stretch... but it's the hook of G, has the downward motion of g, and mirrors <sst pin="00001010"/> used for Cyrillic г and and Greek γ. <sst pin="10010110"/> and <sst pin="11110110"/> are too top heavy. A strong contender is <sst pin="10011010"/> but that one can be used for c with diacritics: č. May still change though.
+          g <sst pin="00100010"/> : Maybe a stretch... but it's the hook of `G`, has the downward motion of `g`, and mirrors <sst pin="00001010"/> used for Cyrillic `г` and and Greek `γ`. <sst pin="10010110"/> and <sst pin="11110110"/> are too top heavy. A strong contender is <sst pin="10011010"/> but that one can be used for `c` with diacritics: č. May still change though.
         </div>
         <div>
-          m <sst pin="10101000"/> : Not <sst pin="10101010"/> to allow ñ to use it. Same as w <sst pin="01010100"/> upside down.
+          m <sst pin="10101000"/> : Not <sst pin="10101010"/> to allow `ñ` to use it. Same as w <sst pin="01010100"/> upside down.
         </div>
         <div>
-          R <sst pin="11101010"/> : Could perhaps also be <sst pin="10001100"/> but then it wouldn't feel like a proper unique capital letter and also wouldn't mirror Cyrillic Я <sst pin="10101110"/>.
+          R <sst pin="11101010"/> : Could perhaps also be <sst pin="10001100"/> but then it wouldn't feel like a proper unique capital letter and also wouldn't mirror Cyrillic `Я` <sst pin="10101110"/>.
         </div>
         <div>
-          T <sst pin="11100000"/> : Not <sst pin="10001100"/> to allow Greek Γ and Cyrillic Г to use it and for all 'T's to look the same. Opposite segments of t <sst pin="00011110"/>.
+          T <sst pin="11100000"/> : Not <sst pin="10001100"/> to allow Greek `Γ` and Cyrillic `Г` to use it and for all `T`s to look the same. Opposite segments of `t` <sst pin="00011110"/>.
         </div>
         <div>
-          w <sst pin="01010100"/> : Not <sst pin="10111000"/> to allow ū to use it. Same as m <sst pin="10101000"/> upside down.
+          w <sst pin="01010100"/> : Not <sst pin="10111000"/> to allow `ū` to use it. Same as m <sst pin="10101000"/> upside down.
         </div>
         <div>
-          X <sst pin="01101100"/> : Not <sst pin="10010010"/> to allow Cyrillic Ш and Greek Ξ to use it and for all 'X's to look the same.
+          X <sst pin="01101100"/> : Not <sst pin="10010010"/> to allow Cyrillic `Ш` and Greek `Ξ` to use it and for all `X`s to look the same.
         </div>
         <div>
-          x <sst pin="00101000"/> : <sst pin="00010010"/> is already used by Cyrillic к and Greek κ.
+          x <sst pin="00101000"/> : <sst pin="00010010"/> is already used by Cyrillic `к` and Greek `κ`.
         </div>
         <div>
-          y <sst pin="01100010"/> : Like a y but rotated to make the right line vertical. <sst pin="01100110"/> looks too top heavy. Could also be <sst pin="01110010"/> but it feels a bit less recognisable.
+          y <sst pin="01100010"/> : Like a `y` but rotated to make the right line vertical. <sst pin="01100110"/> looks too top heavy. Could also be <sst pin="01110010"/> but it feels a bit less recognisable.
         </div>
         <div>
-          Ĳ <sst pin="01110100"/> : Does not require upper and lowercase versions, because "When a Dutch word starting with IJ is capitalised, the entire digraph is capitalised" (e.g. Ĳmuiden becomes IJmuiden not Ijmuiden)
+          Ĳ <sst pin="01110100"/> : Does not require upper and lowercase versions, because "When a Dutch word starting with `Ĳ` is capitalised, the entire digraph is capitalised" (e.g. Ĳmuiden becomes IJmuiden not Ijmuiden)
         </div>
         <div>
           i <sst pin="10100000"/>, m <sst pin="10101000"/> & w <sst pin="01010100"/> : Don't want too many disconnected base characters.
