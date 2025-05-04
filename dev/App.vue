@@ -368,7 +368,7 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
 </script>
 
 <template>
-  <div id="main">
+  <div id="main" :class="{'hide-transcriptions': hideTranscriptions}">
     <div>
       <div class="options">
         <div>
@@ -407,7 +407,7 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
           <textarea v-model="customText"></textarea>
         </div>
         <div id="custom-text-output">
-          <sst v-for="line in customTextLines" :color="color" :mode="hideTranscriptions ? 'line' : 'word'" :sst="generalSss" :text="line"></sst>
+          <sst v-for="line in customTextLines" :color="color" :mode="'word'" :sst="generalSss" :text="line"></sst>
         </div>
       </div>
       <div v-for="([ssd, section]) in sections" class="larger-displays">
@@ -415,12 +415,12 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
         <div>
           <div class="subsection">
             <div v-for="line in section.chars">
-              <sst :color="color" :mode="hideTranscriptions ? 'line' : 'individual'" :sst="ssd" :text="line"></sst>
+              <sst :color="color" :mode="'individual'" :sst="ssd" :text="line"></sst>
             </div>
           </div>
           <div class="subsection">
             <div v-for="line in section.examples">
-              <sst :color="color" :mode="hideTranscriptions ? 'line' : 'word'" :sst="ssd" :text="line"></sst>
+              <sst :color="color" :mode="'word'" :sst="ssd" :text="line"></sst>
             </div>
           </div>
         </div>
@@ -576,5 +576,12 @@ h2
 .test-line
 {
   margin: 10px;
+}
+</style>
+
+<style>
+.hide-transcriptions .seven-segment-panel .plain
+{
+  display: none;
 }
 </style>
