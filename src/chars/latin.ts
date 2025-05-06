@@ -145,7 +145,7 @@ const chars: Char[] = [
       { chr: "œ", var: { _: "o\x1Fe" } },
     { chr: "Ø", var: { _: "O\x1F" } },
     { chr: "Ö", var: { de:["OE", "Oe"] } },
-      { chr: "ö", var: { _: "ō" } },
+      { chr: "ö", var: { _: "ō", is: "ō\x1F" } },
     { chr: "ò", var: { _: "ō" } },
     { chr: "ó", var: { _: "ō", it: "ō\x1F" } },
     { chr: "ô", var: { _: "ō", pt: "ō\x1F" } },
@@ -174,7 +174,7 @@ const chars: Char[] = [
 
   { chr: "U", pin: "01111100" }, { chr: "u", pin: "00111000" },
     { chr: "ū", pin: "10111000" },
-    { chr: "ú", pin: "00110100" },
+    { chr: "ú", pin: "00110100", var: { is: "ū" } },
     { chr: "ù", pin: "10110000" },
     { chr: "û", pin: "10110100" },
     { chr: "Ü", var: { de:["UE", "Ue"] } },
@@ -194,6 +194,9 @@ const chars: Char[] = [
   { chr: "W", pin: "01111110" }, { chr: "w", pin: "01010100" },
   { chr: "X", pin: "01101100" }, { chr: "x", pin: "00101000" },
   { chr: "Y", pin: "01110110" }, { chr: "y", pin: "01100010" },
+    { chr: "ȳ", var: { _: "ù" } },
+    { chr: "ý", var: { _: "ú" } },
+    { chr: "ÿ", var: { _: "ú" } },
 
   { chr: "Z", pin: "11011010" }, { chr: "z", pin: "01011010" },
     { chr: "Ƨ", var: { _: "Z" } },
