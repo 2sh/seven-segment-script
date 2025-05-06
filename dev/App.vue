@@ -434,7 +434,7 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
       <div>
         <h2>Notes</h2>
         <div>
-          a <sst pin="00110010"/> : Considered was <sst pin="00100010"/> as it would mirror `e` <sst pin="00011000"/>, and <sst pin="00110010"/> could then be used for `s` perhaps, but using it also for Greek and Cyrillic `a` would conflict with their `t` <sst pin="00100010"/>. it also makes words a bit less recognisable.
+          a <sst pin="00110010"/> : Considered was <sst pin="00100010"/> as it would mirror `e` <sst pin="00011000"/>, and <sst pin="00110010"/> could then be used for `s` perhaps, but using it also for Greek and Cyrillic `a` would conflict with their `t` <sst pin="00100010"/>. It also makes words a bit less recognisable.
         </div>
         <div>
           f <sst pin="00001110"/> : A strong contender is <sst pin="10001010"/> but that one can be used for `r` with diacritics: ř. May still change though.
