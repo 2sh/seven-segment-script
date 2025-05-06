@@ -472,6 +472,9 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
         <div>
           Between `ò` <sst pin="10111010"/> and `ó` <sst pin="10111010"/> in the Italian locale, `ó` gets the decimal point <sst pin="10111011"/> as it has a low occurrence in Italian.
         </div>
+        <div>
+          ィ <sst pin="00100000"/> : Different from the origin, it has been changed from <sst pin="00001000"/> to avoid conflict with the comma.
+        </div>
       </div>
       <div class="larger-displays">
         <h2>Character Map</h2>
