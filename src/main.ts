@@ -413,10 +413,10 @@ export default class SevenSegmentType
               isLowerCase(splitText[index+1]!)) ? 1 : 0
             variation = variation[varIndex]
           }
-          return variation.split('').map(resolveChr).flat()
+          return variation.split('').flat()
         }
       }
-      if (!char || (char.var && !variation))
+      if (!char || (!char.pin && !variation))
       {
         // remove diacritics if possible and add DP
         return getNormalizedChr(chr) + decimalPointModChar
