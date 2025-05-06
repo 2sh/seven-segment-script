@@ -26,7 +26,7 @@ const chars: Char[] = [
   { chr: "*", pin: "01000000" },
   { chr: "+", pin: "01100010" },
   { chr: ",", pin: "00001000" },
-  { chr: "-", pin: "00000010" }, // minus, not hard-hyphen. Use U+2010 for hard-hyphen
+  { chr: "-", pin: "00000010", break: 'soft' }, // minus-hyphen
   { chr: ".", pin: "00010000" },
   { chr: "/", pin: "01001000" },
   // 0-9
@@ -104,7 +104,7 @@ const chars: Char[] = [
   { chr: "\u200D", pin: "00000000", visible: 'never' }, // zero-width joiner
   { chr: "\u202F", var: { _: "\u00A0" } }, // narrow no-brake space
   { chr: "\u205F", var: { _: " " } }, // medium mathematical space
-  { chr: "‐", pin: "00000010", break: 'soft' }, // hard-hyphen
+  { chr: "‐", pin: "00000010", break: 'soft' }, // hyphen
   { chr: "‑", pin: "00000010" }, // non-breaking hyphen
   { chr: "‒", pin: "00000010" },
   { chr: "–", pin: "00000010" },
