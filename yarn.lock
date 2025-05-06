@@ -262,6 +262,11 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.7.tgz#4158d3105276773d5b7695cd4834b1722e4f37a8"
   integrity sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==
 
+"@types/hyphen@^1.6.7":
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/@types/hyphen/-/hyphen-1.6.7.tgz#f45fdfd3e991dd99a6d936231ce29aec68b25a3f"
+  integrity sha512-LsWduhqP4CG6myv2V5fXMvdQjESNbYQKCA74VoKlwvlqAWvJV6sREqUgTRpqYOe98vcNRSfvyi/zMzD7OGQ5KA==
+
 "@vitejs/plugin-vue@^5.2.1":
   version "5.2.3"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-5.2.3.tgz#71a8fc82d4d2e425af304c35bf389506f674d89b"
@@ -477,6 +482,11 @@ he@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
+
+hyphen@^1.10.6:
+  version "1.10.6"
+  resolved "https://registry.yarnpkg.com/hyphen/-/hyphen-1.10.6.tgz#0e779d280e696102b97d7e42f5ca5de2cc97e274"
+  integrity sha512-fXHXcGFTXOvZTSkPJuGOQf5Lv5T/R2itiiCVPg9LxAje5D00O0pP83yJShFq5V89Ly//Gt6acj7z8pbBr34stw==
 
 magic-string@^0.30.11:
   version "0.30.17"

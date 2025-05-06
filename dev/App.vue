@@ -5,6 +5,8 @@ import sst from './components/SevenSegmentText.vue'
 
 import { computed, ref } from "vue"
 
+import { hyphenateSync as hyphenate } from "hyphen/en-gb";
+
 const chars: Char[] = libChars
   .toSorted((c1, c2) => c1.chr.charCodeAt(0)-c2.chr.charCodeAt(0))
 
@@ -316,7 +318,8 @@ const enableRemovingDiacritics = ref(false)
 const hideTranscriptions = ref(false)
 const color = ref('#00ff3f')
 const customText = ref('Custom text input')
-const customTextLines = computed(() => customText.value.split(/\r\n|\n|\r/))
+const customTextOutput = computed(() => hyphenate(customText.value))
+const customTextSplit = ref(4*12)
 
 const sections = computed<[SevenSegmentType, LanguageSection][]>(() =>
 {
@@ -404,10 +407,15 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
       </div>
       <div id="custom-text-section" class="larger-displays">
         <div>
-          <textarea v-model="customText"></textarea>
+          <div>
+            <textarea v-model="customText"></textarea>
+          </div>
+          <div>
+            <label>Panel width: <input type="number" v-model="customTextSplit"></label>
+          </div>
         </div>
         <div id="custom-text-output">
-          <sst v-for="line in customTextLines" :color="color" :mode="'word'" :sst="generalSss" :text="line"></sst>
+          <sst :color="color" :mode="'split'" :sst="generalSss" :text="customTextOutput" :split="customTextSplit"></sst>
         </div>
       </div>
       <div v-for="([ssd, section]) in sections" class="larger-displays">

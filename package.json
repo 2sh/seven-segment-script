@@ -18,8 +18,10 @@
     "url": "https://github.com/2sh/seven-segment-type/issues"
   },
   "devDependencies": {
+    "@types/hyphen": "^1.6.7",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",
+    "hyphen": "^1.10.6",
     "typescript": "~5.8.3",
     "vite": "^6.3.4",
     "vue": "^3.5.13",
