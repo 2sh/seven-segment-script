@@ -106,6 +106,7 @@ const chars: Char[] = [
   { chr: "\u205F", var: { _: " " } }, // medium mathematical space
   { chr: "‐", pin: "00000010", break: 'soft' }, // hyphen
   { chr: "‑", pin: "00000010" }, // non-breaking hyphen
+  { chr: "\u2212", var: { _: "‑" } }, // mathematical minus
   { chr: "‒", pin: "00000010" },
   { chr: "–", pin: "00000010" },
   { chr: "‖", pin: "01101100" },
