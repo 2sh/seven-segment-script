@@ -48,12 +48,12 @@ sst.convert(hyphenatedMultiLineText).split(24).forEach(line =>
 // either set them in the instance:
 const sstMultiLang = new SevenSegmentType({
   // Note Ü would map to UE even in French text
-  locales: ['fr', 'it', 'de']
+  mods: ['fr', 'it', 'de']
 })
 
 // or during the conversion:
 const deText = "Öffentlich text anzeigen." // Ö becomes Oe
-const deDisplayLine = sst.convert(text, { locales: ['de'] })
+const deDisplayLine = sst.convert(text, { mods: ['de'] })
 ```
 
 The font to use is [DSEG font v0.50beta1](https://github.com/keshikan/DSEG/releases/tag/v0.50beta1). The current NPM stable release does not include the

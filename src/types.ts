@@ -52,8 +52,7 @@ export type Pins =
 
 export interface FunctionOptions
 {
-  locales?: string[],
-  variationKeys?: string[],
+  mods?: string[],
   improveNumbers?: boolean,
   numberDecimalSeparator?: string,
   numberGroupSeparator?: string,

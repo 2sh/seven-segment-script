@@ -347,8 +347,7 @@ export default class SevenSegmentType
     this.properties =
     {
       characters: libChars,
-      locales: [],
-      variationKeys: [],
+      mods: [],
       improveNumbers: true,
       numberDecimalSeparator: ".",
       numberGroupSeparator: ",",
@@ -374,10 +373,7 @@ export default class SevenSegmentType
       ...options
     }
 
-    const variationKeys = [
-      ...opts.variationKeys,
-      ...opts.locales,
-    ]
+    const mods = this.properties.mods.concat(opts.mods)
 
     if (opts.improveNumbers)
     {
@@ -404,7 +400,7 @@ export default class SevenSegmentType
       let variation = null
       if (char && char.var)
       {
-        variation = getVariation(char.var, variationKeys)
+        variation = getVariation(char.var, mods)
         if (variation)
         {
           if (typeof variation !== 'string')
