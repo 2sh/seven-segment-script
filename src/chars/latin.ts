@@ -117,7 +117,7 @@ const chars: Char[] = [
     { chr: "Ŀ", var: { _: "L\x1F" } },
       { chr: "ŀ", var: { _: "l\x1F" } },
     { chr: "Ł", var: { _: "L\x1F" } },
-      { chr: "ł", pin: "00001110" },
+      { chr: "ł", var: { _: "l\x1F" } },
     { chr: "ƚ", var: { _: "l\x1F" } },
     { chr: "Ǉ", var: { _: "LJ" } },
       { chr: "ǈ", var: { _: "Lj" } },
