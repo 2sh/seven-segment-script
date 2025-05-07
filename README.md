@@ -20,18 +20,10 @@ are mapped to AE, OE and UE, but by default to A, O and U.
 ## Usage
 
 ```js
-const sstGeneral = new SevenSegmentType()
-const sstGerman = new SevenSegmentType({
-  locales: ['de']
-})
-const sstMultiLang = new SevenSegmentType({
-  // Ü would map to UE even in French text
-  locales: ['fr', 'it', 'de']
-})
+const sst = new SevenSegmentType()
 
 const text = "Text to be displayed"
-
-const displayLine = sstGeneral.convert(text)
+const displayLine = sst.convert(text)
 
 // String to be rendered with the DSEG font
 const stringOutput = displayLine.toDsegString()
@@ -43,15 +35,25 @@ const pinsLine = displayLine.toPinsArray({
   pinMap: [0,6,2,4,3,5,1,7]
 })
 
-// Splitting the text for a panel with a width of 24 seven segment displays
-sstGeneral.convert(multiLineText).split(24).forEach(line =>
+// Automatically add soft hyphens using the hyphen NPM package
+const hyphenatedMultiLineText = hyphenate(multiLineText)
+// Splitting the text for a panel with a width of 24 seven-segment displays
+sst.convert(hyphenatedMultiLineText).split(24).forEach(line =>
 {
   line.toBytes()
 })
 // Splitting takes into account spaces, newline and soft/hard hyphenation characters
 
-// One liner
-sstGeneral.convert(text).toDsegString()
+// English doesn't require this, but for various other locales,
+// either set them in the instance:
+const sstMultiLang = new SevenSegmentType({
+  // Note Ü would map to UE even in French text
+  locales: ['fr', 'it', 'de']
+})
+
+// or during the conversion:
+const deText = "Öffentlich text anzeigen." // Ö becomes Oe
+const deDisplayLine = sst.convert(text, { locales: ['de'] })
 ```
 
 The font to use is [DSEG font v0.50beta1](https://github.com/keshikan/DSEG/releases/tag/v0.50beta1). The current NPM stable release does not include the
