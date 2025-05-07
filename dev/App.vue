@@ -12,7 +12,7 @@ const chars: Char[] = libChars
 
 const generalSss = new SevenSegmentType()
 const gridSss = new SevenSegmentType({
-  variationKeys: ["*"]
+  mods: ["*"]
 })
 
 function codeString(start: number, end: number)
@@ -326,7 +326,7 @@ const sections = computed<[SevenSegmentType, LanguageSection][]>(() =>
   return languageSections.map(section =>
   {
     const ssd = section.code
-      ? new SevenSegmentType({locales: [section.code]})
+      ? new SevenSegmentType({mods: [section.code]})
       : new SevenSegmentType()
 
     let examples = section.examples
