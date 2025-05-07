@@ -2,6 +2,7 @@
 
 This library provides functionality for displaying text on seven-segment display panels.
 It makes use of a standardized typeface that currently covers the following characters:
+
 - **Numerals**
 - **Punctuation**
 - **Alphabets** (both uppercase and lowercase):
@@ -60,6 +61,7 @@ The font to use is [DSEG font v0.50beta1](https://github.com/keshikan/DSEG/relea
 correct structure for displaying the characters programmatically.
 
 ## Stylistic Choice
+
 - Characters are allowed to look the same as the numerals.
 - **Lowercase letters** are generally designed to have more weight in
   the lower 4 segments and to never have the upper 4 segments all lit
@@ -75,13 +77,15 @@ correct structure for displaying the characters programmatically.
   include it.
 
 ## Help required
+
 Potential areas for improvement:
-  - **Languages using the Latin alphabet with diacritics**
-  - **Greek**
-  - **Languages using Cyrillic**
-  - **Hiragana** (Maybe)
-  - **Korean**
-  - **Any other writing systems**
+
+- **Languages using the Latin alphabet with diacritics**
+- **Greek**
+- **Languages using Cyrillic**
+- **Hiragana** (Maybe)
+- **Korean**
+- **Any other writing systems**
 
 This project needs contributors who are native speakers or highly
 familiar with the languages being worked on as it's important to have a strong sense of how words in these languages are meant to look.
@@ -95,9 +99,11 @@ Don't hesitate to [suggest](https://github.com/2sh/seven-segment-type/discussion
 much a work in progress.
 
 ## Development
+
 ### Dev Web View
 
 To view all the characters in use on a web page, run:
+
 ```sh
 yarn dev
 ```
@@ -105,6 +111,7 @@ yarn dev
 ### Build
 
 To build the library, run:
+
 ```sh
 yarn build
 ```
