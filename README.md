@@ -39,7 +39,7 @@ const pinsLine = displayLine.toPinsArray({
 // Automatically add soft hyphens using the hyphen NPM package
 const hyphenatedMultiLineText = hyphenate(multiLineText)
 // Wrapping the text for a panel with a width of 24 seven-segment displays
-sst.convert(hyphenatedMultiLineText).wrap(24).forEach(line =>
+sst.convert(hyphenatedMultiLineText).wrap({length: 24}).forEach(line =>
 {
   line.toBytes()
 })
