@@ -58,7 +58,7 @@ watch(props, () =>
 
     if (props.mode == 'split')
     {
-      lines.value = line.split(props.split).map(l => [l.toDsegString()])
+      lines.value = line.wrap({length: props.split}).map(l => [l.toDsegString()])
     }
     else
     {

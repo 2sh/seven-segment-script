@@ -38,12 +38,12 @@ const pinsLine = displayLine.toPinsArray({
 
 // Automatically add soft hyphens using the hyphen NPM package
 const hyphenatedMultiLineText = hyphenate(multiLineText)
-// Splitting the text for a panel with a width of 24 seven-segment displays
-sst.convert(hyphenatedMultiLineText).split(24).forEach(line =>
+// Wrapping the text for a panel with a width of 24 seven-segment displays
+sst.convert(hyphenatedMultiLineText).wrap(24).forEach(line =>
 {
   line.toBytes()
 })
-// Splitting takes into account spaces, newline and soft/hard hyphenation characters
+// Wrapping takes into account spaces, newline and soft/hard hyphenation characters
 
 // English doesn't require this, but for various other locales,
 // either set them in the instance:

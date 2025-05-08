@@ -129,7 +129,15 @@ function toSimpleChar(element: TextElement)
 
 function blankFill(length: number): TextElement[]
 {
-  return Array(length).fill({pin: '00000000'})
+  return Array(Math.max(length, 0)).fill({pin: '00000000'})
+}
+
+type Hyphenation = 'soft' | 'always'
+
+type WrapOptions = {
+  length?: number
+  justify?: Justify
+  hyphenation?: Hyphenation
 }
 
 /**
@@ -167,12 +175,20 @@ export class SevenSegmentLine
    * @param options - Optional parameters.
    * @returns An array of strings
    */
-  public split(length: number, justify: Justify = 'left')
+  public wrap(options: WrapOptions)
   {
+    const opts: Required<WrapOptions> =
+    {
+      length: 24,
+      justify: 'left',
+      hyphenation: 'soft',
+      ...options,
+    }
+
     const lines: TextElement[][] = []
     let line: TextElement[] = []
     let part: TextElement[] = []
-    let lineJustify: Justify = justify
+    let lineJustify: Justify = opts.justify
 
     let breakElement: TextElement | null = null
 
@@ -193,7 +209,7 @@ export class SevenSegmentLine
     function pushLine()
     {
       pushBreakElement(isVisibleOnBreak)
-      const remaining = length - line.length
+      const remaining = opts.length - line.length
 
       let left = 0
       let right = 0
@@ -209,10 +225,10 @@ export class SevenSegmentLine
       line = blankFill(left).concat(line, blankFill(right))
       lines.push(line)
       line = []
-      lineJustify = justify
+      lineJustify = opts.justify
     }
 
-    this.elements.forEach(el =>
+    const processElement = (el: TextElement, index: number) =>
     {
       const lineLength = line.length
         + (breakElement && isVisibleWithinLine(breakElement.visible) ? 1 : 0)
@@ -225,7 +241,7 @@ export class SevenSegmentLine
 
       if (el.break)
       {
-        if (isVisibleOnBreak(el.visible) && (lineLength + 1 > length))
+        if (isVisibleOnBreak(el.visible) && (lineLength + 1 > opts.length))
           pushLine() // line with break char would exceed max length
         pushPart()
         breakElement = el
@@ -234,15 +250,30 @@ export class SevenSegmentLine
       }
       else if (el.visible != 'never')
       {
-        if (lineLength + 1 > length)
+        if (lineLength + 1 > opts.length)
         {
           if (line.length == 0)
             pushPart() // part exceeds max length
           pushLine()
         }
         part.push(el)
+
+        const oneAhead = this.elements[index+1]
+        if (opts.hyphenation == 'always'
+          && lineLength + 3 > opts.length
+          && oneAhead && !oneAhead.break)
+        {
+          if (oneAhead.pin == '00000000'
+             || oneAhead.pin == '00000010')
+            oneAhead.break = "soft"
+          else
+            processElement({ pin: '00000010',
+              break: 'soft', visible: 'show-on-break' }, index)
+        }
       }
-    })
+    }
+
+    this.elements.forEach(processElement)
     pushPart()
     if (line.length) pushLine()
     return lines.map(line => new SevenSegmentLine(line))
