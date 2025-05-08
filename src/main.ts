@@ -153,20 +153,13 @@ function alignCenter(line: TextElement[], length: number)
 
 function trim(line: TextElement[]): [TextElement[], number, number]
 {
-  const out = [...line]
   let l = 0
   let r = 0
-  while(out.length && out[0]?.pin == '00000000')
-  {
-    l++
-    out.shift()
-  }
-  while(out.length && out[out.length-1]?.pin == '00000000')
-  {
-    r++
-    out.pop()
-  }
-  return [out, l, r]
+  for(; l<line.length; l++)
+    if (line[l]?.pin != '00000000') break
+  for(; r<line.length-l; r++)
+    if (line[line.length-r-1]?.pin != '00000000') break
+  return [line.slice(l, line.length-r), l, r]
 }
 
 function splitInt(number: number, divisions: number)
