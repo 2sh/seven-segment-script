@@ -15,12 +15,13 @@ import type {
   CharVisible,
   FunctionOptions,
   InstanceOptions,
-  Justify,
+  Align,
   TextElement,
   TextGeneralOptions,
   TextStringOptions,
   TextStringSpecificOptions,
-  VariationMap
+  VariationMap,
+  WrapOptions
 } from "./types"
 
 type CharMap = { [key: string]: Char }
@@ -132,12 +133,107 @@ function blankFill(length: number): TextElement[]
   return Array(Math.max(length, 0)).fill({pin: '00000000'})
 }
 
-type Hyphenation = 'soft' | 'always'
+function alignLeft(line: TextElement[], length: number)
+{
+  return line.concat(blankFill(length - line.length))
+}
 
-type WrapOptions = {
-  length?: number
-  justify?: Justify
-  hyphenation?: Hyphenation
+function alignRight(line: TextElement[], length: number)
+{
+  return blankFill(length - line.length).concat(line)
+}
+
+function alignCenter(line: TextElement[], length: number)
+{
+  const remaining = length - line.length
+  const left = Math.floor(remaining/2)
+  const right = remaining - left
+  return blankFill(left).concat(line, blankFill(right))
+}
+
+function trim(line: TextElement[]): [TextElement[], number, number]
+{
+  const out = [...line]
+  let l = 0
+  let r = 0
+  while(out.length && out[0]?.pin == '00000000')
+  {
+    l++
+    out.shift()
+  }
+  while(out.length && out[out.length-1]?.pin == '00000000')
+  {
+    r++
+    out.pop()
+  }
+  return [out, l, r]
+}
+
+function splitInt(number: number, divisions: number)
+{
+  if(divisions == 0) return []
+
+  const minInt = Math.floor(number / divisions)
+  const rem = number % divisions
+  const c = divisions - rem
+
+  let out: number[] = Array(divisions)
+  let a = 1
+  let b = 1
+
+  for(let i = 0; i < divisions; i++)
+  {
+    if((a * rem) < (b * c))
+    {
+      a++
+      out[i] = minInt
+    }
+    else
+    {
+      b++
+      out[i] = minInt + 1
+    }
+  }
+
+  return out
+}
+
+function interleave<T>(...arrays: T[][])
+{
+  const out: T[] = []
+  for (let i=0; i<Math.max(...arrays.map(a=>a.length)); i++)
+  {
+    arrays.forEach(array => {
+      if (typeof array[i] != 'undefined') out.push(array[i]!)
+    })
+  }
+  return out
+}
+
+function justify(line: TextElement[], length: number)
+{
+  const words: TextElement[][] = [[]]
+  let charCount = 0
+
+  const [trimmedLine, l, r] = trim(line)
+
+  trimmedLine.forEach(e =>
+  {
+    if (e.pin == '00000000')
+      words.push([])
+    else
+    {
+      charCount += 1
+      words[words.length-1]?.push(e)
+    }
+  })
+
+  if (words.length < 2)
+    return line // no change
+
+  const remaining = (length - charCount) - l - r
+  const blanks = splitInt(remaining, words.length-1).map(blankFill)
+  return blankFill(l).concat(interleave(words, blanks).flat(), blankFill(r))
 }
 
 /**
@@ -180,15 +276,18 @@ export class SevenSegmentLine
     const opts: Required<WrapOptions> =
     {
       length: 24,
-      justify: 'left',
-      hyphenation: 'soft',
+      align: 'left',
+      justify: false,
+      breakWordAnywhere: false,
+      breakPin: '00000010',
       ...options,
     }
 
     const lines: TextElement[][] = []
     let line: TextElement[] = []
     let part: TextElement[] = []
-    let lineJustify: Justify = opts.justify
+    let lineAlign: Align = opts.align
+    let lineJustify: boolean = opts.justify
 
     let breakElement: TextElement | null = null
 
@@ -206,25 +305,31 @@ export class SevenSegmentLine
       part = []
     }
 
-    function pushLine()
+    function pushLine(isHard = false)
     {
       pushBreakElement(isVisibleOnBreak)
-      const remaining = opts.length - line.length
 
-      let left = 0
-      let right = 0
-      if (lineJustify == "left")
-        right = remaining
-      else if (lineJustify == "right")
-        left = remaining
-      else if (lineJustify == "center")
+      if (!isHard && lineJustify)
       {
-        left = Math.floor(remaining/2)
-        right = remaining - left
+        line = justify(line, opts.length)
       }
-      line = blankFill(left).concat(line, blankFill(right))
+
+      if (lineAlign == "left")
+      {
+        line = alignLeft(line, opts.length)
+      }
+      else if (lineAlign == "right")
+      {
+        line = alignRight(line, opts.length)
+      }
+      else if (lineAlign == "center")
+      {
+        line = alignCenter(line, opts.length)
+      }
+
       lines.push(line)
       line = []
+      lineAlign = opts.align
       lineJustify = opts.justify
     }
 
@@ -234,9 +339,9 @@ export class SevenSegmentLine
         + (breakElement && isVisibleWithinLine(breakElement.visible) ? 1 : 0)
         + part.length
 
-      if (el.justify)
+      if (el.align)
       {
-        lineJustify = el.justify
+        lineAlign = el.align
       }
 
       if (el.break)
@@ -246,7 +351,7 @@ export class SevenSegmentLine
         pushPart()
         breakElement = el
         if (el.break == "line")
-          pushLine()
+          pushLine(true)
       }
       else if (el.visible != 'never')
       {
@@ -259,23 +364,29 @@ export class SevenSegmentLine
         part.push(el)
 
         const oneAhead = this.elements[index+1]
-        if (opts.hyphenation == 'always'
+        if (opts.breakWordAnywhere
           && lineLength + 3 > opts.length
           && oneAhead && !oneAhead.break)
         {
           if (oneAhead.pin == '00000000'
-             || oneAhead.pin == '00000010')
+             || oneAhead.pin == opts.breakPin)
             oneAhead.break = "soft"
           else
-            processElement({ pin: '00000010',
-              break: 'soft', visible: 'show-on-break' }, index)
+          {
+            if (opts.breakPin)
+              processElement({ pin: opts.breakPin,
+                break: 'soft', visible: 'show-on-break' }, index)
+            else
+            processElement({ pin: '00000000',
+              break: 'soft', visible: 'never' }, index)
+          }
         }
       }
     }
 
     this.elements.forEach(processElement)
     pushPart()
-    if (line.length) pushLine()
+    if (line.length) pushLine(true)
     return lines.map(line => new SevenSegmentLine(line))
   }
 
@@ -479,7 +590,7 @@ export default class SevenSegmentType
           pin: typeof char.pin !== "string" ? decimalPoint : char.pin,
           break: char.break,
           visible: char.visible,
-          justify: char.justify,
+          align: char.align,
         })
       }
     })

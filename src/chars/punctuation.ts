@@ -1,9 +1,9 @@
 import type { Char } from "../types"
 
 const chars: Char[] = [
-  { chr: "\x01", pin: "00000010", justify: 'center', visible: 'never' }, // start of heading: center text
-  { chr: "\x02", pin: "00001100", justify: 'left', visible: 'never' }, // start of text: left justify
-  { chr: "\x03", pin: "01100000", justify: 'right', visible: 'never' }, // end of text: right justify
+  { chr: "\x01", pin: "00000010", align: 'center', visible: 'never' }, // start of heading: center text
+  { chr: "\x02", pin: "00001100", align: 'left', visible: 'never' }, // start of text: left align
+  { chr: "\x03", pin: "01100000", align: 'right', visible: 'never' }, // end of text: right align
 
   { chr: "\t", var: { _: "  " } }, // tab
   { chr: "\n", pin: "00000000", break: 'line', visible: 'hide-on-break' }, // line feed / new line

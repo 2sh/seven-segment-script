@@ -24,7 +24,7 @@ export type CharVisible =
     // use: newline with hard break
   | 'hide-on-break'
 
-export type Justify =
+export type Align =
   'center'
   | 'left'
   | 'right'
@@ -36,7 +36,7 @@ export type Char = {
   dp?: boolean
   break?: CharBreak
   visible?: CharVisible
-  justify?: Justify
+  align?: Align
   // charAfterBreak?: boolean
 }
 
@@ -44,7 +44,7 @@ export interface TextElement {
   pin: string,
   break?: CharBreak
   visible?: CharVisible
-  justify?: Justify
+  align?: Align
 }
 
 export type Pins =
@@ -73,3 +73,11 @@ export interface TextStringSpecificOptions {
 
 export interface TextStringOptions extends
   TextStringSpecificOptions, TextGeneralOptions {}
+
+export type WrapOptions = {
+  length?: number
+  align?: Align
+  justify?: boolean
+  breakWordAnywhere?: boolean
+  breakPin?: string | null
+}
