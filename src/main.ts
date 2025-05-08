@@ -348,7 +348,7 @@ export default class SevenSegmentType
     {
       characters: libChars,
       mods: [],
-      improveNumbers: true,
+      enhanceNumbers: true,
       numberDecimalSeparator: ".",
       numberGroupSeparator: ",",
       ...options,
@@ -375,7 +375,7 @@ export default class SevenSegmentType
 
     const mods = this.properties.mods.concat(opts.mods)
 
-    if (opts.improveNumbers)
+    if (opts.enhanceNumbers)
     {
       const regexDigits = "[" + numbers.map(num => num.chr).join("") + "]"
       const regexGroupSeparator = escapeRegExp(opts.numberGroupSeparator)

@@ -53,7 +53,7 @@ export type Pins =
 export interface FunctionOptions
 {
   mods?: string[],
-  improveNumbers?: boolean,
+  enhanceNumbers?: boolean,
   numberDecimalSeparator?: string,
   numberGroupSeparator?: string,
 }
