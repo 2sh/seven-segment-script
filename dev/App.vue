@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SevenSegmentType, { libChars } from "../src/"
-import type { Char } from "../src/types"
+import type { Align, Char } from "../src/types"
 import sst from './components/SevenSegmentText.vue'
 
 import { computed, ref } from "vue"
@@ -319,7 +319,9 @@ const hideTranscriptions = ref(false)
 const color = ref('#00ff3f')
 const customText = ref('Custom text input')
 const customTextOutput = computed(() => hyphenate(customText.value))
-const customTextSplit = ref(4*12)
+const customTextWrapLength = ref(4*12)
+const customTextWrapAlign = ref<Align>('left')
+const customTextWrapJustify = ref(false)
 
 const sections = computed<[SevenSegmentType, LanguageSection][]>(() =>
 {
@@ -411,11 +413,20 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
             <textarea v-model="customText"></textarea>
           </div>
           <div>
-            <label>Panel width: <input type="number" v-model="customTextSplit"></label>
+            <label>Panel width: <input type="number" v-model="customTextWrapLength"></label>
+            <label>Align: <select v-model="customTextWrapAlign">
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+              <option value="center">Center</option>
+            </select></label>
+            <label>Justify: <input type="checkbox" v-model="customTextWrapJustify"></label>
           </div>
         </div>
         <div id="custom-text-output">
-          <sst :color="color" :mode="'split'" :sst="generalSss" :text="customTextOutput" :split="customTextSplit"></sst>
+          <sst :color="color" :mode="'wrap'" :sst="generalSss" :text="customTextOutput"
+            :length="customTextWrapLength"
+            :align="customTextWrapAlign"
+            :justify="customTextWrapJustify"></sst>
         </div>
       </div>
       <div v-for="([ssd, section]) in sections" class="larger-displays">
@@ -436,7 +447,7 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
       <div class="larger-displays">
         <h2>Text Wrapping Test</h2>
         <div style="margin: 10px;">
-          <sst :mode="'split'" :text="wrappingTextExample" :split="24"></sst>
+          <sst :mode="'wrap'" :text="wrappingTextExample" :length="24"></sst>
         </div>
       </div>
       <div>

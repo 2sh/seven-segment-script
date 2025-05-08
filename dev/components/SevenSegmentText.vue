@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 
-import SevenSegmentType, { SevenSegmentLine } from '../../src'
+import SevenSegmentType, { Align, SevenSegmentLine } from '../../src'
 
 type Mode =
   | 'line'
   | 'individual'
   | 'word'
-  | 'split'
+  | 'wrap'
 
 export interface Props {
   sst?: SevenSegmentType,
@@ -15,7 +15,9 @@ export interface Props {
   pin?: string | string[],
   text?: string,
   color?: string,
-  split?: number,
+  length?: number,
+  align?: Align,
+  justify?: boolean,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,7 +26,9 @@ const props = withDefaults(defineProps<Props>(), {
   text: "",
   pin: () => [],
   color: "#00ff3f",
-  split: 4*6,
+  length: 4*6,
+  align: 'left',
+  justify: false,
 })
 
 const lines = ref<string[][]>([])
@@ -56,9 +60,13 @@ watch(props, () =>
       line = props.sst.convert(props.text)
     }
 
-    if (props.mode == 'split')
+    if (props.mode == 'wrap')
     {
-      lines.value = line.wrap({length: props.split}).map(l => [l.toDsegString()])
+      lines.value = line.wrap({
+        length: props.length,
+        align: props.align,
+        justify: props.justify
+      }).map(l => [l.toDsegString()])
     }
     else
     {
