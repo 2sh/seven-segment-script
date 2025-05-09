@@ -57,7 +57,6 @@ export const libChars: Char[] =
 	...latin,
 	...cyrillic,
 	...greek,
-	...cjkNumbers,
 	...cjkPunctuation,
 	...japanese,
 	...korean,
