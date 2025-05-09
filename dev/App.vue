@@ -496,6 +496,9 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
         <div>
           ィ <sst pin="00100000"/> : Different from the origin, it has been changed from <sst pin="00001000"/> to avoid conflict with the comma.
         </div>
+        <div>
+          ↊ <sst pin="01011010"/> & ↋ <sst pin="00011110"/> : Both DSGB and DSA now use the rotated `2` and `3` by Isaac Pitman. Though rotated `2` <sst pin="11011010"/> in 7 segments ends up looking like a `2` again, so using a popular <a href="http://www.dozenalsociety.org.uk/basicstuff/hammond.html">proposal</a> by Don Hammond which feels the closest to Pitman's without inventing yet more dozenal symbols to the already huge array out there <a href="https://dozenal.org/drupal/content/dsa-symbology-synopsis.html">*</a>. An idea was <sst pin="10011110"/> for `↋` but there wasn't a nice way to represent `↊` otherwise and only using half of Hammond's proposal is silly. Using an X <sst pin="00100110"/> for `↊` would go against using Pitman's symbols. Though mirrored to <sst pin="01001010"/> it does almost also look like a `↊`... but also a bit like a slash `/` and would currently conflict with the % symbol.
+        </div>
       </div>
       <div class="larger-displays">
         <h2>Character Map</h2>
