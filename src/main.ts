@@ -41,11 +41,10 @@ type CharMap = { [key: string]: Char }
 
 import punctuation from './chars/punctuation'
 import diacritics from './chars/diacritics'
-import numbers from './chars/numbers'
+import numbers from './chars/numerals'
 import latin from './chars/latin'
 import cyrillic from './chars/cyrillic'
 import greek from './chars/greek'
-import cjkNumbers from './chars/cjk_numbers'
 import cjkPunctuation from './chars/cjk_punctuation'
 import japanese from './chars/japanese'
 import korean from './chars/korean'

@@ -12,12 +12,14 @@ const chars: Char[] = [
   { chr: "8", pin: "11111110" },
   { chr: "9", pin: "11110110" },
 
+  // Dozenal 10 and 11
+  { chr: "↊", pin: "01011010" },
+  { chr: "↋", pin: "00011110" },
   // Don Hammond's proposal
   // http://www.dozenalsociety.org.uk/basicstuff/hammond.html
   // https://dozenal.org/drupal/content/dsa-symbology-synopsis.html
-  { chr: "↊", pin: "01011010" },
-  { chr: "↋", pin: "00011110" },
 
+  // Roman
   { chr: "Ⅰ", pin: "00001100" },
   { chr: "Ⅱ", pin: "11111100" },
   { chr: "Ⅲ", var: { _: "ⅡⅠ" } },
@@ -35,6 +37,7 @@ const chars: Char[] = [
   { chr: "Ⅾ", var: { _: "D" } },
   { chr: "Ⅿ", var: { _: "M" } },
 
+  // Roman small
   { chr: "ⅰ", pin: "10001000" },
   { chr: "ⅱ", pin: "10101010" }, // may change
   { chr: "ⅲ", var: { _: "ⅱⅰ" } },
@@ -51,5 +54,20 @@ const chars: Char[] = [
   { chr: "ⅽ", var: { _: "c" } },
   { chr: "ⅾ", var: { _: "d" } },
   { chr: "ⅿ", var: { _: "m" } },
+
+  // CJK
+  { chr: "一", pin: "00000010" },
+  { chr: "二", pin: "10010000" },
+  { chr: "三", pin: "10010010" },
+  { chr: "四", pin: "11111100" },
+  { chr: "五", pin: "10111110" },
+  { chr: "六", pin: "10101000" },
+  { chr: "七", pin: "00011110" },
+  { chr: "八", pin: "11101000" },
+  { chr: "九", pin: "00101110" },
+  { chr: "十", pin: "01100010" },
+  { chr: "百", pin: "11111110" },
+  { chr: "千", pin: "11100010" },
+  { chr: "万", pin: "10101110" },
 ]
 export default chars
