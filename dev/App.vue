@@ -41,7 +41,9 @@ const languageSections: LanguageSection[] = [
     chars: [
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
       "abcdefghijklmnopqrstuvwxyz",
-      "0123456789↊↋",
+      "0123456789 ↊↋",
+      "ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫⅬⅭⅮⅯ", "ⅯⅭⅯⅩⅭⅧ",
+      "ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹⅺⅻⅼⅽⅾⅿ",
       "!\"#$%&'()*+,-./ :;<=>?@ [\\]^_` {|}~",
       "þðʒȝŋñĳ āēèíìıōúūùû",
       codeString(0x00A0, 0x00FF),
