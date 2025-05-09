@@ -271,6 +271,7 @@ export class SevenSegmentLine
       length: 24,
       align: 'left',
       justify: false,
+      justifyLastLine: false,
       breakWordAnywhere: false,
       breakPin: '00000010',
       ...options,
@@ -302,7 +303,8 @@ export class SevenSegmentLine
     {
       pushBreakElement(isVisibleOnBreak)
 
-      if (!isHard && lineJustify)
+      if ((opts.justifyLastLine || !isHard)
+        && lineJustify)
       {
         line = justify(line, opts.length)
       }

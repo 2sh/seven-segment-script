@@ -78,6 +78,7 @@ export type WrapOptions = {
   length?: number
   align?: Align
   justify?: boolean
+  justifyLastLine?: boolean
   breakWordAnywhere?: boolean
   breakPin?: string | null
 }
