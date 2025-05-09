@@ -42,7 +42,7 @@ const chars: Char[] = [
   { chr: "ⅱ", pin: "10101010" }, // may change
   { chr: "ⅲ", var: { _: "ⅱⅰ" } },
   { chr: "ⅳ", var: { _: "iⅴ" } },
-  { chr: "ⅴ", pin: "00111000" },
+  { chr: "ⅴ", pin: "00110000" },
   { chr: "ⅵ", var: { _: "ⅴⅰ" } },
   { chr: "ⅶ", var: { _: "ⅴⅱ" } },
   { chr: "ⅷ", var: { _: "ⅴⅱⅰ" } },
