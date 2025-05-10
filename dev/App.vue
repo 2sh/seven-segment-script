@@ -31,7 +31,14 @@ function getRandomNumber(min: number, max: number) {
 
 function toDozenal(num: number)
 {
-  return num.toString(12).replaceAll('a', '↊').replaceAll('b', '↋')
+  return num.toString(12)
+    .replaceAll('a', '↊').replaceAll('b', '↋')
+}
+
+function toAlphabetical(num: number, radix: number)
+{
+  return num.toString(radix).toUpperCase()
+    .replaceAll('B', 'b').replaceAll('d', 'D')
 }
 
 function exampleNumbers(radix: number = 10)
@@ -44,7 +51,7 @@ function exampleNumbers(radix: number = 10)
     const num = Math.round(getRandomNumber(radix**lower, radix**upper-1))
     return radix == 12
       ? toDozenal(num)
-      : num.toString(radix).toUpperCase()
+      : toAlphabetical(num, radix)
   }).join(' ')
 }
 
@@ -66,7 +73,7 @@ const languageSections: LanguageSection[] = [
       "abcdefghijklmnopqrstuvwxyz",
       "0123456789  " + exampleNumbers(10),
       "0123456789↊↋  " + exampleNumbers(12),
-      "0123456789ABCDEF  " + exampleNumbers(16),
+      "0123456789AbCdEF  " + exampleNumbers(16),
       "ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫⅬⅭⅮⅯ", "ⅯⅭⅯⅩⅭⅧ",
       "ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹⅺⅻⅼⅽⅾⅿ",
       "!\"#$%&'()*+,-./ :;<=>?@ [\\]^_` {|}~",
@@ -525,7 +532,7 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
 ↊ <sst pin="10001100"/> & ↋ <sst pin="10011110"/> : Both DSGB and DSA now use
 the rotated `2` and `3` by Isaac Pitman. Though rotated `2` <sst pin="11011010"/>
 in 7 segments ends up being <sst pin="11011010"/> again.
-<sst pin="10001100"/> was designed from an insular/uncial `Ꞇ` (T)  which look similar to `↊`.
+<sst pin="10001100"/> was designed from an insular/uncial `Ꞇ` (T) which looks similar to the `↊`.
 Also `T` for <i>T</i>en. Other design ideas: <sst pin="10011100"/>
 could be confused with Hexadecimal C, <sst pin="10111100"/> looks too much
 like a `G`, and <sst pin="0001110"/> and <sst pin="00111100"/> look too much
