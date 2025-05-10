@@ -537,7 +537,7 @@ by Don Hammond but amongst the other numbers 0-9, they just don't look "full"
 enough, like lower case letters (`z` and `t`).
 
 I really wanted to avoid inventing something new but was unsatified with the
-various proposals out there <a href="https://dozenal.org/drupal/content/dsa-symbology-synopsis.html">*</a>.
+<a href="https://dozenal.org/drupal/content/dsa-symbology-synopsis.html">various proposals</a> out there.
 For `↊`, thinking of `*` (telephone key) or `X` (Roman numeral for 10) there's the following:
 <sst pin="01101110"/> would allow for <sst pin="01101110"/><sst pin="01101110"/>
 as a valid number; <sst pin="01001010"/> and <sst pin="00100110"/> look like
