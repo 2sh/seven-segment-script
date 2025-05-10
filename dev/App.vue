@@ -25,8 +25,31 @@ function codeString(start: number, end: number)
 	return t
 }
 
-// https://clagnut.com/blog/2380
+function getRandomNumber(min: number, max: number) {
+  return Math.random() * (max - min) + min;
+}
 
+function toDozenal(num: number)
+{
+  return num.toString(12).replaceAll('a', '↊').replaceAll('b', '↋')
+}
+
+function exampleNumbers(radix: number = 10)
+{
+  return Array.from({length: 8}, () =>
+  {
+    const length = Math.round(getRandomNumber(2, 4))
+    const lower = length-1
+    const upper = length
+    const num = Math.round(getRandomNumber(radix**lower, radix**upper-1))
+    return radix == 12
+      ? toDozenal(num)
+      : num.toString(radix).toUpperCase()
+  }).join(' ')
+}
+
+
+// https://clagnut.com/blog/2380
 
 type LanguageSection = {
   name: string,
@@ -41,7 +64,9 @@ const languageSections: LanguageSection[] = [
     chars: [
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
       "abcdefghijklmnopqrstuvwxyz",
-      "0123456789 ↊↋",
+      "0123456789  " + exampleNumbers(10),
+      "0123456789↊↋  " + exampleNumbers(12),
+      "0123456789ABCDEF  " + exampleNumbers(16),
       "ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫⅬⅭⅮⅯ", "ⅯⅭⅯⅩⅭⅧ",
       "ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹⅺⅻⅼⅽⅾⅿ",
       "!\"#$%&'()*+,-./ :;<=>?@ [\\]^_` {|}~",
@@ -497,7 +522,27 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
           ィ <sst pin="00100000"/> : Different from the origin, it has been changed from <sst pin="00001000"/> to avoid conflict with the comma.
         </div>
         <div>
-          ↊ <sst pin="01011010"/> & ↋ <sst pin="00011110"/> : Both DSGB and DSA now use the rotated `2` and `3` by Isaac Pitman. Though rotated `2` <sst pin="11011010"/> in 7 segments ends up looking like a `2` again, so using a popular <a href="http://www.dozenalsociety.org.uk/basicstuff/hammond.html">proposal</a> by Don Hammond which feels the closest to Pitman's without inventing yet more dozenal symbols to the already huge array out there <a href="https://dozenal.org/drupal/content/dsa-symbology-synopsis.html">*</a>. An idea was <sst pin="10011110"/> for `↋` but there wasn't a nice way to represent `↊` otherwise and only using half of Hammond's proposal is silly. Using an X <sst pin="00100110"/> for `↊` would go against using Pitman's symbols. Though mirrored to <sst pin="01001010"/> it does almost also look like a `↊`... but also a bit like a slash `/` and would currently conflict with the `%` symbol.
+↊ <sst pin="10001100"/> & ↋ <sst pin="10011110"/> : Both DSGB and DSA now use
+the rotated `2` and `3` by Isaac Pitman. Though rotated `2` <sst pin="11011010"/>
+in 7 segments ends being <sst pin="11011010"/> again.
+<sst pin="10001100"/> was designed from an insular/uncial `Ꞇ` (T)  which look similar to `↊`.
+Also `T` for <i>T</i>en. Other design ideas: <sst pin="10011100"/>
+could be confused with Hexadecimal C, <sst pin="10111100"/> looks too much
+like a `G`, and <sst pin="0001110"/> and <sst pin="00111100"/> look too much
+like `L` and `l`.
+
+Heavily considered were <sst pin="01011010"/> & <sst pin="00011110"/>, a
+<a href="http://www.dozenalsociety.org.uk/basicstuff/hammond.html">proposal</a>
+by Don Hammond but amongst the other numbers 0-9, they just don't look "full"
+enough, like lower case letters (`z` and `t`).
+
+I really wanted to avoid inventing something new but was unsatified with the
+various proposals out there <a href="https://dozenal.org/drupal/content/dsa-symbology-synopsis.html">*</a>.
+For `↊`, thinking of `*` (telephone key) or `X` (Roman numeral for 10) there's the following:
+<sst pin="01101110"/> would allow for <sst pin="01101110"/><sst pin="01101110"/>
+as a valid number; <sst pin="01001010"/> and <sst pin="00100110"/> look like
+slashes; <sst pin="00001110"/> and <sst pin="10010010"/> are too obscure looking;
+<sst pin="0110110"/> looks like two `1`s
         </div>
       </div>
       <div class="larger-displays">

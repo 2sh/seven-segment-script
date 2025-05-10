@@ -13,11 +13,8 @@ const chars: Char[] = [
   { chr: "9", pin: "11110110" },
 
   // Dozenal 10 and 11
-  { chr: "↊", pin: "01011010" },
-  { chr: "↋", pin: "00011110" },
-  // Don Hammond's proposal
-  // http://www.dozenalsociety.org.uk/basicstuff/hammond.html
-  // https://dozenal.org/drupal/content/dsa-symbology-synopsis.html
+  { chr: "↊", pin: "10001100" },
+  { chr: "↋", pin: "10011110" },
 
   // Roman
   { chr: "Ⅰ", pin: "00001100" },
