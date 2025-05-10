@@ -524,7 +524,7 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
         <div>
 ↊ <sst pin="10001100"/> & ↋ <sst pin="10011110"/> : Both DSGB and DSA now use
 the rotated `2` and `3` by Isaac Pitman. Though rotated `2` <sst pin="11011010"/>
-in 7 segments ends being <sst pin="11011010"/> again.
+in 7 segments ends up being <sst pin="11011010"/> again.
 <sst pin="10001100"/> was designed from an insular/uncial `Ꞇ` (T)  which look similar to `↊`.
 Also `T` for <i>T</i>en. Other design ideas: <sst pin="10011100"/>
 could be confused with Hexadecimal C, <sst pin="10111100"/> looks too much
