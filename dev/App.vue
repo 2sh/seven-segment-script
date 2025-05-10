@@ -501,7 +501,7 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
           w <sst pin="01010100"/> : Not <sst pin="10111000"/> to allow `ū` to use it. Same as m <sst pin="10101000"/> upside down.
         </div>
         <div>
-          X <sst pin="01101100"/> : Not <sst pin="10010010"/> to allow Cyrillic `Ш` and Greek `Ξ` to use it and for all `X`s to look the same.
+          X <sst pin="00100110"/> : Not <sst pin="10010010"/> to allow Cyrillic `Ш` and Greek `Ξ` to use it and for all `X`s to look the same. Strongly considered was <sst pin="01101100"/> but looks a bit too disconnected.
         </div>
         <div>
           x <sst pin="00101000"/> : <sst pin="00010010"/> is already used by Cyrillic `к` and Greek `κ`.
@@ -542,7 +542,7 @@ For `↊`, thinking of `*` (telephone key) or `X` (Roman numeral for 10) there's
 <sst pin="01101110"/> would allow for <sst pin="01101110"/><sst pin="01101110"/>
 as a valid number; <sst pin="01001010"/> and <sst pin="00100110"/> look like
 slashes; <sst pin="00001110"/> and <sst pin="10010010"/> are too obscure looking;
-<sst pin="0110110"/> looks like two `1`s
+and <sst pin="0110110"/> looks like two `1`s.
         </div>
       </div>
       <div class="larger-displays">
