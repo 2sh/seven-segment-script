@@ -39,6 +39,7 @@ type CharMap = { [key: string]: Char }
 
 */
 
+import segments from './chars/segments'
 import punctuation from './chars/punctuation'
 import diacritics from './chars/diacritics'
 import numbers from './chars/numerals'
@@ -51,6 +52,7 @@ import korean from './chars/korean'
 
 export const libChars: Char[] =
 [
+  ...segments,
 	...punctuation,
 	...diacritics,
 	...numbers,
@@ -70,12 +72,12 @@ function escapeRegExp(string: string)
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function bits2byte(bits: string)
+export function bits2byte(bits: string)
 {
   return parseInt(bits, 2)
 }
 
-function byte2bits(byte: number)
+export function byte2bits(byte: number)
 {
   return byte.toString(2).padStart(8, "0")
 }

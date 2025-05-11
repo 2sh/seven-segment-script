@@ -83,6 +83,7 @@ const languageSections: LanguageSection[] = [
       codeString(0x2010, 0x203E),
       codeString(0x0100, 0x017F),
       codeString(0x0180, 0x024F),
+      codeString(0x2800, 0x28FF),
     ],
     examples: [
       "CPU=14 MEM=50 SWP=00",
