@@ -25,7 +25,8 @@ function codeString(start: number, end: number)
 	return t
 }
 
-function getRandomNumber(min: number, max: number) {
+function getRandomNumber(min: number, max: number)
+{
   return Math.random() * (max - min) + min;
 }
 
