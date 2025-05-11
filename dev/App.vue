@@ -536,7 +536,7 @@ the rotated `2` and `3` by Isaac Pitman. Though rotated `2` <sst pin="11011010"/
 in 7 segments ends up being <sst pin="11011010"/> again.
 <sst pin="10001100"/> was designed from an insular/uncial `Ꞇ` (T) which looks very similar to the `↊`.
 Also `T` for <i>T</i>en. Other design ideas: <sst pin="10011100"/>
-looks like a C, <sst pin="10111100"/> looks too like a `G`,
+looks like a C, <sst pin="10111100"/> looks like a `G`,
 and <sst pin="0001110"/> and <sst pin="00111100"/> look like `L` and `l`.
 
 Heavily considered were <sst pin="01011010"/> & <sst pin="00011110"/>, a
