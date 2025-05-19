@@ -547,14 +547,6 @@ Also `T` for <i>T</i>en. Other design ideas: <sst pin="10011100"/>
 looks like a C, <sst pin="10111100"/> looks like a `G`,
 and <sst pin="0001110"/> and <sst pin="00111100"/> look like `L` and `l`.
 
-Strongly considered were <sst pin="01011010"/> & <sst pin="00011110"/>, a
-<a href="http://www.dozenalsociety.org.uk/basicstuff/hammond.html">proposal</a>
-by Don Hammond but amongst the other numbers 0-9, they just don't look "full"
-enough, like lower case letters (`z` and `t`). Don Hammond's proposal can be
-displayed instead with the var keys `hammond_ten` and `hammond_elf`. These
-in combination with `five_segment_six` and `five_segment_nine` makes it more
-aesthetically pleasing.
-
 I really wanted to avoid inventing something new but was unsatified with the
 <a href="https://dozenal.org/drupal/content/dsa-symbology-synopsis.html">various proposals</a> out there.
 For `↊`, thinking of `*` (telephone key) or `X` (Roman numeral for 10) there's the following:
@@ -562,6 +554,14 @@ For `↊`, thinking of `*` (telephone key) or `X` (Roman numeral for 10) there's
 as a valid number; <sst pin="01001010"/> and <sst pin="00100110"/> look like
 slashes; <sst pin="00001110"/> and <sst pin="10010010"/> are too obscure looking;
 and <sst pin="01101100"/> looks like two `1`s.
+
+Strongly considered were <sst pin="01011010"/> & <sst pin="00011110"/>, a
+<a href="http://www.dozenalsociety.org.uk/basicstuff/hammond.html">proposal</a>
+by Don Hammond but amongst the other numbers 0-9, they just don't look "full"
+enough, like lower case letters (`z` and `t`). Don Hammond's proposal can be
+displayed instead with the var keys `hammond_ten` and `hammond_elf`. These
+in combination with `five_segment_six` and `five_segment_nine` makes it more
+aesthetically pleasing.
         </div>
       </div>
       <div class="larger-displays">
