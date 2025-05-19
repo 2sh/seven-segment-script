@@ -22,7 +22,8 @@ import type {
   TextStringSpecificOptions,
   PinMap,
   WrapOptions,
-  Pin
+  Pin,
+  Pins
 } from "./types"
 
 interface NormChar extends Char {
@@ -116,6 +117,12 @@ function getNormalizedChr(str: string)
 function orPinMap(a: number, b: number): number
 {
   return a | b
+}
+
+function remap(pin: number, pinMap: Pins)
+{
+  const bits = byte2bits(pin)
+  return pinMap.map(i => bits[i]).join("")
 }
 
 export function normalizeToPinMap(pin: Pin | PinMap | undefined):
@@ -425,12 +432,10 @@ export class SevenSegmentLine
       ...this.properties,
       ...options,
     }
-    return this.getFilteredElements()
-      .map(el =>
+    return this.getFilteredElements().map(el =>
     {
-      const pin = byte2bits(el.pin)
       return opts.pinMap
-        ? opts.pinMap.map(i => pin[i]).join("")
+        ? remap(el.pin, opts.pinMap)
         : byte2bits(el.pin)
     })
   }
@@ -447,12 +452,10 @@ export class SevenSegmentLine
       ...this.properties,
       ...options,
     }
-    return this.getFilteredElements()
-      .map(el =>
+    return this.getFilteredElements().map(el =>
     {
-      const pin = byte2bits(el.pin)
       return opts.pinMap
-        ? bits2byte(opts.pinMap.map(i => pin[i]).join(""))
+        ? bits2byte(remap(el.pin, opts.pinMap))
         : el.pin
     })
   }
