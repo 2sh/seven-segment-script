@@ -561,7 +561,7 @@ For `↊`, thinking of `*` (telephone key) or `X` (Roman numeral for 10) there's
 <sst pin="01101110"/> would allow for <sst pin="01101110"/><sst pin="01101110"/>
 as a valid number; <sst pin="01001010"/> and <sst pin="00100110"/> look like
 slashes; <sst pin="00001110"/> and <sst pin="10010010"/> are too obscure looking;
-and <sst pin="0110110"/> looks like two `1`s.
+and <sst pin="01101100"/> looks like two `1`s.
         </div>
       </div>
       <div class="larger-displays">
