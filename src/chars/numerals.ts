@@ -7,14 +7,14 @@ const chars: Char[] = [
   { chr: "3", pin: 0b11110010 },
   { chr: "4", pin: 0b01100110 },
   { chr: "5", pin: 0b10110110 },
-  { chr: "6", pin: { _: 0b10111110, alt_6: 0b00111110 } },
-  { chr: "7", pin: { _: 0b11100100, alt_7: 0b11100000 } },
+  { chr: "6", pin: { _: 0b10111110, five_segment_six: 0b00111110 } },
+  { chr: "7", pin: { _: 0b11100000, four_segment_seven: 0b11100100 } },
   { chr: "8", pin: 0b11111110 },
-  { chr: "9", pin: { _: 0b11110110, alt_9: 0b11100110 } },
+  { chr: "9", pin: { _: 0b11110110, five_segment_nine: 0b11100110 } },
 
   // Dozenal 10 and 11
   { chr: "↊", pin: { _: 0b10001100, hammond_ten: 0b01011010 } },
-  { chr: "↋", pin: { _: 0b10011110, hammond_eleven: 0b00011110 } },
+  { chr: "↋", pin: { _: 0b10011110, hammond_elf: 0b00011110 } },
 
   // Roman
   { chr: "Ⅰ", pin: 0b00001100 },
