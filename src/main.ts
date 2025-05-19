@@ -20,14 +20,14 @@ import type {
   TextGeneralOptions,
   TextStringOptions,
   TextStringSpecificOptions,
-  PinMap,
+  VariationMap,
   WrapOptions,
-  Pin,
+  CharPin,
   Pins
 } from "./types"
 
 interface NormChar extends Char {
-  pin?: PinMap
+  pin?: VariationMap
 }
 
 type CharMap = { [key: string]: NormChar }
@@ -88,7 +88,7 @@ export function byte2bits(byte: number): string
   return byte.toString(2).padStart(8, "0")
 }
 
-function getVariation(varMap: PinMap, varKeys: string[]): Pin | null
+function getVariation(varMap: VariationMap, varKeys: string[]): CharPin | null
 {
   for (const key of varKeys)
   {
@@ -125,8 +125,8 @@ function remap(pin: number, pinMap: Pins)
   return pinMap.map(i => bits[i]).join("")
 }
 
-export function normalizeToPinMap(pin: Pin | PinMap | undefined):
-  PinMap | undefined
+export function normalizeToPinMap(pin: CharPin | VariationMap | undefined):
+  VariationMap | undefined
 {
   if ((typeof pin == 'object' && !Array.isArray(pin))
     || typeof pin == 'undefined')
@@ -575,7 +575,7 @@ export default class SevenSegmentType
     {
       if (chr == decimalPointModChar) return chr
       const char = this.charMap[chr]
-      let variation: Pin | null = null
+      let variation: CharPin | null = null
       if (char && typeof char.pin !== "undefined")
       {
         variation = getVariation(char.pin, mods)

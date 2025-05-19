@@ -4,9 +4,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-export type Variation = string | [string, string]
-export type Pin = number | Variation
-export type PinMap = {[key: string]: Pin}
+export type CharLink = string | [string, string]
+export type CharPin = number | CharLink
+export type VariationMap = {[key: string]: CharPin}
 
 export type CharBreak =
     'line'
@@ -32,7 +32,7 @@ export type Align =
 
 export interface Char {
   chr: string
-  pin?: PinMap | Pin
+  pin?: VariationMap | CharPin
   dp?: boolean
   break?: CharBreak
   visible?: CharVisible
