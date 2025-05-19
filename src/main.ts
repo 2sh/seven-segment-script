@@ -20,11 +20,16 @@ import type {
   TextGeneralOptions,
   TextStringOptions,
   TextStringSpecificOptions,
-  VariationMap,
-  WrapOptions
+  PinMap,
+  WrapOptions,
+  Pin
 } from "./types"
 
-type CharMap = { [key: string]: Char }
+interface NormChar extends Char {
+  pin?: PinMap
+}
+
+type CharMap = { [key: string]: NormChar }
 
 /*
 
@@ -34,8 +39,8 @@ type CharMap = { [key: string]: Char }
   e   c
     d
 
-  abcdefgP
-  00000000
+    abcdefgP
+  0b........
 
 */
 
@@ -64,38 +69,41 @@ export const libChars: Char[] =
 	...korean,
 ]
 
-const decimalPoint = "00000001"
+const decimalPoint = 0b00000001
 const decimalPointModChar = "\0" // null
 
-function escapeRegExp(string: string)
+function escapeRegExp(string: string): string
 {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
-export function bits2byte(bits: string)
+export function bits2byte(bits: string): number
 {
   return parseInt(bits, 2)
 }
 
-export function byte2bits(byte: number)
+export function byte2bits(byte: number): string
 {
   return byte.toString(2).padStart(8, "0")
 }
 
-function getVariation(varMap: VariationMap, varKeys: string[])
+function getVariation(varMap: PinMap, varKeys: string[]): Pin | null
 {
   for (const key of varKeys)
   {
-    if (key in varMap) return varMap[key]
+    if (varMap[key]) return varMap[key]
   }
+  if (typeof varMap["_"] !== 'undefined')
+    return varMap["_"]
   if (varKeys.includes("*"))
   {
-    return (Object.entries(varMap)[0]||[])[1]
+    const found = Object.entries(varMap)[0]
+    if (found) return found[1]
   }
-  return varMap["_"] || null
+  return null
 }
 
-function isLowerCase(str: string)
+function isLowerCase(str: string): boolean
 {
   return str != str.toUpperCase()
 }
@@ -105,10 +113,23 @@ function getNormalizedChr(str: string)
   return str.normalize("NFD")[0]
 }
 
-function orPinMap(a: string, b: string)
+function orPinMap(a: number, b: number): number
 {
-  return a.split('').map((ac, i) =>
-    ac == '1' || b[i] == '1' ? '1' : '0').join('')
+  return a | b
+}
+
+export function normalizeToPinMap(pin: Pin | PinMap | undefined):
+  PinMap | undefined
+{
+  if ((typeof pin == 'object' && !Array.isArray(pin))
+    || typeof pin == 'undefined')
+  {
+    return pin
+  }
+  else
+  {
+    return { _: pin }
+  }
 }
 
 type BreakCheck = (visible: CharVisible | undefined) => boolean
@@ -123,7 +144,7 @@ const isVisibleOnBreak: BreakCheck = (visible) =>
   return visible == 'show-on-break' || typeof visible == 'undefined'
 }
 
-function toSimpleChar(element: TextElement)
+function toSimpleChar(element: TextElement): TextElement
 {
   return { pin: element.pin }
 }
@@ -133,17 +154,17 @@ function blankFill(length: number): TextElement[]
   return Array(Math.max(length, 0)).fill({pin: '00000000'})
 }
 
-function alignLeft(line: TextElement[], length: number)
+function alignLeft(line: TextElement[], length: number): TextElement[]
 {
   return line.concat(blankFill(length - line.length))
 }
 
-function alignRight(line: TextElement[], length: number)
+function alignRight(line: TextElement[], length: number): TextElement[]
 {
   return blankFill(length - line.length).concat(line)
 }
 
-function alignCenter(line: TextElement[], length: number)
+function alignCenter(line: TextElement[], length: number): TextElement[]
 {
   const remaining = length - line.length
   const left = Math.floor(remaining/2)
@@ -156,13 +177,13 @@ function trim(line: TextElement[]): [TextElement[], number, number]
   let l = 0
   let r = 0
   for(; l<line.length; l++)
-    if (line[l]?.pin != '00000000') break
+    if (line[l]?.pin != 0b00000000) break
   for(; r<line.length-l; r++)
-    if (line[line.length-r-1]?.pin != '00000000') break
+    if (line[line.length-r-1]?.pin != 0b00000000) break
   return [line.slice(l, line.length-r), l, r]
 }
 
-function splitInt(number: number, divisions: number)
+function splitInt(number: number, divisions: number): number[]
 {
   if(divisions == 0) return []
 
@@ -191,7 +212,7 @@ function splitInt(number: number, divisions: number)
   return out
 }
 
-function interleave<T>(...arrays: T[][])
+function interleave<T>(...arrays: T[][]): T[]
 {
   const out: T[] = []
   for (let i=0; i<Math.max(...arrays.map(a=>a.length)); i++)
@@ -203,7 +224,7 @@ function interleave<T>(...arrays: T[][])
   return out
 }
 
-function justify(line: TextElement[], length: number)
+function justify(line: TextElement[], length: number): TextElement[]
 {
   const words: TextElement[][] = [[]]
   let charCount = 0
@@ -212,7 +233,7 @@ function justify(line: TextElement[], length: number)
 
   trimmedLine.forEach(e =>
   {
-    if (e.pin == '00000000')
+    if (e.pin == 0b00000000)
       words.push([])
     else
     {
@@ -264,7 +285,7 @@ export class SevenSegmentLine
    * @param options - Optional parameters.
    * @returns An array of strings
    */
-  public wrap(options: WrapOptions)
+  public wrap(options: WrapOptions): SevenSegmentLine[]
   {
     const opts: Required<WrapOptions> =
     {
@@ -273,7 +294,7 @@ export class SevenSegmentLine
       justify: false,
       justifyLastLine: false,
       breakWordAnywhere: false,
-      breakPin: '00000010',
+      breakPin: 0b00000010,
       ...options,
     }
 
@@ -363,7 +384,7 @@ export class SevenSegmentLine
           && lineLength + 3 > opts.length
           && oneAhead && !oneAhead.break)
         {
-          if (oneAhead.pin == '00000000'
+          if (oneAhead.pin == 0b00000000
              || oneAhead.pin == opts.breakPin)
             oneAhead.break = "soft"
           else
@@ -372,7 +393,7 @@ export class SevenSegmentLine
               processElement({ pin: opts.breakPin,
                 break: 'soft', visible: 'show-on-break' }, index)
             else
-            processElement({ pin: '00000000',
+            processElement({ pin: 0b00000000,
               break: 'soft', visible: 'never' }, index)
           }
         }
@@ -385,26 +406,32 @@ export class SevenSegmentLine
     return lines.map(line => new SevenSegmentLine(line))
   }
 
+  private getFilteredElements(): TextElement[]
+  {
+    return this.elements
+      .filter(el => el.visible != 'never'
+        && el.visible != 'show-on-break')
+  }
+
   /**
    * Output an array of strings representing the 8 segments
    * as '1' or '0'.
    * @param options - Optional parameters.
    * @returns An array of strings
    */
-  public toPinsArray(options?: TextGeneralOptions)
+  public toPinsArray(options?: TextGeneralOptions): string[]
   {
     const opts: Required<TextGeneralOptions> = {
       ...this.properties,
       ...options,
     }
-    return this.elements
-      .filter(el => el.visible != 'never'
-        && el.visible != 'show-on-break')
+    return this.getFilteredElements()
       .map(el =>
     {
+      const pin = byte2bits(el.pin)
       return opts.pinMap
-        ? opts.pinMap.map(i => el.pin[i]).join("")
-        : el.pin
+        ? opts.pinMap.map(i => pin[i]).join("")
+        : byte2bits(el.pin)
     })
   }
 
@@ -414,13 +441,20 @@ export class SevenSegmentLine
    * @param options - Optional parameters.
    * @returns An array of bytes
    */
-  public toBytes(options?: TextGeneralOptions)
+  public toBytes(options?: TextGeneralOptions): number[]
   {
     const opts: Required<TextGeneralOptions> = {
       ...this.properties,
       ...options,
     }
-    return this.toPinsArray(options).map(bits2byte)
+    return this.getFilteredElements()
+      .map(el =>
+    {
+      const pin = byte2bits(el.pin)
+      return opts.pinMap
+        ? bits2byte(opts.pinMap.map(i => pin[i]).join(""))
+        : el.pin
+    })
   }
 
   /**
@@ -428,7 +462,7 @@ export class SevenSegmentLine
    * @param options - Optional parameters.
    * @returns A string of bytes
    */
-  public toString(options?: TextStringOptions)
+  public toString(options?: TextStringOptions): string
   {
     const opts: Required<TextStringSpecificOptions> = {
       startCharCode: 0,
@@ -450,7 +484,7 @@ export class SevenSegmentLine
    * @param options - Optional parameters.
    * @returns A string of bytes
    */
-  public toDsegString(options?: TextStringOptions)
+  public toDsegString(options?: TextStringOptions): string
   {
     return this.toString({
       pinMap: [7,6,5,4,3,2,1,0],
@@ -492,7 +526,11 @@ export default class SevenSegmentType
     }
 
     this.charMap = Object.fromEntries(
-      this.properties.characters.map(char => [char.chr, char]))
+      this.properties.characters.map(char => [char.chr,
+      {
+        ...char,
+        pin: normalizeToPinMap(char.pin)
+      }]))
   }
 
   /**
@@ -502,7 +540,7 @@ export default class SevenSegmentType
    * @returns An instance of the
    *   {@link SevenSegmentLine | `SevenSegmentLine`} class.
    */
-  public convert(text: string, options?: FunctionOptions)
+  public convert(text: string, options?: FunctionOptions): SevenSegmentLine
   {
     const opts: Required<InstanceOptions> =
     {
@@ -533,28 +571,25 @@ export default class SevenSegmentType
     const resolveChr = (chr: string, index: number): string | string[] =>
     {
       if (chr == decimalPointModChar) return chr
-      let char = this.charMap[chr]
-      let variation = null
-      if (char && char.var)
+      const char = this.charMap[chr]
+      let variation: Pin | null = null
+      if (char && typeof char.pin !== "undefined")
       {
-        variation = getVariation(char.var, mods)
-        if (variation)
+        variation = getVariation(char.pin, mods)
+        if (typeof variation === 'number')
+          return chr
+        if (variation !== null)
         {
           if (typeof variation !== 'string')
           {
-            const varIndex = (index+1 < splitText.length &&
-              isLowerCase(splitText[index+1]!)) ? 1 : 0
+            const varIndex = (index+1 < splitText.length
+              && isLowerCase(splitText[index+1]!)) ? 1 : 0
             variation = variation[varIndex]
           }
           return variation.split('').flat()
         }
       }
-      if (!char || (!char.pin && !variation))
-      {
-        // remove diacritics if possible and add DP
-        return getNormalizedChr(chr) + decimalPointModChar
-      }
-      return chr
+      return getNormalizedChr(chr) + decimalPointModChar
     }
 
     // Replace chrs in text with variations
@@ -581,8 +616,10 @@ export default class SevenSegmentType
       }
       else
       {
+        const pin = typeof char.pin != 'undefined'
+          && char.pin["_"]
         elements.push({
-          pin: typeof char.pin !== "string" ? decimalPoint : char.pin,
+          pin: typeof pin !== "number" ? decimalPoint : pin,
           break: char.break,
           visible: char.visible,
           align: char.align,

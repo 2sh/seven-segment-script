@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 
-import SevenSegmentType, { Align, SevenSegmentLine } from '../../src'
+import SevenSegmentType, { Align, bits2byte, SevenSegmentLine } from '../../src'
 
 type Mode =
   | 'line'
@@ -9,10 +9,12 @@ type Mode =
   | 'word'
   | 'wrap'
 
+type Pin = string | number
+
 export interface Props {
   sst?: SevenSegmentType,
   mode?: Mode,
-  pin?: string | string[],
+  pin?: Pin | Pin[],
   text?: string,
   color?: string,
   length?: number,
@@ -50,10 +52,13 @@ watch(props, () =>
   {
     textParts.value = []
     let line: SevenSegmentLine
-    if (props.pin.length)
+    if (typeof props.pin == "number" || props.pin.length)
     {
-      const pins = typeof props.pin == "string" ? [props.pin] : props.pin
-      line = new SevenSegmentLine(pins.map(pin => { return {pin} } ))
+      const pins = typeof props.pin != "object" ? [props.pin] : props.pin
+      line = new SevenSegmentLine(pins.map(pin =>
+      {
+        return { pin: typeof pin == 'number' ? pin : bits2byte(pin) }
+      }))
     }
     else
     {

@@ -10,7 +10,7 @@ for (let byte=0; byte<2**8; byte++)
   const rByte = bits2byte(bits.split('').toReversed().join(''))
   chars.push({
     chr: String.fromCharCode(0x2800 + rByte),
-    pin: bits,
+    pin: byte,
   })
 }
 export default chars

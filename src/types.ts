@@ -5,7 +5,8 @@
  */
 
 export type Variation = string | [string, string]
-export type VariationMap = {[key: string]: Variation}
+export type Pin = number | Variation
+export type PinMap = {[key: string]: Pin}
 
 export type CharBreak =
     'line'
@@ -29,10 +30,9 @@ export type Align =
   | 'left'
   | 'right'
 
-export type Char = {
+export interface Char {
   chr: string
-  pin?: string
-  var?: VariationMap
+  pin?: PinMap | Pin
   dp?: boolean
   break?: CharBreak
   visible?: CharVisible
@@ -41,7 +41,7 @@ export type Char = {
 }
 
 export interface TextElement {
-  pin: string,
+  pin: number,
   break?: CharBreak
   visible?: CharVisible
   align?: Align
@@ -80,5 +80,5 @@ export type WrapOptions = {
   justify?: boolean
   justifyLastLine?: boolean
   breakWordAnywhere?: boolean
-  breakPin?: string | null
+  breakPin?: number | null
 }

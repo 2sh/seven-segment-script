@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SevenSegmentType, { libChars } from "../src/"
+import SevenSegmentType, { libChars, normalizeToPinMap } from "../src/"
 import type { Align, Char } from "../src/types"
 import sst from './components/SevenSegmentText.vue'
 
@@ -7,8 +7,14 @@ import { computed, ref } from "vue"
 
 import { hyphenateSync as hyphenate } from "hyphen/en-gb";
 
-const chars: Char[] = libChars
+const chars: [Char, boolean][] = libChars
   .toSorted((c1, c2) => c1.chr.charCodeAt(0)-c2.chr.charCodeAt(0))
+  .map(char =>
+  {
+    const pinMap = normalizeToPinMap(char.pin)
+    const hasPin = !!(pinMap && typeof pinMap["_"] == "number")
+    return [char, hasPin]
+  })
 
 const generalSss = new SevenSegmentType()
 const gridSss = new SevenSegmentType({
@@ -555,7 +561,7 @@ and <sst pin="0110110"/> looks like two `1`s.
       <div class="larger-displays">
         <h2>Character Map</h2>
         <div id="character-map">
-          <div class="character" v-bind:class="{'has-pinmap': typeof char.pin !== 'undefined'}" v-for="char in chars">
+          <div class="character" v-bind:class="{'has-pin': hasPin }" v-for="[char, hasPin] in chars">
             <div class="title">{{ char.chr }}</div>
             <div class="ssbox sevensegment-text"><div>{{ gridSss.convert(char.chr).toDsegString() }}</div></div>
           </div>
@@ -626,7 +632,7 @@ and <sst pin="0110110"/> looks like two `1`s.
   height: 22px;
 }
 
-.character:not(.has-pinmap) .title
+.character:not(.has-pin) .title
 {
   background-color: #ffdbb3;
 }
