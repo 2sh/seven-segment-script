@@ -536,6 +536,9 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
           ィ <sst pin="00100000"/> : Different from the origin, it has been changed from <sst pin="00001000"/> to avoid conflict with the comma.
         </div>
         <div>
+          6 <sst pin="10111110"/>, 7 <sst pin="11100000"/> & 9 <sst pin="11110110"/>: These seem to be most common on general displays. Though `7` is often found as <sst pin="11100100"/> on calculators. `6` <sst pin="00111110"/>, `7` <sst pin="11100100"/> & `9` <sst pin="11100110"/> can be displayed instead with the var keys `five_segment_six`, `four_segment_seven` and `five_segment_nine`, respectively.
+        </div>
+        <div>
 ↊ <sst pin="10001100"/> & ↋ <sst pin="10011110"/> : Both DSGB and DSA now use
 the rotated `2` and `3` by Isaac Pitman. Though rotated `2` <sst pin="11011010"/>
 in 7 segments ends up being <sst pin="11011010"/> again.
@@ -547,7 +550,10 @@ and <sst pin="0001110"/> and <sst pin="00111100"/> look like `L` and `l`.
 Strongly considered were <sst pin="01011010"/> & <sst pin="00011110"/>, a
 <a href="http://www.dozenalsociety.org.uk/basicstuff/hammond.html">proposal</a>
 by Don Hammond but amongst the other numbers 0-9, they just don't look "full"
-enough, like lower case letters (`z` and `t`).
+enough, like lower case letters (`z` and `t`). Don Hammond's proposal can be
+displayed instead with the var keys `hammond_ten` and `hammond_elf`. These
+in combination with `five_segment_six` and `five_segment_nine` makes it more
+aesthetically pleasing.
 
 I really wanted to avoid inventing something new but was unsatified with the
 <a href="https://dozenal.org/drupal/content/dsa-symbology-synopsis.html">various proposals</a> out there.
