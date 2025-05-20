@@ -45,7 +45,7 @@ function toDozenal(num: number)
 function toAlphabetical(num: number, radix: number)
 {
   return num.toString(radix).toUpperCase()
-    .replaceAll('B', 'b').replaceAll('d', 'D')
+    .replaceAll('B', 'b').replaceAll('D', 'd')
 }
 
 function exampleNumbers(radix: number = 10)
