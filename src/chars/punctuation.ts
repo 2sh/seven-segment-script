@@ -150,5 +150,7 @@ const chars: Char[] = [
   { chr: "ǁ", pin: "‖" },
   { chr: "ǂ", pin: "‡" },
   { chr: "ǃ", pin: "!" },
+
+  { chr: "√", pin: { _: "⡄\x1F⠱" } },
 ]
 export default chars
