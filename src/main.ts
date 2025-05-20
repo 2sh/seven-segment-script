@@ -92,7 +92,8 @@ function getVariation(varMap: VariationMap, varKeys: string[]): CharPin | null
 {
   for (const key of varKeys)
   {
-    if (varMap[key]) return varMap[key]
+    if (typeof varMap[key] !== 'undefined')
+      return varMap[key]
   }
   if (typeof varMap["_"] !== 'undefined')
     return varMap["_"]
@@ -564,8 +565,9 @@ export default class SevenSegmentType
       ...this.properties,
       ...options
     }
-
-    const mods = this.properties.mods.concat(opts.mods)
+    const mods = options && options.mods
+      ? this.properties.mods.concat(options.mods)
+      : this.properties.mods
 
     if (opts.enhanceNumbers)
     {
@@ -634,7 +636,7 @@ export default class SevenSegmentType
       else
       {
         const pin = typeof char.pin != 'undefined'
-          && char.pin["_"]
+          && getVariation(char.pin, mods)
         elements.push({
           pin: typeof pin !== "number" ? decimalPoint : pin,
           break: char.break,
