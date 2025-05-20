@@ -52,9 +52,9 @@ watch(props, () =>
   }
   else if (props.convertColon)
   {
-    const parts = props.text.split(/([: ])/)
-    lines.value = [[parts.map(text => (text == ":" || text == " ")
-        ? text
+    const parts = props.text.split(/([:␣])/)
+    lines.value = [[parts.map(text => (text == ":" || text == "␣")
+        ? text.replaceAll("␣", " ")
         : props.sst.convert(text).toDsegString()).join('')]]
   }
   else
@@ -103,7 +103,7 @@ const lineStyle = computed(() =>
   <div class="line" v-for="line in lines">
     <div class="part" v-for="(part, i) in line">
       <div class="displays sevensegment-text">
-        <div class="off">{{ part.split('').map(c => (c == ":" || c == " ") ? ' ' : '8').join('') }}</div>
+        <div class="off">{{ part.split('').map(c => (c == ":" || c == " ") ? ':' : '8').join('') }}</div>
         <div class="on" :style="lineStyle">{{ part }}</div>
       </div>
       <div v-if="textParts.length" class="plain"><div>{{ textParts[i] }}</div></div>
