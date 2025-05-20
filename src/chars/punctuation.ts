@@ -38,16 +38,16 @@ const chars: Char[] = [
   { chr: "?", pin: 0b11010000 },
   { chr: "@", pin: 0b11011110 },
   // A-Z
-  { chr: "[", pin: 0b10011100 },
+  { chr: "[", pin: 0b10000110 },
   { chr: "\\", pin: 0b00100100 },
-  { chr: "]", pin: 0b11110000 },
+  { chr: "]", pin: 0b11000010 },
   { chr: "^", pin: 0b11000100 },
   { chr: "_", pin: 0b00010000 },
   { chr: "`", pin: 0b01000000 },
   // a-z
-  { chr: "{", pin: 0b01100010 },
+  { chr: "{", pin: 0b01000010 },
   { chr: "|", pin: 0b00001100 },
-  { chr: "}", pin: 0b00001110 },
+  { chr: "}", pin: 0b00000110 },
   { chr: "~", pin: 0b01000010 },
 
   // 0x00A1 - 0x00BF (Latin-1 Supplement)
