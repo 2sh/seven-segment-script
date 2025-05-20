@@ -69,32 +69,51 @@ function exampleNumbers(radix: number = 10)
   }), radix).join(' ')
 }
 
-function ssdt(radix: number = 10)
+function sstime(radix: number = 10)
 {
   const now = new Date()
   const dtArray = [
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
     now.getHours(),
     now.getMinutes(),
     now.getSeconds(),
   ]
   const a = arrayToRadix(dtArray, radix)
-    .map((n, i) => n.padStart(i == 1 && radix > 12 ? 1 : 2, '0'))
-  return `${a[0]}-${a[1]}-${a[2]} ${a[3]}:${a[4]}:${a[5]}`
+    .map((n, i) => n.padStart(2, '0'))
+  return `${a[0]}:${a[1]}:${a[2]}`
+}
+
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+function ssdate(radix: number = 10)
+{
+  const now = new Date()
+  const dtArray = [
+    now.getFullYear(),
+    now.getDate(),
+  ]
+  const month = months[now.getMonth()-1]
+
+  const a = arrayToRadix(dtArray, radix)
+    .map((n, i) => n.padStart(2, '0'))
+  return `${a[1]} ${month} ${a[0]}`
 }
 
 const hammondSst = new SevenSegmentType({mods: ['hammond_ten', 'hammond_elf', 'five_segment_six', 'five_segment_nine']})
+const decDate = ref<string>('')
 const decTime = ref<string>('')
+const dozDate = ref<string>('')
 const dozTime = ref<string>('')
+const hexDate = ref<string>('')
 const hexTime = ref<string>('')
 
 function setTime()
 {
-  decTime.value = ssdt(10)
-  dozTime.value = ssdt(12)
-  hexTime.value = ssdt(16)
+  decDate.value = ssdate(10)
+  decTime.value = sstime(10)
+  dozDate.value = ssdate(12)
+  dozTime.value = sstime(12)
+  hexDate.value = ssdate(16)
+  hexTime.value = sstime(16)
 }
 
 setInterval(setTime, 1000)
@@ -509,21 +528,25 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
       </div>
       <div class="larger-displays">
         <h2>Date & Time</h2>
-        <div>
-          <h3>Decimal</h3>
-          <sst :convertColon="true" :text="decTime"/>
+        <h3>Decimal</h3>
+        <div class="date-time">
+          <div><sst :text="decDate"/></div>
+          <div><sst :convertColon="true" :text="decTime"/></div>
         </div>
-        <div>
-          <h3>Dozenal</h3>
-          <sst :convertColon="true" :text="dozTime"/>
+        <h3>Dozenal</h3>
+        <div class="date-time">
+          <div><sst :text="dozDate"/></div>
+          <div><sst :convertColon="true" :text="dozTime"/></div>
         </div>
-        <div>
-          <h3>Dozenal (Hammond)</h3>
-          <sst :convertColon="true" :sst="hammondSst" :text="dozTime"/>
+        <h3>Dozenal (Hammond)</h3>
+        <div class="date-time">
+          <div><sst :sst="hammondSst" :text="dozDate"/></div>
+          <div><sst :convertColon="true" :sst="hammondSst" :text="dozTime"/></div>
         </div>
-        <div>
-          <h3>Hexadecimal</h3>
-          <sst :convertColon="true" :text="hexTime"/>
+        <h3>Hexadecimal</h3>
+        <div class="date-time">
+          <div><sst :text="hexDate"/></div>
+          <div><sst :convertColon="true" :text="hexTime"/></div>
         </div>
       </div>
       <div v-for="([ssd, section]) in sections" class="larger-displays">
@@ -667,6 +690,12 @@ aesthetically pleasing.
 #custom-text-output
 {
   margin-top: 10px;
+}
+
+.date-time > div
+{
+  display: inline-block;
+  margin: 0 10px;
 }
 
 #character-map
