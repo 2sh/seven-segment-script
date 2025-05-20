@@ -20,6 +20,7 @@ export interface Props {
   length?: number,
   align?: Align,
   justify?: boolean,
+  convertColon?: boolean,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   length: 4*6,
   align: 'left',
   justify: false,
+  convertColon: false,
 })
 
 const lines = ref<string[][]>([])
@@ -47,6 +49,13 @@ watch(props, () =>
       : props.text.split(/(?<=\s+)/)
     lines.value = [textParts.value.map(text =>
       props.sst.convert(text).toDsegString())]
+  }
+  else if (props.convertColon)
+  {
+    const parts = props.text.split(/([: ])/)
+    lines.value = [[parts.map(text => (text == ":" || text == " ")
+        ? text
+        : props.sst.convert(text).toDsegString()).join('')]]
   }
   else
   {
@@ -94,7 +103,7 @@ const lineStyle = computed(() =>
   <div class="line" v-for="line in lines">
     <div class="part" v-for="(part, i) in line">
       <div class="displays sevensegment-text">
-        <div class="off">{{ "8".repeat(part.length) }}</div>
+        <div class="off">{{ part.split('').map(c => (c == ":" || c == " ") ? ' ' : '8').join('') }}</div>
         <div class="on" :style="lineStyle">{{ part }}</div>
       </div>
       <div v-if="textParts.length" class="plain"><div>{{ textParts[i] }}</div></div>

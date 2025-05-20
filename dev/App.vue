@@ -511,19 +511,19 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
         <h2>Date & Time</h2>
         <div>
           <h3>Decimal</h3>
-          <sst :text="decTime"/>
+          <sst :convertColon="true" :text="decTime"/>
         </div>
         <div>
           <h3>Dozenal</h3>
-          <sst :text="dozTime"/>
+          <sst :convertColon="true" :text="dozTime"/>
         </div>
         <div>
           <h3>Dozenal (Hammond)</h3>
-          <sst :sst="hammondSst" :text="dozTime"/>
+          <sst :convertColon="true" :sst="hammondSst" :text="dozTime"/>
         </div>
         <div>
           <h3>Hexadecimal</h3>
-          <sst :text="hexTime"/>
+          <sst :convertColon="true" :text="hexTime"/>
         </div>
       </div>
       <div v-for="([ssd, section]) in sections" class="larger-displays">
