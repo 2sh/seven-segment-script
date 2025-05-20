@@ -48,20 +48,57 @@ function toAlphabetical(num: number, radix: number)
     .replaceAll('B', 'b').replaceAll('D', 'd')
 }
 
+function arrayToRadix(array: number[], radix: number = 10)
+{
+  return array.map(num =>
+  {
+    return radix == 12
+      ? toDozenal(num)
+      : toAlphabetical(num, radix)
+  })
+}
+
 function exampleNumbers(radix: number = 10)
 {
-  return Array.from({length: 8}, () =>
+  return arrayToRadix(Array.from({length: 8}, () =>
   {
     const length = Math.round(getRandomNumber(2, 4))
     const lower = length-1
     const upper = length
-    const num = Math.round(getRandomNumber(radix**lower, radix**upper-1))
-    return radix == 12
-      ? toDozenal(num)
-      : toAlphabetical(num, radix)
-  }).join(' ')
+    return Math.round(getRandomNumber(radix**lower, radix**upper-1))
+  }), radix).join(' ')
 }
 
+function ssdt(radix: number = 10)
+{
+  const now = new Date()
+  const dtArray = [
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    now.getHours(),
+    now.getMinutes(),
+    now.getSeconds(),
+  ]
+  const a = arrayToRadix(dtArray, radix)
+    .map((n, i) => n.padStart(i == 1 && radix > 12 ? 1 : 2, '0'))
+  return `${a[0]}-${a[1]}-${a[2]} ${a[3]}:${a[4]}:${a[5]}`
+}
+
+const hammondSst = new SevenSegmentType({mods: ['hammond_ten', 'hammond_elf', 'five_segment_six', 'five_segment_nine']})
+const decTime = ref<string>('')
+const dozTime = ref<string>('')
+const hexTime = ref<string>('')
+
+function setTime()
+{
+  decTime.value = ssdt(10)
+  dozTime.value = ssdt(12)
+  hexTime.value = ssdt(16)
+}
+
+setInterval(setTime, 1000)
+setTime()
 
 // https://clagnut.com/blog/2380
 
@@ -470,6 +507,25 @@ const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901
             :justify="customTextWrapJustify"></sst>
         </div>
       </div>
+      <div class="larger-displays">
+        <h2>Date & Time</h2>
+        <div>
+          <h3>Decimal</h3>
+          <sst :text="decTime"/>
+        </div>
+        <div>
+          <h3>Dozenal</h3>
+          <sst :text="dozTime"/>
+        </div>
+        <div>
+          <h3>Dozenal (Hammond)</h3>
+          <sst :sst="hammondSst" :text="dozTime"/>
+        </div>
+        <div>
+          <h3>Hexadecimal</h3>
+          <sst :text="hexTime"/>
+        </div>
+      </div>
       <div v-for="([ssd, section]) in sections" class="larger-displays">
         <h2>{{ section.name }}</h2>
         <div>
@@ -654,9 +710,10 @@ aesthetically pleasing.
   padding: 4px;
 }
 
-h2
+h2, h3
 {
   margin: 0;
+  margin-bottom: 8px;
 }
 
 .subsection
