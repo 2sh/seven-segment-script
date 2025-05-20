@@ -82,6 +82,7 @@ function sstime(radix: number = 10)
   return `${a[0]}:${a[1]}:${a[2]}`
 }
 
+const weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 function ssdate(radix: number = 10)
@@ -91,11 +92,25 @@ function ssdate(radix: number = 10)
     now.getFullYear(),
     now.getDate(),
   ]
-  const month = months[now.getMonth()]
+
+  function changeCase(text: string)
+  {
+    if (caseMode.value == "upper")
+      return text.toLocaleUpperCase()
+    else if (caseMode.value == "lower")
+      return text.toLocaleLowerCase()
+    else
+      return text
+  }
+
+  const week = changeCase(weeks[now.getDay()]!)
+  const month = changeCase(months[now.getMonth()]!)
+
+
 
   const a = arrayToRadix(dtArray, radix)
     .map((n, i) => n.padStart(2, '0'))
-  return `${a[1]} ${month} ${a[0]}`
+  return `${week}, ${a[1]} ${month} ${a[0]}`
 }
 
 const hammondSst = new SevenSegmentType({mods: ['hammond_ten', 'hammond_elf', 'five_segment_six', 'five_segment_nine']})
@@ -116,8 +131,6 @@ function setTime()
   hexTime.value = sstime(16)
 }
 
-setInterval(setTime, 1000)
-setTime()
 
 // https://clagnut.com/blog/2380
 
@@ -466,6 +479,9 @@ function onColorPreset(e: Event)
 }
 
 const wrappingTextExample = "\x01Title\n\x03Right aligned\n123456789012345678901234 Testing hyphenating sen\u00ADtence and some no\u00A0break\u00A0spaces. With many many words to test the wrapping of seven\u2010segment text and also\na newline character."
+
+setInterval(setTime, 1000)
+setTime()
 
 </script>
 
