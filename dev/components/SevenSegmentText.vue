@@ -70,7 +70,7 @@ watch(props, () =>
       lines.value = line.wrap({
         length: props.length,
         align: props.align,
-        justify: props.justify
+        justify: props.justify,
       }).map(l => [l.toDsegString()])
     }
     else

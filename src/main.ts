@@ -302,8 +302,12 @@ export class SevenSegmentLine
       justifyLastLine: false,
       breakWordAnywhere: false,
       breakPin: 0b00000010,
+      limit: null,
       ...options,
     }
+
+    if (opts.limit == 0) return []
+    if (opts.limit == 1) return [this]
 
     const lines: TextElement[][] = []
     let line: TextElement[] = []
@@ -407,7 +411,17 @@ export class SevenSegmentLine
       }
     }
 
-    this.elements.forEach(processElement)
+    this.elements.forEach((el, index) =>
+    {
+      if (opts.limit !== null && lines.length >= opts.limit-1)
+      {
+        part.push(el)
+      }
+      else
+      {
+        processElement(el, index)
+      }
+    })
     pushPart()
     if (line.length) pushLine(true)
     return lines.map(line => new SevenSegmentLine(line))

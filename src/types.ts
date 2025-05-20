@@ -81,4 +81,5 @@ export type WrapOptions = {
   justifyLastLine?: boolean
   breakWordAnywhere?: boolean
   breakPin?: number | null
+  limit?: number | null
 }
