@@ -91,7 +91,7 @@ function ssdate(radix: number = 10)
     now.getFullYear(),
     now.getDate(),
   ]
-  const month = months[now.getMonth()-1]
+  const month = months[now.getMonth()]
 
   const a = arrayToRadix(dtArray, radix)
     .map((n, i) => n.padStart(2, '0'))
