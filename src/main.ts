@@ -538,8 +538,9 @@ export default class SevenSegmentType
       characters: libChars,
       mods: [],
       enhanceNumbers: true,
-      numberDecimalSeparator: ".",
-      numberGroupSeparator: ",",
+      numberPattern: "[0-9↊↋]",
+      numberDecimalSeparatorPattern: "\\.",
+      numberGroupSeparatorPattern: ",",
       ...options,
     }
 
@@ -571,18 +572,24 @@ export default class SevenSegmentType
 
     if (opts.enhanceNumbers)
     {
-      const regexDigits = "[" + numbers.map(num => num.chr).join("") + "]"
-      const regexGroupSeparator = escapeRegExp(opts.numberGroupSeparator)
-      const regexDecimalSeparator = escapeRegExp(opts.numberDecimalSeparator)
+      const d = opts.numberPattern
+      const p = opts.numberDecimalSeparatorPattern
+      const g = opts.numberGroupSeparatorPattern
+      const np = `${d}|${p}|${g}`
 
-      const regexGroupSep = new RegExp(
-        `(${regexDigits})${regexGroupSeparator}(${regexDigits})`, "gu")
-      const regexDecimalSep = new RegExp(
-        `(${regexDigits})${regexDecimalSeparator}(${regexDigits})`, "gu")
-
-      text = text
-        .replace(regexGroupSep, "$1$2")
-        .replace(regexDecimalSep, `$1${decimalPointModChar}$2`)
+      const reNumber = new RegExp(
+          `(?<!${np})`
+        + `(${d}{1,3}(${g}${d}{3})+(${p}${d}+)?|${d}+${p}${d}+)`
+        + `(?!${np})`,
+        "gu")
+      const reGroupSep = new RegExp(g, "gu")
+      const reDecSep = new RegExp(p, "gu")
+      text = text.replace(reNumber, m =>
+      {
+        return m
+          .replace(reGroupSep, '')
+          .replace(reDecSep, decimalPointModChar)
+      })
     }
 
     const splitText = text.split('')

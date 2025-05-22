@@ -54,8 +54,9 @@ export interface FunctionOptions
 {
   mods?: string[],
   enhanceNumbers?: boolean,
-  numberDecimalSeparator?: string,
-  numberGroupSeparator?: string,
+  numberPattern?: string,
+  numberDecimalSeparatorPattern?: string,
+  numberGroupSeparatorPattern?: string,
 }
 
 export interface InstanceOptions extends FunctionOptions
